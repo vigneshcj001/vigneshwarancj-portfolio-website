@@ -14,7 +14,7 @@ import ContactUs from "./src/pages/ContactUs";
 const App = () => {
   return (
     <Router>
-      <div className="bg-black min-h-screen w-full">
+      <div className=" bg-black min-h-screen w-full">
         <Header />
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6">
           <Routes>
