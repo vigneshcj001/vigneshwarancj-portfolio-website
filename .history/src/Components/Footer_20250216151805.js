@@ -1,13 +1,6 @@
-import { Link } from "react-router";
-import { FaGithub, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; 
-import {
-  GITHUB_LINK,
-  LINKEDIN_LINK,
-  X_LINK,
-  INSTAGRAM_LINK,
-  YOUTUBE_LINK,
-} from "../Utils/const"; 
+import { Link } from "react-router-dom"; // Import from react-router-dom
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import { GITHUB_LINK, LINKEDIN_LINK, X_LINK, INSTAGRAM_LINK, YOUTUBE_LINK } from "../Utils/const"; // Import all links
 
 const Footer = () => {
   return (
@@ -38,9 +31,9 @@ const Footer = () => {
           to={{ pathname: X_LINK }}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-black dark:text-gray-300 hover:text-gray-600 dark:hover:text-white transition-all text-xl"
+          className="text-blue-500 dark:text-blue-300 hover:text-blue-700 dark:hover:text-blue-100 transition-all text-xl"
         >
-          <FaXTwitter />
+          <FaTwitter />
         </Link>
         <Link
           to={{ pathname: INSTAGRAM_LINK }}

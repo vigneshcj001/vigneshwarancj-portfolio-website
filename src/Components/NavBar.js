@@ -24,42 +24,50 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="p-4 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex justify-center space-x-8 border-b border-gray-700">
-      <Link
-        to="/"
-        className="font-medium hover:text-gray-700 dark:hover:text-gray-300 transition"
-      >
-        Home
-      </Link>
-      <Link
-        to="/about"
-        className="font-medium hover:text-gray-700 dark:hover:text-gray-300 transition"
-      >
-        About
-      </Link>
-      <Link
-        to="/projects"
-        className="font-medium hover:text-gray-700 dark:hover:text-gray-300 transition"
-      >
-        Projects
-      </Link>
-      <Link
-        to="/social"
-        className="font-medium hover:text-gray-700 dark:hover:text-gray-300 transition"
-      >
-        Social
-      </Link>
-      <Link
-        to="/contact"
-        className="font-medium hover:text-gray-700 dark:hover:text-gray-300 transition"
-      >
-        Contact
-      </Link>
+    <nav className="p-4 bg-white dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-white flex justify-between items-center border-b border-gray-300 dark:border-gray-700 shadow-md transition-all">
+      <div className="flex space-x-6">
+        <Link
+          to="/"
+          className="font-medium hover:text-gray-600 dark:hover:text-gray-300 transition duration-200"
+        >
+          Home
+        </Link>
+        <Link
+          to="/about"
+          className="font-medium hover:text-gray-600 dark:hover:text-gray-300 transition duration-200"
+        >
+          About
+        </Link>
+        <Link
+          to="/projects"
+          className="font-medium hover:text-gray-600 dark:hover:text-gray-300 transition duration-200"
+        >
+          Projects
+        </Link>
+        <Link
+          to="/social"
+          className="font-medium hover:text-gray-600 dark:hover:text-gray-300 transition duration-200"
+        >
+          Social
+        </Link>
+        <Link
+          to="/contact"
+          className="font-medium hover:text-gray-600 dark:hover:text-gray-300 transition duration-200"
+        >
+          Contact
+        </Link>
+      </div>
+
+      {/* Dark Mode Toggle */}
       <button
         onClick={darkModeHandler}
-        className="ml-4 p-2 rounded-full bg-gray-800 dark:bg-gray-100 text-white dark:text-black"
+        className="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700 transition-all shadow-md"
       >
-        {dark ? <IoSunny className="text-yellow-400" /> : <IoMoon />}
+        {dark ? (
+          <IoSunny className="text-yellow-400 w-6 h-6" />
+        ) : (
+          <IoMoon className="w-6 h-6" />
+        )}
       </button>
     </nav>
   );

@@ -1,18 +1,12 @@
 import React from "react";
-import {
-  FaLinkedin,
-  FaGithub,
-  FaXTwitter,
-  FaYoutube,
-  FaInstagram,
-} from "react-icons/fa6";
+import { FaLinkedin, FaGithub, FaXTwitter, FaYoutube, FaInstagram } from "react-icons/fa6";
 import {
   LINKEDIN_LINK,
   INSTAGRAM_LINK,
   GITHUB_LINK,
   X_LINK,
   YOUTUBE_LINK,
-} from "../Utils/const.js"; // Import from const.js
+} from "../const"; // Import from const.js
 
 const socialLinks = [
   {
