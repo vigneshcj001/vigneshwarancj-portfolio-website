@@ -7,26 +7,21 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-center p-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md border-b border-gray-300 dark:border-gray-700 transition-all z-50">
-      {/* Logo */}
+    <header className="text-gray-900 dark:text-white bg-white dark:bg-gray-900 flex justify-between items-center p-5 shadow-md transition-all border-b border-gray-300 dark:border-gray-700">
       <Link
-        to="/home"
+        to="/"
         className="text-2xl font-bold hover:text-gray-700 dark:hover:text-gray-400 transition-all"
       >
         vigneshwarancj
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex">
+      <div className="hidden md:flex">
         <NavBar />
-      </nav>
+      </div>
 
       {/* Mobile Menu Button */}
-      <button
-        className="md:hidden p-2"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Toggle Menu"
-      >
+      <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <Menu size={28} />}
       </button>
 

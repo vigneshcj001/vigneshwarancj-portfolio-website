@@ -42,12 +42,13 @@ const skills = [
   "Public Speaking",
 ];
 
-// Generate random positions for skill bubbles
-const generateRandomPositions = (count) =>
-  Array.from({ length: count }, () => ({
+// Generate random positions within the viewport
+const generateRandomPositions = (count) => {
+  return Array.from({ length: count }, () => ({
     top: `${Math.random() * 90}vh`,
     left: `${Math.random() * 85}vw`,
   }));
+};
 
 const Home = () => {
   const [bubblePositions, setBubblePositions] = useState(() =>

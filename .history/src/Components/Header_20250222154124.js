@@ -10,7 +10,7 @@ const Header = () => {
     <header className="fixed top-0 left-0 w-full flex justify-between items-center p-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md border-b border-gray-300 dark:border-gray-700 transition-all z-50">
       {/* Logo */}
       <Link
-        to="/home"
+        to="/"
         className="text-2xl font-bold hover:text-gray-700 dark:hover:text-gray-400 transition-all"
       >
         vigneshwarancj

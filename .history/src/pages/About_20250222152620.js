@@ -1,19 +1,19 @@
 import { useState, useEffect } from "react";
 
 const About = () => {
-  const [dark, setDark] = useState(
-    localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-  );
+  const [dark, setDark] = useState(() => {
+    return localStorage.getItem("theme") === "dark" ||
+      (!localStorage.getItem("theme") &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+  });
 
   useEffect(() => {
     if (dark) {
       document.documentElement.classList.add("dark");
-      localStorage.theme = "dark";
+      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.theme = "light";
+      localStorage.setItem("theme", "light");
     }
   }, [dark]);
 
@@ -24,13 +24,12 @@ const About = () => {
           About Me
         </h1>
 
-        {/* Education Section */}
         <h2 className="text-xl font-bold mt-6 border-b-2 border-gray-300 dark:border-gray-600 pb-2">
           Education
         </h2>
 
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 duration-300">
+          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all">
             <h4 className="font-semibold text-lg">
               Master of Technology in Big Data Biology
             </h4>
@@ -38,16 +37,16 @@ const About = () => {
               SASTRA Deemed University, Thanjavur, Tamil Nadu, India
             </p>
             <p className="text-sm">Aug 2023 - Present</p>
-            <p className="text-sm font-medium">Percentage: 78.33</p>
+            <p className="text-sm font-medium">Percentage: 78.33%</p>
           </div>
 
-          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 duration-300">
+          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all">
             <h4 className="font-semibold text-lg">Bachelor of Technology</h4>
             <p className="text-gray-700 dark:text-gray-300">
               Prathyusha Engineering College, Tiruvallur, Tamil Nadu, India
             </p>
             <p className="text-sm">Aug 2019 - Apr 2023</p>
-            <p className="text-sm font-medium">Percentage: 84.4</p>
+            <p className="text-sm font-medium">Percentage: 84.4%</p>
           </div>
         </div>
       </div>

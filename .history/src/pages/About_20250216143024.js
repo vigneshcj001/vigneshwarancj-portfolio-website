@@ -30,7 +30,7 @@ const About = () => {
         </h2>
 
         <div className="mt-4 space-y-4">
-          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 duration-300">
+          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all">
             <h4 className="font-semibold text-lg">
               Master of Technology in Big Data Biology
             </h4>
@@ -41,7 +41,7 @@ const About = () => {
             <p className="text-sm font-medium">Percentage: 78.33</p>
           </div>
 
-          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 duration-300">
+          <div className="p-4 bg-gray-200 dark:bg-gray-700 rounded-lg shadow-md transition-all">
             <h4 className="font-semibold text-lg">Bachelor of Technology</h4>
             <p className="text-gray-700 dark:text-gray-300">
               Prathyusha Engineering College, Tiruvallur, Tamil Nadu, India

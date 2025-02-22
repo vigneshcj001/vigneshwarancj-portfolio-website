@@ -7,10 +7,10 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 w-full flex justify-between items-center p-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md border-b border-gray-300 dark:border-gray-700 transition-all z-50">
+    <header className="flex justify-between items-center p-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-md border-b border-gray-300 dark:border-gray-700 transition-all">
       {/* Logo */}
       <Link
-        to="/home"
+        to="/"
         className="text-2xl font-bold hover:text-gray-700 dark:hover:text-gray-400 transition-all"
       >
         vigneshwarancj
@@ -31,11 +31,13 @@ const Header = () => {
       </button>
 
       {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="absolute top-16 right-5 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 md:hidden">
-          <NavBar />
-        </div>
-      )}
+      <div
+        className={`absolute top-16 right-5 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg p-4 transition-all ${
+          isOpen ? "block" : "hidden"
+        } md:hidden`}
+      >
+        <NavBar />
+      </div>
     </header>
   );
 };

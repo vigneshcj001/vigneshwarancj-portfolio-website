@@ -18,7 +18,7 @@ const App = () => {
         <Header />
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6">
           <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/Home" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/social" element={<Social />} />
