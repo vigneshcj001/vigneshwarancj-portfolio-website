@@ -1,14 +1,15 @@
 import { Link } from "react-router";
-import { IoSunny, IoMoon } from "react-icons/io5";
+import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import { useState, useEffect } from "react";
 
 const NavBar = () => {
-  const [dark, setDark] = useState(
-    () =>
+  const [dark, setDark] = useState(() => {
+    return (
       localStorage.getItem("theme") === "dark" ||
       (!localStorage.getItem("theme") &&
         window.matchMedia("(prefers-color-scheme: dark)").matches)
-  );
+    );
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -17,7 +18,13 @@ const NavBar = () => {
 
   return (
     <nav className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-center">
-      {["Home", "About", "Projects", "Social", "Contact"].map((item) => (
+      <Link
+        to="/"
+        className="font-medium hover:text-gray-600 dark:hover:text-gray-300"
+      >
+        Home
+      </Link>
+      {["About", "Projects", "Social", "Contact"].map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
@@ -34,9 +41,9 @@ const NavBar = () => {
         aria-label="Toggle Theme"
       >
         {dark ? (
-          <IoSunny className="text-yellow-400 w-6 h-6" />
+          <IoIosSunny className="text-yellow-400 w-6 h-6" />
         ) : (
-          <IoMoon className="w-6 h-6" />
+          <IoIosMoon className="w-6 h-6" />
         )}
       </button>
     </nav>

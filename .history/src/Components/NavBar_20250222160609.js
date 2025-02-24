@@ -17,7 +17,7 @@ const NavBar = () => {
   }, [dark]);
 
   return (
-    <nav className="flex flex-col md:flex-row md:space-x-6 space-y-8 md:space-y-0 text-center text-lg">
+    <nav className="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-center">
       <Link
         to="/"
         className="font-medium hover:text-gray-600 dark:hover:text-gray-300"
