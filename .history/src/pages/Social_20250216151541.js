@@ -12,7 +12,7 @@ import {
   GITHUB_LINK,
   X_LINK,
   YOUTUBE_LINK,
-} from "../Utils/const.js"; 
+} from "../Utils/const.js"; // Import from const.js
 
 const socialLinks = [
   {

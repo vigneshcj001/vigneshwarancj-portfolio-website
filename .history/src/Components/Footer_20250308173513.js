@@ -12,7 +12,7 @@ import {
   GITHUB_LINK,
   X_LINK,
   YOUTUBE_LINK,
-} from "../Utils/const";
+} from "../../Utils/const";
 
 const socialLinks = [
   {

@@ -5,14 +5,13 @@ import {
   FaYoutube,
   FaInstagram,
 } from "react-icons/fa6";
-
 import {
   LINKEDIN_LINK,
   INSTAGRAM_LINK,
   GITHUB_LINK,
   X_LINK,
   YOUTUBE_LINK,
-} from "../Utils/const";
+} from "../Utils/const.js";
 
 const socialLinks = [
   {
@@ -54,24 +53,22 @@ const socialLinks = [
 
 const Footer = () => {
   return (
-    <footer className="p-6 bg-gray-100 dark:bg-gray-900 text-center text-gray-700 dark:text-gray-300 border-t border-gray-300 dark:border-gray-700">
+    <footer className="p-6 bg-gray-200 dark:bg-gray-800 text-center text-gray-700 dark:text-gray-300 border-t border-gray-300 dark:border-gray-700">
       <p className="text-lg font-semibold">
-        © {new Date().getFullYear()} Vigneshwaran.C.J | All Rights Reserved
+        © 2025 Vigneshwaran.C.J | All Rights Reserved
       </p>
 
-      {/* Social Media Icons */}
-      <div className="flex justify-center gap-6 mt-4 flex-wrap">
+      <div className="flex justify-center gap-6 mt-4">
         {socialLinks.map((link, index) => (
           <a
             key={index}
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center p-3 hover:scale-110 transition-transform"
-            aria-label={link.name}
+            className="flex flex-col items-center p-4 hover:scale-105 transition-transform"
           >
             {link.icon}
-            <p className="mt-2 text-sm font-medium">{link.name}</p>
+            <p className="mt-2 text-lg font-semibold">{link.name}</p>
           </a>
         ))}
       </div>
