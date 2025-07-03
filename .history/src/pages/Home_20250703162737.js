@@ -64,11 +64,9 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="text-xl md:text-xl font-medium text-white/90 mb-6"
+          className="text-xl md:text-2xl font-medium text-white/90 mb-6"
         >
-          Interdisciplinary Researcher-Engineer|
-          Artificial Intelligence | Bioinformatics | Glycomics| Full-Stack
-          Developer
+          Interdisciplinary Researcher | AI in Glycomics | Full-Stack Developer
         </motion.p>
 
         <motion.a
@@ -89,11 +87,7 @@ const Home = () => {
             className="absolute w-16 h-16 bg-gradient-to-br from-[#FF512F] via-[#DD2476] to-[#F09819] dark:from-[#434343] dark:to-[#000000] rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg"
             style={{ top: position.top, left: position.left }}
             animate={{ y: [0, 15, -15, 0] }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
+            transition={{ duration: 6, repeat: Infinity, repeatType: "reverse" }}
           >
             {/* Tooltip on hover */}
             <motion.span
@@ -104,9 +98,7 @@ const Home = () => {
             </motion.span>
 
             {/* Skill abbreviation or icon placeholder */}
-            <span className="z-10">
-              {skills[index].slice(0, 2).toUpperCase()}
-            </span>
+            <span className="z-10">{skills[index].slice(0, 2).toUpperCase()}</span>
           </motion.div>
         ))}
       </div>

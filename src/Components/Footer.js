@@ -5,6 +5,7 @@ import {
   FaYoutube,
   FaInstagram,
 } from "react-icons/fa6";
+import { SiBuymeacoffee } from "react-icons/si";
 
 import {
   LINKEDIN_LINK,
@@ -12,6 +13,7 @@ import {
   GITHUB_LINK,
   X_LINK,
   YOUTUBE_LINK,
+  BUY_ME_A_COFFEE_LINK,
 } from "../Utils/const";
 
 const socialLinks = [
@@ -48,6 +50,13 @@ const socialLinks = [
     url: YOUTUBE_LINK,
     icon: (
       <FaYoutube className="w-8 h-8 text-red-500 hover:text-red-700 transition-all" />
+    ),
+  },
+  {
+    name: "Buy Me a Coffee",
+    url: BUY_ME_A_COFFEE_LINK,
+    icon: (
+      <SiBuymeacoffee className="w-8 h-8 text-yellow-600 hover:text-yellow-700 transition-all" />
     ),
   },
 ];

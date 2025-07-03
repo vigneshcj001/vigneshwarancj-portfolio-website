@@ -17,8 +17,8 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-35 px-6 sm:px-10">
-      <div className="p-10 bg-transparent dark:bg-transparent rounded-3xl shadow-2xl border border-gray-300 dark:border-gray-700">
+    <div className="max-w-5xl mx-auto my-24 px-6 sm:px-10">
+      <div className="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 p-10 rounded-3xl shadow-2xl border border-gray-300 dark:border-gray-700">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-center text-gray-800 dark:text-white mb-10 animate-pulse">
           ✉️ Get in Touch
         </h2>

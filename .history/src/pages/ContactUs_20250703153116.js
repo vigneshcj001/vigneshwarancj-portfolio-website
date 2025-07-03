@@ -17,7 +17,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-35 px-6 sm:px-10">
+    <div className="max-w-5xl mx-auto pt-20 px-6 sm:px-10">
       <div className="p-10 bg-transparent dark:bg-transparent rounded-3xl shadow-2xl border border-gray-300 dark:border-gray-700">
         <h2 className="text-4xl sm:text-5xl font-extrabold text-center text-gray-800 dark:text-white mb-10 animate-pulse">
           ✉️ Get in Touch

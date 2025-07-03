@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 const projects = [
   {
-    title: "Natural language processing for Glycomics of infectious microbes",
+    title: "NATURAL LANGUAGE PROCESSING FOR GLYCOMICS OF INFECTIOUS MICROBES",
     description:
       "Utilizing NLP and Deep Learning to study glycans in infectious microbes for biomedical insight.",
     link: "https://github.com/APalaniaLab/GlycanBench",
@@ -70,8 +70,8 @@ const projects = [
 
 const Projects = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 text-gray-900 dark:text-white">
-      <h1 className="text-5xl font-extrabold mb-12 animate-pulse">
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-100 to-white dark:from-gray-900 dark:to-gray-950">
+      <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-12 animate-pulse">
         🚀 My Projects
       </h1>
 
@@ -79,7 +79,7 @@ const Projects = () => {
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`relative p-6 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105  border border-white/10 backdrop-blur-md ${project.color}`}
+            className={`relative p-6 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-yellow-300/50 border border-white/10 backdrop-blur-md bg-opacity-90 ${project.color}`}
           >
             <h2 className="text-xl font-bold text-white mb-2">
               {project.title}

@@ -11,11 +11,10 @@ import Projects from "./src/pages/Project";
 import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
 
-
 const App = () => {
   return (
     <Router>
-      <div className="bg-gray-100 dark:bg-gray-900 min-h-screen w-full text-gray-900 dark:text-gray-100 flex flex-col">
+      <div className="min-h-screen w-full text-gray-900 dark:text-gray-100 flex flex-col bg-transparent">
         <Header />
         <main className="flex-1 flex flex-col items-center justify-center text-center px-6">
           <Routes>

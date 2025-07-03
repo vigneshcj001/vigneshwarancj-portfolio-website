@@ -10,7 +10,7 @@ import About from "./src/pages/About";
 import Projects from "./src/pages/Project";
 import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
-
+import Chatbot from "./src/pages/Chatbot"; // ✅ Import chatbot
 
 const App = () => {
   return (
@@ -27,6 +27,7 @@ const App = () => {
           </Routes>
         </main>
         <Footer />
+        <Chatbot /> {/* ✅ Floating chatbot appears on every page */}
       </div>
     </Router>
   );

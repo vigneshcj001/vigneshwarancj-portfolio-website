@@ -3,15 +3,60 @@ import { motion } from "framer-motion";
 
 // A–Z sorted skill list
 const skills = [
-  "Bioinformatics", "Bootstrap", "C++", "Computer Vision", "Content Creation",
-  "Content Writing", "CSS", "Cytoscape", "Data Science", "Deep Learning",
-  "Galaxy", "Git", "GitHub", "GlycoWork", "Glycomics", "HTML", "Java",
-  "JavaScript", "KBase", "Linux", "Machine Learning", "Network Science",
-  "NetworkX", "NLP", "Proteomics", "Public Speaking", "PyMOL", "Pandas",
-  "Photoshop", "Python", "PyTorch", "R", "React", "Redux", "SQL", "Sass",
-  "Scikit Learn", "Seaborn", "Tailwind CSS", "TensorFlow", "UX/UI Design",
-  "Vim", "Video Editing", "Webpack", "arduino", "babel", "css3", "firebase",
-  "gcp", "html5", "mongodb", "nodejs", "opencv", "oracle"
+  "Bioinformatics",
+  "Bootstrap",
+  "C++",
+  "Computer Vision",
+  "Content Creation",
+  "Content Writing",
+  "CSS",
+  "Cytoscape",
+  "Data Science",
+  "Deep Learning",
+  "Galaxy",
+  "Git",
+  "GitHub",
+  "GlycoWork",
+  "Glycomics",
+  "HTML",
+  "Java",
+  "JavaScript",
+  "KBase",
+  "Linux",
+  "Machine Learning",
+  "Network Science",
+  "NetworkX",
+  "NLP",
+  "Proteomics",
+  "Public Speaking",
+  "PyMOL",
+  "Pandas",
+  "Photoshop",
+  "Python",
+  "PyTorch",
+  "R",
+  "React",
+  "Redux",
+  "SQL",
+  "Sass",
+  "Scikit Learn",
+  "Seaborn",
+  "Tailwind CSS",
+  "TensorFlow",
+  "UX/UI Design",
+  "Vim",
+  "Video Editing",
+  "Webpack",
+  "arduino",
+  "babel",
+  "css3",
+  "firebase",
+  "gcp",
+  "html5",
+  "mongodb",
+  "nodejs",
+  "opencv",
+  "oracle",
 ].sort((a, b) => a.localeCompare(b));
 
 // Generate random positions
@@ -52,7 +97,7 @@ const Home = () => {
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="text-4xl md:text-5xl font-extrabold mb-4"
+          className="text-4xl md:text-6xl font-extrabold mb-4"
         >
           Hi, I'm{" "}
           <span className="text-yellow-400 dark:text-green-300">
@@ -64,11 +109,9 @@ const Home = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="text-xl md:text-xl font-medium text-white/90 mb-6"
+          className="text-xl md:text-2xl font-medium text-white/90 mb-6"
         >
-          Interdisciplinary Researcher-Engineer|
-          Artificial Intelligence | Bioinformatics | Glycomics| Full-Stack
-          Developer
+          Interdisciplinary Researcher | AI in Glycomics | Full-Stack Developer
         </motion.p>
 
         <motion.a

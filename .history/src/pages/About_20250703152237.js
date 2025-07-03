@@ -19,8 +19,8 @@ const About = () => {
   }, [dark]);
 
   return (
-    <div className="min-h-screen pt-35 flex justify-center items-start text-gray-900 dark:text-gray-100 px-4">
-      <div className="max-w-3xl w-full p-8 shadow-2xl rounded-3xl border border-gray-300 dark:border-gray-700 bg-transparent dark:bg-transparent transition-all">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-gray-100 to-white dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-gray-100 transition-all px-4">
+      <div className="max-w-3xl w-full p-8 bg-white dark:bg-gray-800 shadow-2xl rounded-3xl border border-gray-300 dark:border-gray-700 transition-all">
         <h1 className="text-4xl font-extrabold text-center mb-8 bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text animate-pulse">
           🚀 About Me
         </h1>
@@ -36,7 +36,7 @@ const About = () => {
             <div className="absolute left-0 top-1 text-blue-500">
               <FaGraduationCap size={24} />
             </div>
-            <div className="p-5 bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-xl shadow-md hover:shadow-xl transition-transform hover:scale-105">
+            <div className="p-5 bg-gray-200 dark:bg-gray-700 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105">
               <h3 className="text-xl font-bold">
                 Master of Technology in Big Data Biology
               </h3>
@@ -53,7 +53,7 @@ const About = () => {
             <div className="absolute left-0 top-1 text-green-500">
               <FaUniversity size={24} />
             </div>
-            <div className="p-5 bg-white/30 dark:bg-white/10 backdrop-blur-md rounded-xl shadow-md hover:shadow-xl transition-transform hover:scale-105">
+            <div className="p-5 bg-gray-200 dark:bg-gray-700 rounded-xl shadow-lg hover:shadow-2xl transition-transform transform hover:scale-105">
               <h3 className="text-xl font-bold">Bachelor of Technology</h3>
               <p className="text-sm mt-1 text-gray-800 dark:text-gray-200">
                 Prathyusha Engineering College, Tiruvallur, Tamil Nadu, India

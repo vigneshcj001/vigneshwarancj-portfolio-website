@@ -19,7 +19,7 @@ const About = () => {
   }, [dark]);
 
   return (
-    <div className="min-h-screen pt-35 flex justify-center items-start text-gray-900 dark:text-gray-100 px-4">
+    <div className="min-h-screen pt-12 flex justify-center items-start text-gray-900 dark:text-gray-100 px-4">
       <div className="max-w-3xl w-full p-8 shadow-2xl rounded-3xl border border-gray-300 dark:border-gray-700 bg-transparent dark:bg-transparent transition-all">
         <h1 className="text-4xl font-extrabold text-center mb-8 bg-gradient-to-r from-purple-500 to-blue-500 text-transparent bg-clip-text animate-pulse">
           🚀 About Me

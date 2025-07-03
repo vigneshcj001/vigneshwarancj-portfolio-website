@@ -79,7 +79,7 @@ const Projects = () => {
         {projects.map((project, index) => (
           <div
             key={index}
-            className={`relative p-6 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105  border border-white/10 backdrop-blur-md ${project.color}`}
+            className={`relative p-6 rounded-3xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-yellow-300/50 border border-white/10 backdrop-blur-md ${project.color}`}
           >
             <h2 className="text-xl font-bold text-white mb-2">
               {project.title}
