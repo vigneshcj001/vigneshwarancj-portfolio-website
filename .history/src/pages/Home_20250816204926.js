@@ -61,7 +61,7 @@ const Home = () => {
         >
           Hi, I'm{" "}
           <span className="text-yellow-400 dark:text-green-300">
-            Vigneshwaran C . J .
+            Vigneshwaran C .J .
           </span>
         </motion.h1>
 
