@@ -4,6 +4,14 @@ import { ArrowRight } from "lucide-react";
 
 const projects = [
   {
+    title: "Syncly - Full Stack Web Application - Professional Networking Platform",
+    description:
+      "Developed a cross-sector professional networking platform using MongoDB, Express.js, React.js, and Node.js, enabling technical and non-technical professionals to connect, collaborate, and share projects. Implemented real-time chat with Socket.IO, portfolio builder, AWS EC2 deployment, AWS SES email notifications, and daily cron jobs for user updates.",
+    link: "https://syncly.co.in",
+    color: "bg-teal-400 dark:bg-teal-600",
+    buttonGradient: "from-teal-500 to-teal-700",
+  },
+  {
     title: "Natural language processing for Glycomics of infectious microbes",
     description:
       "We applied Natural Language Processing and Deep Learning models—including GAT, GIN, MPNN, and LSTM—to predict glycan immunogenicity in infectious microbes, and integrated them into GlycanBench, an interactive web platform for AI-powered glycomics analysis, visualization, and structural mutation simulation.",

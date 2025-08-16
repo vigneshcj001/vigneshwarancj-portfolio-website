@@ -24,7 +24,7 @@ const NavBar = () => {
       >
         Home
       </Link>
-      {["About", "Projects", "Social", "Contact"].map((item) => (
+      {["About", "Projects", "Skills","Social", "Contact"].map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}

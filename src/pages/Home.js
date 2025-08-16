@@ -3,16 +3,21 @@ import { motion } from "framer-motion";
 
 // A–Z sorted skill list
 const skills = [
-  "Bioinformatics", "Bootstrap", "C++", "Computer Vision", "Content Creation",
-  "Content Writing", "CSS", "Cytoscape", "Data Science", "Deep Learning",
-  "Galaxy", "Git", "GitHub", "GlycoWork", "Glycomics", "HTML", "Java",
-  "JavaScript", "KBase", "Linux", "Machine Learning", "Network Science",
-  "NetworkX", "NLP", "Proteomics", "Public Speaking", "PyMOL", "Pandas",
-  "Photoshop", "Python", "PyTorch", "R", "React", "Redux", "SQL", "Sass",
-  "Scikit Learn", "Seaborn", "Tailwind CSS", "TensorFlow", "UX/UI Design",
-  "Vim", "Video Editing", "Webpack", "arduino", "babel", "css3", "firebase",
-  "gcp", "html5", "mongodb", "nodejs", "opencv", "oracle"
+  "AI/ML Model Development", "AWS", "AWS SES (Simple Email Service)", "AWS Web Hosting",
+  "Agentic AI", "Arduino", "Babel", "Bioinformatics", "Bootstrap", "C++", "Claude",
+  "Computer Vision", "Content Creation", "Content Writing", "CSS", "CSS3", "Cytoscape",
+  "Data Science", "Deep Learning", "Express", "Firebase", "Flask", "GAT", "GIN",
+  "GPT-4", "Galaxy", "Generative AI", "Git", "GitHub", "GlycoWork", "Glycomics",
+  "Google Cloud", "HTML", "HTML5", "Java", "JavaScript", "Jupyter Notebook",
+  "KBase", "LangChain", "Linux", "LLMs", "LLaMA", "Machine Learning", "MongoDB",
+  "Network Science", "NetworkX", "NLP", "Node.js", "NumPy", "OpenCV", "Oracle",
+  "Pandas", "PaLM", "Photoshop", "Postman", "Proteomics", "Public Speaking", "PyMOL",
+  "PyTorch", "Python", "R", "RAG", "React", "Redux", "REST APIs", "SQL", "SVM",
+  "Sass", "Scikit Learn", "Seaborn", "Socket.IO", "Streamlit", "Tailwind CSS",
+  "TensorFlow", "UX/UI Design", "Vim", "Video Editing", "Webpack", "XGBoost",
+  "Zero/Few-shot"
 ].sort((a, b) => a.localeCompare(b));
+
 
 // Generate random positions
 const generateRandomPositions = (count) =>
