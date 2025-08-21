@@ -12,7 +12,7 @@ const projects = [
     buttonGradient: "from-teal-500 to-teal-700",
   },
   {
-    title: "Natural language processing for Glycomics of infectious microbes",
+    title: "GlycanBench: tools and models for working with glycan-omics",
     description:
       "We applied Natural Language Processing and Deep Learning models—including GAT, GIN, MPNN, and LSTM—to predict glycan immunogenicity in infectious microbes, and integrated them into GlycanBench, an interactive web platform for AI-powered glycomics analysis, visualization, and structural mutation simulation.",
     link: "https://github.com/APalaniaLab/GlycanBench",
