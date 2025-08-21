@@ -12,7 +12,7 @@ const projects = [
     buttonGradient: "from-teal-500 to-teal-700",
   },
   {
-    title: "GlycanBench: tools and models for working with glycan-omic",
+    title: "GlycanBench: tools and models for working with glycan-omics",
     description:
       "We applied Natural Language Processing and Deep Learning models—including GAT, GIN, MPNN, and LSTM—to predict glycan immunogenicity in infectious microbes, and integrated them into GlycanBench, an interactive web platform for AI-powered glycomics analysis, visualization, and structural mutation simulation.",
     link: "https://github.com/APalaniaLab/GlycanBench",
@@ -92,7 +92,7 @@ const Projects = () => {
             <h2 className="text-xl font-bold text-white mb-2">
               {project.title}
             </h2>
-            <p className="text-sm text-white opacity-90 mb-4">
+            <p className="text-sm text-white opacity-90 mb-4 line-clamp-2">
               {project.description}
             </p>
 
