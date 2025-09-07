@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import useContactForm from "../Hooks/useContactForm.js";
 import { SiBuymeacoffee } from "react-icons/si";
+import { BUY_ME_A_COFFEE_LINK } from "../Utils/const.js";
 
 const ContactUs = () => {
   const {
@@ -113,7 +114,7 @@ const ContactUs = () => {
         {/* Buy Me a Coffee Button */}
         <div className="mt-10 text-center">
           <a
-            href="https://www.buymeacoffee.com/yourusername"
+            href={BUY_ME_A_COFFEE_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-full shadow-md transition-transform transform hover:scale-105"
