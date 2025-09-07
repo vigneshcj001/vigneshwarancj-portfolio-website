@@ -24,13 +24,19 @@ const NavBar = () => {
       >
         Home
       </Link>
-      {["About", "Projects", "Skills","Social", "Contact"].map((item) => (
+      {[
+        "About",
+        "Projects",
+        "Skills",
+        "Social",
+        "Contact",
+      ].map((item) => (
         <Link
           key={item}
           to={`/${item.toLowerCase()}`}
           className="font-medium hover:text-gray-600 dark:hover:text-gray-300"
         >
-          {item}
+          {item.replace("-", " ")}
         </Link>
       ))}
 

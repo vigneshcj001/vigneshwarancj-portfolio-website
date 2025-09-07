@@ -34,7 +34,9 @@ import {
   SiMacos,
   SiLangchain,
   SiOpenai,
+  SiFastapi, // ✅ FastAPI
 } from "react-icons/si";
+import { BiLogoPostgresql } from "react-icons/bi"; // ✅ PostgreSQL
 import {
   FaDatabase,
   FaNetworkWired,
@@ -90,10 +92,15 @@ const Skills = () => {
         name: "Flask",
         icon: <SiFlask className="text-black dark:text-white" />,
       },
+      { name: "FastAPI", icon: <SiFastapi className="text-green-500" /> }, // ✅ Added FastAPI
     ],
     Databases: [
       { name: "MongoDB", icon: <SiMongodb className="text-green-600" /> },
       { name: "Oracle", icon: <SiOracle className="text-red-600" /> },
+      {
+        name: "PostgreSQL",
+        icon: <BiLogoPostgresql className="text-blue-500" />,
+      }, // ✅ Added PostgreSQL
       { name: "SQL", icon: <FaDatabase className="text-gray-600" /> },
     ],
     "Cloud & DevOps": [

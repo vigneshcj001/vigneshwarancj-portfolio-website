@@ -11,8 +11,6 @@ import Projects from "./src/pages/Project";
 import Skills from "./src/pages/Skills";
 import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
-
-
 const App = () => {
   return (
     <Router>

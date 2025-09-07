@@ -3,21 +3,87 @@ import { motion } from "framer-motion";
 
 // A–Z sorted skill list
 const skills = [
-  "AI/ML Model Development", "AWS", "AWS SES (Simple Email Service)", "AWS Web Hosting",
-  "Agentic AI", "Arduino", "Babel", "Bioinformatics", "Bootstrap", "C++", "Claude",
-  "Computer Vision", "Content Creation", "Content Writing", "CSS", "CSS3", "Cytoscape",
-  "Data Science", "Deep Learning", "Express", "Firebase", "Flask", "GAT", "GIN",
-  "GPT-4", "Galaxy", "Generative AI", "Git", "GitHub", "GlycoWork", "Glycomics",
-  "Google Cloud", "HTML", "HTML5", "Java", "JavaScript", "Jupyter Notebook",
-  "KBase", "LangChain", "Linux", "LLMs", "LLaMA", "Machine Learning", "MongoDB",
-  "Network Science", "NetworkX", "NLP", "Node.js", "NumPy", "OpenCV", "Oracle",
-  "Pandas", "PaLM", "Photoshop", "Postman", "Proteomics", "Public Speaking", "PyMOL",
-  "PyTorch", "Python", "R", "RAG", "React", "Redux", "REST APIs", "SQL", "SVM",
-  "Sass", "Scikit Learn", "Seaborn", "Socket.IO", "Streamlit", "Tailwind CSS",
-  "TensorFlow", "UX/UI Design", "Vim", "Video Editing", "Webpack", "XGBoost",
-  "Zero/Few-shot"
+  "AI/ML Model Development",
+  "AWS",
+  "AWS SES (Simple Email Service)",
+  "AWS Web Hosting",
+  "Agentic AI",
+  "Arduino",
+  "Babel",
+  "Bioinformatics",
+  "Bootstrap",
+  "C++",
+  "Claude",
+  "Computer Vision",
+  "Content Creation",
+  "Content Writing",
+  "CSS",
+  "CSS3",
+  "Cytoscape",
+  "Data Science",
+  "Deep Learning",
+  "Express",
+  "Firebase",
+  "Flask",
+  "GAT",
+  "GIN",
+  "GPT-4",
+  "Galaxy",
+  "Generative AI",
+  "Git",
+  "GitHub",
+  "GlycoWork",
+  "Glycomics",
+  "Google Cloud",
+  "HTML",
+  "HTML5",
+  "Java",
+  "JavaScript",
+  "Jupyter Notebook",
+  "KBase",
+  "LangChain",
+  "Linux",
+  "LLMs",
+  "LLaMA",
+  "Machine Learning",
+  "MongoDB",
+  "Network Science",
+  "NetworkX",
+  "NLP",
+  "Node.js",
+  "NumPy",
+  "OpenCV",
+  "Oracle",
+  "Pandas",
+  "PaLM",
+  "Photoshop",
+  "Postman",
+  "Proteomics",
+  "Public Speaking",
+  "PyMOL",
+  "PyTorch",
+  "Python",
+  "R",
+  "RAG",
+  "React",
+  "Redux",
+  "REST APIs",
+  "SQL",
+  "SVM",
+  "Sass",
+  "Scikit Learn",
+  "Seaborn",
+  "Socket.IO",
+  "Streamlit",
+  "Tailwind CSS",
+  "TensorFlow",
+  "UX/UI Design",
+  "Vim",
+  "Video Editing",
+  "Webpack",
+  "XGBoost",
+  "Zero/Few-shot",
 ].sort((a, b) => a.localeCompare(b));
-
 
 // Generate random positions
 const generateRandomPositions = (count) =>
@@ -71,9 +137,8 @@ const Home = () => {
           transition={{ delay: 0.6, duration: 1 }}
           className="text-xl md:text-xl font-medium text-white/90 mb-6"
         >
-          Interdisciplinary Researcher-Engineer |
-          Artificial Intelligence | Bioinformatics | Glycomics| Full-Stack
-          Developer
+          Interdisciplinary Researcher-Engineer | Artificial Intelligence |
+          Bioinformatics | Glycomics| Full-Stack Developer
         </motion.p>
 
         <motion.a
