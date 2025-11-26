@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { SiOpenai } from "react-icons/si";
 import { FiMessageSquare, FiX, FiSend } from "react-icons/fi";
 import botAvatar from "../../images/vignesh.png";
@@ -6,7 +6,7 @@ import userAvatar from "../../images/vignesh.png";
 
 const BACKEND = "http://127.0.0.1:8000";
 
-const starterQuestions = [
+const STARTER_QUESTIONS = [
   "What are Vigneshwaran's main skills?",
   "Tell me about the Syncly project.",
   "How does GlycanBench work?",
@@ -14,23 +14,55 @@ const starterQuestions = [
   "Summarize his research interests.",
 ];
 
+const INITIAL_MESSAGE = {
+  id: 1,
+  from: "bot",
+  text: "Hi! I'm Vigneshwaran's AI assistant. Ask me anything or try a suggestion below 🚀",
+  time: new Date(),
+};
+
+function MessageBubble({ from, text }) {
+  const isUser = from === "user";
+  const avatar = isUser ? userAvatar : botAvatar;
+  const alt = isUser ? "You" : "Vigneshwaran";
+
+  return (
+    <div
+      className={`flex gap-2 items-end ${
+        isUser ? "justify-end" : "justify-start"
+      }`}
+    >
+      <img
+        src={avatar}
+        className="w-8 h-8 rounded-full shadow border"
+        alt={alt}
+        loading="lazy"
+      />
+      <div
+        className={`px-3 py-2 rounded-2xl max-w-[75%] text-sm leading-relaxed shadow-sm ${
+          isUser
+            ? "bg-blue-600 text-white rounded-br-none"
+            : "bg-white text-gray-900 rounded-bl-none"
+        }`}
+      >
+        {text}
+      </div>
+    </div>
+  );
+}
+
 export default function PortfolioAssistant() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      from: "bot",
-      text: "Hi! I'm Vigneshwaran's AI assistant. Ask me anything or try a suggestion below 🚀",
-      time: new Date(),
-    },
-  ]);
+  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
   const [input, setInput] = useState("");
   const [activeChip, setActiveChip] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
+  const typingIntervalRef = useRef(null);
 
-  // Auto scroll
+  // Auto scroll on new messages
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -42,71 +74,115 @@ export default function PortfolioAssistant() {
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
 
-  // Typewriter effect for bot replies
-  function typeMessage(full, id) {
+  // Clear interval on unmount
+  useEffect(() => {
+    return () => {
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+      }
+    };
+  }, []);
+
+  // Typewriter effect for bot replies (with first-letter fix)
+  const typeMessage = useCallback((full, id) => {
     return new Promise((resolve) => {
-      let i = 0;
-      const tick = setInterval(() => {
+      if (!full || !full.length) {
+        resolve();
+        return;
+      }
+
+      // Initialize first character immediately (fixes missing 1st letter)
+      setMessages((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, text: full[0] } : m))
+      );
+
+      let i = 1; // start from second character
+      typingIntervalRef.current = setInterval(() => {
         setMessages((prev) =>
-          prev.map((m) => (m.id === id ? { ...m, text: m.text + full[i] } : m))
+          prev.map((m) =>
+            m.id === id ? { ...m, text: m.text + (full[i] || "") } : m
+          )
         );
-        i++;
+        i += 1;
+
         if (i >= full.length) {
-          clearInterval(tick);
+          clearInterval(typingIntervalRef.current);
+          typingIntervalRef.current = null;
           resolve();
         }
       }, 15);
     });
-  }
+  }, []);
 
-  async function sendMessage(text) {
-    if (!text.trim()) return;
-    const trimmed = text.trim();
+  const sendMessage = useCallback(
+    async (text) => {
+      const trimmed = text.trim();
+      if (!trimmed || loading) return;
 
-    const uId = Date.now();
-    const bId = uId + 1;
+      const uId = Date.now();
+      const bId = uId + 1;
+      const now = new Date();
 
-    // Add user message + bot placeholder
-    setMessages((m) => [
-      ...m,
-      { id: uId, from: "user", text: trimmed, time: new Date() },
-      { id: bId, from: "bot", text: "", time: new Date() },
-    ]);
+      // Add user message + bot placeholder
+      setMessages((prev) => [
+        ...prev,
+        { id: uId, from: "user", text: trimmed, time: now },
+        { id: bId, from: "bot", text: "", time: now },
+      ]);
 
-    setInput("");
-    setActiveChip(null);
-    setLoading(true);
+      setInput("");
+      setActiveChip(null);
+      setLoading(true);
 
-    try {
-      const res = await fetch(`${BACKEND}/api/assistant`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed }),
-      });
+      try {
+        const res = await fetch(`${BACKEND}/api/assistant`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: trimmed }),
+        });
 
-      let reply = "Sorry, something went wrong.";
-      if (res.ok) {
-        const data = await res.json();
-        reply = data.reply || reply;
-      } else {
-        const errBody = await res.json().catch(() => ({}));
-        reply = errBody.detail || reply;
+        let reply = "Sorry, something went wrong.";
+        if (res.ok) {
+          const data = await res.json();
+          reply = data.reply || reply;
+        } else {
+          const errBody = await res.json().catch(() => ({}));
+          reply = errBody.detail || reply;
+        }
+
+        await typeMessage(reply, bId);
+      } catch (e) {
+        console.error("Assistant request failed:", e);
+        await typeMessage("Network error. Please try again.", bId);
+      } finally {
+        setLoading(false);
       }
+    },
+    [loading, typeMessage]
+  );
 
-      await typeMessage(reply, bId);
-    } catch (e) {
-      await typeMessage("Network error. Please try again.", bId);
-    }
-    setLoading(false);
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!input.trim()) return;
+    sendMessage(input);
+  };
+
+  const handleChipClick = (q, idx) => {
+    setInput(q);
+    setActiveChip(idx);
+    // If you want second-click-to-send, you can do:
+    // if (input.trim() === q.trim()) sendMessage(q);
+  };
 
   return (
     <>
       {/* Floating Trigger Button */}
       {!open && (
         <button
+          type="button"
           onClick={() => setOpen(true)}
           className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition transform z-50"
+          aria-label="Open Vigneshwaran AI Assistant"
         >
           <FiMessageSquare className="w-6 h-6" />
         </button>
@@ -114,51 +190,41 @@ export default function PortfolioAssistant() {
 
       {/* Chat Window */}
       {open && (
-        <div className="fixed bottom-6 right-6 w-96 max-w-[92vw] bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl shadow-2xl flex flex-col z-50 animate-[fadeIn_0.2s_ease]">
+        <div
+          className="
+            fixed bottom-6 right-6
+            w-96 max-w-[92vw]
+            bg-white/80 backdrop-blur-xl border border-gray-200
+            rounded-2xl shadow-2xl
+            flex flex-col
+            max-h-[70vh]
+            z-50
+            animate-[fadeIn_0.2s_ease]
+          "
+        >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-700 to-blue-600 text-white rounded-t-2xl shadow">
+          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-700 to-blue-600 text-white rounded-t-2xl shadow shrink-0">
             <div className="flex items-center gap-2">
               <SiOpenai className="w-5 h-5" />
-              <p className="font-semibold">Vigneshwaran AI Assistant</p>
+              <p className="font-semibold text-sm">Vigneshwaran AI Assistant</p>
             </div>
             <button
+              type="button"
               onClick={() => setOpen(false)}
               className="hover:bg-white/20 p-1 rounded-full"
+              aria-label="Close assistant"
             >
               <FiX className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Messages */}
+          {/* Messages (scrollable) */}
           <div
             ref={scrollRef}
             className="flex-1 px-4 py-3 space-y-3 overflow-y-auto bg-gray-50"
           >
             {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex gap-2 items-end ${
-                  m.from === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
-                {/* Avatar */}
-                <img
-                  src={m.from === "user" ? userAvatar : botAvatar}
-                  className="w-8 h-8 rounded-full shadow border"
-                  alt={m.from === "user" ? "You" : "Vigneshwaran"}
-                />
-
-                {/* Bubble */}
-                <div
-                  className={`px-3 py-2 rounded-2xl max-w-[75%] text-sm leading-relaxed shadow-sm ${
-                    m.from === "user"
-                      ? "bg-blue-600 text-white rounded-br-none"
-                      : "bg-white text-gray-900 rounded-bl-none"
-                  }`}
-                >
-                  {m.text}
-                </div>
-              </div>
+              <MessageBubble key={m.id} from={m.from} text={m.text} />
             ))}
 
             {loading && (
@@ -174,16 +240,12 @@ export default function PortfolioAssistant() {
           </div>
 
           {/* Suggested Questions */}
-          <div className="flex gap-2 px-3 py-2 overflow-x-auto border-t bg-white">
-            {starterQuestions.map((q, i) => (
+          <div className="flex gap-2 px-3 py-2 overflow-x-auto border-t bg-white shrink-0">
+            {STARTER_QUESTIONS.map((q, i) => (
               <button
-                key={i}
-                onClick={() => {
-                  setInput(q);
-                  setActiveChip(i);
-                  // If you want auto-send on click, uncomment:
-                  // sendMessage(q);
-                }}
+                key={q}
+                type="button"
+                onClick={() => handleChipClick(q, i)}
                 className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition ${
                   activeChip === i
                     ? "bg-black text-white"
@@ -197,11 +259,8 @@ export default function PortfolioAssistant() {
 
           {/* Input Bar */}
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              sendMessage(input);
-            }}
-            className="flex items-center gap-2 px-3 py-3 border-t bg-gray-50 rounded-b-2xl"
+            onSubmit={handleSubmit}
+            className="flex items-center gap-2 px-3 py-3 border-t bg-gray-50 rounded-b-2xl shrink-0"
           >
             <input
               ref={inputRef}
@@ -212,10 +271,14 @@ export default function PortfolioAssistant() {
               }}
               className="flex-1 px-3 py-2 rounded-lg border text-sm text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Ask about skills, research, or projects..."
+              aria-label="Ask the AI assistant about Vigneshwaran"
+              disabled={loading}
             />
             <button
-              disabled={loading}
-              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow"
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow flex items-center justify-center"
+              aria-label="Send message"
             >
               <FiSend />
             </button>
