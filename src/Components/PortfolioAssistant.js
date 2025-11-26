@@ -4,7 +4,7 @@ import { FiMessageSquare, FiX, FiSend } from "react-icons/fi";
 import botAvatar from "../../images/vignesh.png";
 import userAvatar from "../../images/vignesh.png";
 
-const BACKEND = "http://127.0.0.1:8000";
+const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 
 const STARTER_QUESTIONS = [
   "What are Vigneshwaran's main skills?",
