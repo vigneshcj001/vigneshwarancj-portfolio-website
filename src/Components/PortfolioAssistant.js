@@ -30,18 +30,19 @@ export default function PortfolioAssistant() {
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
 
-  // auto scroll
+  // Auto scroll
   useEffect(() => {
-    if (scrollRef.current)
+    if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [messages]);
 
-  // autofocus input when chat opens
+  // Autofocus input when chat opens
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
 
-  // typewriter effect
+  // Typewriter effect for bot replies
   function typeMessage(full, id) {
     return new Promise((resolve) => {
       let i = 0;
@@ -50,7 +51,7 @@ export default function PortfolioAssistant() {
           prev.map((m) => (m.id === id ? { ...m, text: m.text + full[i] } : m))
         );
         i++;
-        if (i === full.length) {
+        if (i >= full.length) {
           clearInterval(tick);
           resolve();
         }
@@ -65,6 +66,7 @@ export default function PortfolioAssistant() {
     const uId = Date.now();
     const bId = uId + 1;
 
+    // Add user message + bot placeholder
     setMessages((m) => [
       ...m,
       { id: uId, from: "user", text: trimmed, time: new Date() },
@@ -86,6 +88,9 @@ export default function PortfolioAssistant() {
       if (res.ok) {
         const data = await res.json();
         reply = data.reply || reply;
+      } else {
+        const errBody = await res.json().catch(() => ({}));
+        reply = errBody.detail || reply;
       }
 
       await typeMessage(reply, bId);
@@ -176,7 +181,7 @@ export default function PortfolioAssistant() {
                 onClick={() => {
                   setInput(q);
                   setActiveChip(i);
-                  // If you want auto-send on click, uncomment next line:
+                  // If you want auto-send on click, uncomment:
                   // sendMessage(q);
                 }}
                 className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition ${
