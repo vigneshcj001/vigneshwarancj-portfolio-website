@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import { Typewriter } from "react-simple-typewriter";
-import profilePhoto from "../assets/image.jpeg";
+import profilePhoto from "url:../assets/image.jpeg";
 
 const SKILL_BUBBLES = [
   { name: "Python",       abbr: "PY", cat: "Language" },
