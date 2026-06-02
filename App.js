@@ -12,12 +12,13 @@ import Skills from "./src/pages/Skills";
 import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
 import PortfolioAssistant from "./src/Components/PortfolioAssistant";
+
 const App = () => {
   return (
     <Router>
       <div className="bg-gray-100 dark:bg-gray-900 min-h-screen w-full text-gray-900 dark:text-gray-100 flex flex-col">
         <Header />
-        <main className="flex-1 flex flex-col items-center justify-center text-center px-6">
+        <main className="flex-1 flex flex-col">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

@@ -1,48 +1,41 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { SiOpenai } from "react-icons/si";
 import { FiMessageSquare, FiX, FiSend } from "react-icons/fi";
+import { SiOpenai } from "react-icons/si";
 import botAvatar from "../../images/vignesh.png";
-import userAvatar from "../../images/vignesh.png";
 
 const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 
 const STARTER_QUESTIONS = [
-  "What are Vigneshwaran's main skills?",
-  "Tell me about the Syncly project.",
+  "What are his main skills?",
+  "Tell me about Syncly.",
   "How does GlycanBench work?",
   "What tech stack does he use?",
-  "Summarize his research interests.",
+  "His research interests?",
 ];
 
 const INITIAL_MESSAGE = {
   id: 1,
   from: "bot",
-  text: "Hi! I'm Vigneshwaran's AI assistant. Ask me anything or try a suggestion below 🚀",
-  time: new Date(),
+  text: "Hi! I'm Vigneshwaran's AI assistant. Ask me anything or try a suggestion below.",
 };
 
 function MessageBubble({ from, text }) {
   const isUser = from === "user";
-  const avatar = isUser ? userAvatar : botAvatar;
-  const alt = isUser ? "You" : "Vigneshwaran";
-
   return (
-    <div
-      className={`flex gap-2 items-end ${
-        isUser ? "justify-end" : "justify-start"
-      }`}
-    >
-      <img
-        src={avatar}
-        className="w-8 h-8 rounded-full shadow border"
-        alt={alt}
-        loading="lazy"
-      />
+    <div className={`flex gap-2 items-end ${isUser ? "justify-end" : "justify-start"}`}>
+      {!isUser && (
+        <img
+          src={botAvatar}
+          className="w-7 h-7 rounded-full object-cover border border-gray-200 dark:border-gray-600 shrink-0"
+          alt="Vigneshwaran"
+          loading="lazy"
+        />
+      )}
       <div
-        className={`px-3 py-2 rounded-2xl max-w-[75%] text-sm leading-relaxed shadow-sm ${
+        className={`px-3 py-2 rounded-2xl max-w-[78%] text-sm leading-relaxed ${
           isUser
-            ? "bg-blue-600 text-white rounded-br-none"
-            : "bg-white text-gray-900 rounded-bl-none"
+            ? "bg-blue-600 text-white rounded-br-sm"
+            : "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-bl-sm border border-gray-100 dark:border-gray-600 shadow-sm"
         }`}
       >
         {text}
@@ -62,41 +55,31 @@ export default function PortfolioAssistant() {
   const inputRef = useRef(null);
   const typingIntervalRef = useRef(null);
 
-  // Auto scroll on new messages
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Autofocus input when chat opens
   useEffect(() => {
     if (open && inputRef.current) inputRef.current.focus();
   }, [open]);
 
-  // Clear interval on unmount
   useEffect(() => {
     return () => {
-      if (typingIntervalRef.current) {
-        clearInterval(typingIntervalRef.current);
-      }
+      if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
     };
   }, []);
 
-  // Typewriter effect for bot replies (with first-letter fix)
   const typeMessage = useCallback((full, id) => {
     return new Promise((resolve) => {
-      if (!full || !full.length) {
-        resolve();
-        return;
-      }
+      if (!full?.length) { resolve(); return; }
 
-      // Initialize first character immediately (fixes missing 1st letter)
       setMessages((prev) =>
         prev.map((m) => (m.id === id ? { ...m, text: full[0] } : m))
       );
 
-      let i = 1; // start from second character
+      let i = 1;
       typingIntervalRef.current = setInterval(() => {
         setMessages((prev) =>
           prev.map((m) =>
@@ -104,13 +87,12 @@ export default function PortfolioAssistant() {
           )
         );
         i += 1;
-
         if (i >= full.length) {
           clearInterval(typingIntervalRef.current);
           typingIntervalRef.current = null;
           resolve();
         }
-      }, 15);
+      }, 14);
     });
   }, []);
 
@@ -121,15 +103,12 @@ export default function PortfolioAssistant() {
 
       const uId = Date.now();
       const bId = uId + 1;
-      const now = new Date();
 
-      // Add user message + bot placeholder
       setMessages((prev) => [
         ...prev,
-        { id: uId, from: "user", text: trimmed, time: now },
-        { id: bId, from: "bot", text: "", time: now },
+        { id: uId, from: "user", text: trimmed },
+        { id: bId, from: "bot", text: "" },
       ]);
-
       setInput("");
       setActiveChip(null);
       setLoading(true);
@@ -146,13 +125,12 @@ export default function PortfolioAssistant() {
           const data = await res.json();
           reply = data.reply || reply;
         } else {
-          const errBody = await res.json().catch(() => ({}));
-          reply = errBody.detail || reply;
+          const err = await res.json().catch(() => ({}));
+          reply = err.detail || reply;
         }
 
         await typeMessage(reply, bId);
-      } catch (e) {
-        console.error("Assistant request failed:", e);
+      } catch {
         await typeMessage("Network error. Please try again.", bId);
       } finally {
         setLoading(false);
@@ -167,89 +145,73 @@ export default function PortfolioAssistant() {
     sendMessage(input);
   };
 
-  const handleChipClick = (q, idx) => {
-    setInput(q);
-    setActiveChip(idx);
-    // If you want second-click-to-send, you can do:
-    // if (input.trim() === q.trim()) sendMessage(q);
-  };
-
   return (
     <>
-      {/* Floating Trigger Button */}
+      {/* Floating trigger */}
       {!open && (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 bg-blue-600 text-white p-4 rounded-full shadow-2xl hover:scale-110 transition transform z-50"
-          aria-label="Open Vigneshwaran AI Assistant"
+          className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-500 text-white p-4 rounded-full shadow-2xl shadow-blue-500/30 hover:scale-110 transition-all duration-200 z-50"
+          aria-label="Open AI Assistant"
         >
-          <FiMessageSquare className="w-6 h-6" />
+          <FiMessageSquare className="w-5 h-5" />
         </button>
       )}
 
-      {/* Chat Window */}
+      {/* Chat window */}
       {open && (
-        <div
-          className="
-            fixed bottom-6 right-6
-            w-96 max-w-[92vw]
-            bg-white/80 backdrop-blur-xl border border-gray-200
-            rounded-2xl shadow-2xl
-            flex flex-col
-            max-h-[70vh]
-            z-50
-            animate-[fadeIn_0.2s_ease]
-          "
-        >
+        <div className="fixed bottom-6 right-6 w-96 max-w-[92vw] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl shadow-black/20 flex flex-col max-h-[72vh] z-50 overflow-hidden">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-700 to-blue-600 text-white rounded-t-2xl shadow shrink-0">
+          <div className="flex items-center justify-between px-4 py-3 bg-linear-to-r from-blue-700 to-violet-700 text-white shrink-0">
             <div className="flex items-center gap-2">
-              <SiOpenai className="w-5 h-5" />
-              <p className="font-semibold text-sm">Vigneshwaran AI Assistant</p>
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <SiOpenai className="w-4 h-4" />
+              <span className="font-semibold text-sm">Vigneshwaran AI</span>
             </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="hover:bg-white/20 p-1 rounded-full"
-              aria-label="Close assistant"
+              className="hover:bg-white/20 p-1 rounded-full transition-colors"
+              aria-label="Close"
             >
               <FiX className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Messages (scrollable) */}
+          {/* Messages */}
           <div
             ref={scrollRef}
-            className="flex-1 px-4 py-3 space-y-3 overflow-y-auto bg-gray-50"
+            className="flex-1 px-4 py-3 space-y-3 overflow-y-auto bg-gray-50 dark:bg-gray-900/80"
           >
             {messages.map((m) => (
               <MessageBubble key={m.id} from={m.from} text={m.text} />
             ))}
 
             {loading && (
-              <div className="flex items-center gap-2 text-xs text-gray-400 pl-2 animate-pulse">
-                <span className="flex gap-1">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.15s]" />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.3s]" />
-                </span>
-                Vigneshwaran is typing...
+              <div className="flex items-center gap-1.5 pl-9">
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce"
+                    style={{ animationDelay: `${i * 0.15}s` }}
+                  />
+                ))}
               </div>
             )}
           </div>
 
-          {/* Suggested Questions */}
-          <div className="flex gap-2 px-3 py-2 overflow-x-auto border-t bg-white shrink-0">
+          {/* Suggested chips */}
+          <div className="flex gap-1.5 px-3 py-2 overflow-x-auto border-t border-gray-100 dark:border-gray-700/50 bg-white dark:bg-gray-800/80 shrink-0 scrollbar-hide">
             {STARTER_QUESTIONS.map((q, i) => (
               <button
                 key={q}
                 type="button"
-                onClick={() => handleChipClick(q, i)}
-                className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition ${
+                onClick={() => { setInput(q); setActiveChip(i); }}
+                className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition-all shrink-0 ${
                   activeChip === i
-                    ? "bg-black text-white"
-                    : "bg-gray-200 text-black hover:bg-gray-300"
+                    ? "bg-blue-600 text-white border-blue-600"
+                    : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
                 }`}
               >
                 {q}
@@ -257,30 +219,28 @@ export default function PortfolioAssistant() {
             ))}
           </div>
 
-          {/* Input Bar */}
+          {/* Input bar */}
           <form
             onSubmit={handleSubmit}
-            className="flex items-center gap-2 px-3 py-3 border-t bg-gray-50 rounded-b-2xl shrink-0"
+            className="flex items-center gap-2 px-3 py-3 border-t border-gray-100 dark:border-gray-700/50 bg-white dark:bg-gray-800/80 rounded-b-2xl shrink-0"
           >
             <input
               ref={inputRef}
               value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                setActiveChip(null);
-              }}
-              className="flex-1 px-3 py-2 rounded-lg border text-sm text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ask about skills, research, or projects..."
-              aria-label="Ask the AI assistant about Vigneshwaran"
+              onChange={(e) => { setInput(e.target.value); setActiveChip(null); }}
+              className="flex-1 px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              placeholder="Ask about skills, projects, research..."
+              aria-label="Ask the AI assistant"
               disabled={loading}
+              maxLength={500}
             />
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 shadow flex items-center justify-center"
-              aria-label="Send message"
+              className="p-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white rounded-xl transition-all shadow-sm flex items-center justify-center"
+              aria-label="Send"
             >
-              <FiSend />
+              <FiSend className="w-4 h-4" />
             </button>
           </form>
         </div>
