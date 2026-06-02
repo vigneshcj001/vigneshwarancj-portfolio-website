@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMessageSquare, FiX, FiSend, FiTrash2, FiCopy, FiCheck } from "react-icons/fi";
-import { RiRobot2Line } from "react-icons/ri";
 import botAvatar from "url:../assets/image.jpeg";
 
 const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 const MAX_HISTORY = 20;
-const CHUNK = 6;
-const TICK_MS = 16;
+const CHUNK = 7;
+const TICK_MS = 14;
 
 const STARTER_QUESTIONS = [
   "What are his main skills?",
@@ -16,6 +15,8 @@ const STARTER_QUESTIONS = [
   "What's his research focus?",
   "Tech stack he uses?",
 ];
+
+const mkId = () => Date.now() + Math.random();
 
 const INITIAL_MESSAGE = {
   id: 1,
@@ -45,8 +46,7 @@ function CopyButton({ text }) {
     >
       {copied
         ? <FiCheck className="w-3 h-3 text-emerald-500" />
-        : <FiCopy className="w-3 h-3" />
-      }
+        : <FiCopy className="w-3 h-3" />}
     </button>
   );
 }
@@ -55,9 +55,9 @@ function MessageBubble({ msg }) {
   const isUser = msg.from === "user";
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22, ease: "easeOut" }}
+      transition={{ duration: 0.18, ease: "easeOut" }}
       className={`flex gap-2 items-end ${isUser ? "justify-end" : "justify-start"} group`}
     >
       {!isUser && (
@@ -82,7 +82,7 @@ function MessageBubble({ msg }) {
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-400 rounded-full animate-bounce"
+                  className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
                   style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
@@ -102,16 +102,19 @@ function MessageBubble({ msg }) {
 }
 
 export default function PortfolioAssistant() {
-  const [open, setOpen]         = useState(false);
-  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
-  const [input, setInput]       = useState("");
+  const [open, setOpen]             = useState(false);
+  const [messages, setMessages]     = useState([INITIAL_MESSAGE]);
+  const [input, setInput]           = useState("");
   const [activeChip, setActiveChip] = useState(null);
-  const [loading, setLoading]   = useState(false);
+  const [loading, setLoading]       = useState(false);
 
-  const scrollRef         = useRef(null);
-  const inputRef          = useRef(null);
-  const typingRef         = useRef(null);
-  const abortRef          = useRef(null);
+  const scrollRef   = useRef(null);
+  const inputRef    = useRef(null);
+  const typingRef   = useRef(null);
+  const abortRef    = useRef(null);
+  // Mirror messages in a ref so sendMessage reads current state without stale closure
+  const msgsRef     = useRef(messages);
+  useEffect(() => { msgsRef.current = messages; }, [messages]);
 
   // Warm up Render free-tier on mount
   useEffect(() => { fetch(BACKEND).catch(() => {}); }, []);
@@ -156,35 +159,26 @@ export default function PortfolioAssistant() {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
 
-    const uId = Date.now();
-    const bId = uId + 1;
+    // ── Snapshot history BEFORE adding new messages (fixes race condition) ──
+    const history = msgsRef.current
+      .filter((m) => m.done && m.text)
+      .slice(-MAX_HISTORY)
+      .map((m) => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
 
-    // Build conversation history from fully-typed messages
-    setMessages((prev) => {
-      return [
-        ...prev,
-        { id: uId, from: "user", text: trimmed, ts: Date.now(), done: true },
-        { id: bId, from: "bot",  text: "",       ts: Date.now(), done: false },
-      ];
-    });
+    const uId = mkId();
+    const bId = mkId();
+    const now  = Date.now();
 
+    setMessages((prev) => [
+      ...prev,
+      { id: uId, from: "user", text: trimmed, ts: now,     done: true  },
+      { id: bId, from: "bot",  text: "",       ts: now + 1, done: false },
+    ]);
     setInput("");
     setActiveChip(null);
     setLoading(true);
 
     try {
-      // Read history snapshot BEFORE adding the new messages (using functional read)
-      const history = await new Promise((resolve) => {
-        setMessages((prev) => {
-          const snapshot = prev
-            .filter((m) => m.done && m.text)
-            .slice(-MAX_HISTORY)
-            .map((m) => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
-          resolve(snapshot);
-          return prev; // no state change — just reading
-        });
-      });
-
       const res = await fetch(`${BACKEND}/api/assistant`, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
@@ -213,7 +207,7 @@ export default function PortfolioAssistant() {
   const clearChat = () => {
     abortRef.current?.abort();
     if (typingRef.current) clearInterval(typingRef.current);
-    setMessages([INITIAL_MESSAGE]);
+    setMessages([{ ...INITIAL_MESSAGE, id: mkId(), ts: Date.now() }]);
     setLoading(false);
     setInput("");
     setActiveChip(null);
@@ -248,16 +242,16 @@ export default function PortfolioAssistant() {
         {open && (
           <motion.div
             key="panel"
-            initial={{ opacity: 0, y: 24, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0,  scale: 1    }}
-            exit={{ opacity: 0, y: 24, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0,  scale: 1     }}
+            exit={{ opacity: 0, y: 20, scale: 0.96 }}
+            transition={{ type: "spring", stiffness: 340, damping: 30 }}
             className="fixed bottom-6 right-6 w-[22rem] sm:w-96 max-w-[92vw] flex flex-col max-h-[78vh] z-50 rounded-2xl overflow-hidden shadow-2xl shadow-black/30 border border-gray-200 dark:border-gray-700/60"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-linear-to-r from-blue-700 to-violet-700 text-white shrink-0">
               <div className="flex items-center gap-2.5">
-                <div className="relative">
+                <div className="relative shrink-0">
                   <img
                     src={botAvatar}
                     className="w-8 h-8 rounded-full object-cover object-top border-2 border-white/30"
@@ -270,7 +264,7 @@ export default function PortfolioAssistant() {
                   <p className="text-[10px] text-blue-200 leading-tight">Online · Ask anything</p>
                 </div>
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <button
                   type="button"
                   onClick={clearChat}
@@ -337,7 +331,7 @@ export default function PortfolioAssistant() {
                   maxLength={500}
                 />
                 {charWarn && (
-                  <span className={`absolute right-2 bottom-2 text-[10px] font-medium ${charCount >= 500 ? "text-red-500" : "text-amber-500"}`}>
+                  <span className={`absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-medium ${charCount >= 500 ? "text-red-500" : "text-amber-500"}`}>
                     {500 - charCount}
                   </span>
                 )}
