@@ -45,15 +45,21 @@ function MessageBubble({ from, text }) {
 }
 
 export default function PortfolioAssistant() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([INITIAL_MESSAGE]);
-  const [input, setInput] = useState("");
+  const [open, setOpen]             = useState(false);
+  const [messages, setMessages]     = useState([INITIAL_MESSAGE]);
+  const [input, setInput]           = useState("");
   const [activeChip, setActiveChip] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]       = useState(false);
 
-  const scrollRef = useRef(null);
-  const inputRef = useRef(null);
+  const scrollRef         = useRef(null);
+  const inputRef          = useRef(null);
   const typingIntervalRef = useRef(null);
+  const abortRef          = useRef(null);
+
+  // Warm up Render free-tier backend on mount to reduce cold-start latency
+  useEffect(() => {
+    fetch(BACKEND).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -67,32 +73,30 @@ export default function PortfolioAssistant() {
 
   useEffect(() => {
     return () => {
+      abortRef.current?.abort();
       if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
     };
   }, []);
 
+  // Chunk-typed typing: 5 chars per 20 ms (~250 chars/s) vs old 1 char per 14 ms (~71 chars/s)
   const typeMessage = useCallback((full, id) => {
     return new Promise((resolve) => {
-      if (!full?.length) { resolve(); return; }
+      if (!full) { resolve(); return; }
 
-      setMessages((prev) =>
-        prev.map((m) => (m.id === id ? { ...m, text: full[0] } : m))
-      );
+      const CHUNK = 5;
+      let i = 0;
 
-      let i = 1;
       typingIntervalRef.current = setInterval(() => {
+        i = Math.min(i + CHUNK, full.length);
         setMessages((prev) =>
-          prev.map((m) =>
-            m.id === id ? { ...m, text: m.text + (full[i] || "") } : m
-          )
+          prev.map((m) => (m.id === id ? { ...m, text: full.slice(0, i) } : m))
         );
-        i += 1;
         if (i >= full.length) {
           clearInterval(typingIntervalRef.current);
           typingIntervalRef.current = null;
           resolve();
         }
-      }, 14);
+      }, 20);
     });
   }, []);
 
@@ -101,13 +105,17 @@ export default function PortfolioAssistant() {
       const trimmed = text.trim();
       if (!trimmed || loading) return;
 
+      // Cancel any previous in-flight request before starting a new one
+      abortRef.current?.abort();
+      abortRef.current = new AbortController();
+
       const uId = Date.now();
       const bId = uId + 1;
 
       setMessages((prev) => [
         ...prev,
         { id: uId, from: "user", text: trimmed },
-        { id: bId, from: "bot", text: "" },
+        { id: bId, from: "bot",  text: ""      },
       ]);
       setInput("");
       setActiveChip(null);
@@ -115,9 +123,10 @@ export default function PortfolioAssistant() {
 
       try {
         const res = await fetch(`${BACKEND}/api/assistant`, {
-          method: "POST",
+          method:  "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: trimmed }),
+          body:    JSON.stringify({ message: trimmed }),
+          signal:  abortRef.current.signal,
         });
 
         let reply = "Sorry, something went wrong.";
@@ -130,8 +139,10 @@ export default function PortfolioAssistant() {
         }
 
         await typeMessage(reply, bId);
-      } catch {
-        await typeMessage("Network error. Please try again.", bId);
+      } catch (e) {
+        if (e.name !== "AbortError") {
+          await typeMessage("Network error. Please try again.", bId);
+        }
       } finally {
         setLoading(false);
       }
@@ -147,7 +158,6 @@ export default function PortfolioAssistant() {
 
   return (
     <>
-      {/* Floating trigger */}
       {!open && (
         <button
           type="button"
@@ -159,7 +169,6 @@ export default function PortfolioAssistant() {
         </button>
       )}
 
-      {/* Chat window */}
       {open && (
         <div className="fixed bottom-6 right-6 w-96 max-w-[92vw] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl shadow-black/20 flex flex-col max-h-[72vh] z-50 overflow-hidden">
           {/* Header */}
@@ -201,14 +210,15 @@ export default function PortfolioAssistant() {
             )}
           </div>
 
-          {/* Suggested chips */}
+          {/* Suggested chips — click sends directly instead of just filling the input */}
           <div className="flex gap-1.5 px-3 py-2 overflow-x-auto border-t border-gray-100 dark:border-gray-700/50 bg-white dark:bg-gray-800/80 shrink-0 scrollbar-hide">
             {STARTER_QUESTIONS.map((q, i) => (
               <button
                 key={q}
                 type="button"
-                onClick={() => { setInput(q); setActiveChip(i); }}
-                className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition-all shrink-0 ${
+                disabled={loading}
+                onClick={() => { setActiveChip(i); sendMessage(q); }}
+                className={`whitespace-nowrap px-3 py-1 rounded-full text-[11px] font-medium border transition-all shrink-0 disabled:opacity-40 ${
                   activeChip === i
                     ? "bg-blue-600 text-white border-blue-600"
                     : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600"
