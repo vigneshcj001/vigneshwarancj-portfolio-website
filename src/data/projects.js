@@ -26,7 +26,7 @@ export const projects = [
       "Explainable ML framework for EGFR inhibitor discovery using SHAP, RDKit, Mordred descriptors. Gradient Boosting achieved 92% accuracy on ChEMBL dataset.",
     tags: ["Python", "SHAP", "Scikit-Learn", "RDKit", "Mordred"],
     accent: "green",
-    category: "Research",
+    category: "AI/Research",
   },
   {
     title: "Lignocellulosic Bioethanol",
@@ -35,7 +35,7 @@ export const projects = [
       "ML models predicting lignocellulosic components and fermentable sugars for bioethanol production. Includes BFuel web platform with dataset hosting.",
     tags: ["Python", "Random Forest", "SVM", "Web Dev"],
     accent: "orange",
-    category: "Research",
+    category: "AI/Research",
   },
   {
     title: "QSPR for Posaconazole SEDDS",
@@ -44,7 +44,7 @@ export const projects = [
       "QSPR models predicting Posaconazole solubility in SEDDS using quantum descriptors and VIF analysis. Random Forest achieved R² up to 0.926.",
     tags: ["Python", "ML", "QSPR", "Pharma"],
     accent: "violet",
-    category: "Research",
+    category: "AI/Research",
   },
   {
     title: "Guazuma ulmifolia Bioethanol",
@@ -57,13 +57,13 @@ export const projects = [
   },
   {
     title: "CJFoods",
-    subtitle: "MERN Food Delivery App",
+    subtitle: "React.js Food Delivery App",
     description:
-      "Scalable MERN-based food delivery platform integrating Swiggy API with real-time UI and optimized performance.",
+      "Frontend-only React.js SPA consuming the Swiggy API in real time. Displays live restaurant listings, menus, and filters with a responsive, performance-optimised UI.",
     link: "https://cj-foods.vercel.app/",
-    tags: ["React.js", "Node.js", "MongoDB", "Express.js"],
+    tags: ["React.js", "Swiggy API", "JavaScript"],
     accent: "yellow",
-    category: "Full-Stack",
+    category: "Frontend",
   },
   {
     title: "TinDog",

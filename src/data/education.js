@@ -5,7 +5,7 @@ export const education = [
     degree: "Master of Technology in Big Data Biology",
     institution: "SASTRA Deemed University",
     location: "Thanjavur, Tamil Nadu, India",
-    period: "Aug 2023 – Present",
+    period: "Aug 2023 – Jun 2025",
     percentage: "79.67%",
     Icon: FaGraduationCap,
     accent: "blue",
