@@ -11,6 +11,7 @@ import Projects from "./src/pages/Project";
 import Skills from "./src/pages/Skills";
 import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
+import Experience from "./src/pages/Experience";
 import PortfolioAssistant from "./src/Components/PortfolioAssistant";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/experience" element={<Experience />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/social" element={<Social />} />
             <Route path="/skills" element={<Skills />} />
