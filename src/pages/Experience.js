@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiBriefcase, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin } from "react-icons/fi";
 import { roles, tagColors, roleAccents } from "../data/experience.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 
@@ -64,7 +64,7 @@ function TechStackSection({ techStack }) {
   return (
     <div className="mt-5 pt-5 border-t border-gray-100 dark:border-gray-700/40">
       <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
-        Full Tech Stack
+        Technology Stack
       </p>
       <div className="flex flex-wrap gap-2">
         {Object.entries(techStack).map(([cat, items]) =>
@@ -96,7 +96,7 @@ function RoleCard({ role, index }) {
       {/* Timeline dot */}
       <div className={`absolute left-0 top-6 w-4 h-4 rounded-full ${a.dot} ring-4 ring-white dark:ring-gray-900 z-10`} />
 
-      {/* Timeline vertical line (only for first card) */}
+      {/* Timeline vertical line (first card only) */}
       {index === 0 && (
         <div className={`absolute left-[7px] top-10 bottom-0 w-0.5 ${a.line}`} />
       )}
@@ -108,15 +108,15 @@ function RoleCard({ role, index }) {
         <div className={`px-6 py-5 bg-linear-to-r ${a.header} text-white`}>
           <div className="flex items-start justify-between gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <FiBriefcase className="w-4 h-4 opacity-80" />
-                <span className="text-xs font-medium opacity-80">{role.company}</span>
-                <span className="text-xs px-2 py-0.5 rounded-full bg-white/15 font-medium">
+              <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                <FiBriefcase className="w-3.5 h-3.5 opacity-75" />
+                <span className="text-xs font-semibold opacity-90">{role.company}</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/15 font-semibold uppercase tracking-wide">
                   {role.type}
                 </span>
               </div>
-              <h3 className="text-lg font-black leading-tight">{role.title}</h3>
-              <p className="text-sm opacity-80 mt-0.5">{role.period}</p>
+              <h3 className="text-xl font-black leading-tight tracking-tight">{role.title}</h3>
+              <p className="text-sm opacity-75 mt-1 font-medium">{role.period}</p>
             </div>
             <button
               onClick={() => setExpanded((v) => !v)}
@@ -143,13 +143,13 @@ function RoleCard({ role, index }) {
             >
               <div className="px-6 py-5">
                 {/* Overview */}
-                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 border-l-2 border-gray-200 dark:border-gray-600 pl-4">
                   {role.overview}
                 </p>
 
                 {/* Projects */}
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">
-                  Projects · {role.projects.length}
+                  Key Deliverables · {role.projects.length} Projects
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {role.projects.map((project, i) => (
@@ -166,7 +166,7 @@ function RoleCard({ role, index }) {
                     <ul className="space-y-1.5">
                       {role.additionalSkills.map((s) => (
                         <li key={s} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-300">
-                          <span className="mt-1.5 w-1 h-1 rounded-full bg-gray-400 shrink-0" />
+                          <span className="mt-2 w-1 h-1 rounded-full bg-blue-400 shrink-0" />
                           {s}
                         </li>
                       ))}
@@ -174,7 +174,6 @@ function RoleCard({ role, index }) {
                   </div>
                 )}
 
-                {/* Full tech stack */}
                 <TechStackSection techStack={role.techStack} />
               </div>
             </motion.div>
@@ -190,9 +189,26 @@ const Experience = () => {
     <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <PageHeader
+          badge="Career"
           title="Experience"
-          subtitle="Professional roles, projects, and tech stacks across AI engineering and software development."
+          subtitle="Professional roles at Ceiyone Tech Works Pvt. Ltd. (Zoho Partner), spanning AI engineering, enterprise application development, and cloud infrastructure."
         />
+
+        {/* Company note */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="flex items-center gap-2.5 mb-10 px-5 py-3 rounded-xl border border-blue-200 dark:border-blue-800/40 bg-blue-50 dark:bg-blue-900/10"
+        >
+          <FiMapPin className="w-3.5 h-3.5 text-blue-500 shrink-0" />
+          <p className="text-xs text-blue-700 dark:text-blue-400 font-medium">
+            Ceiyone Tech Works Private Limited — Zoho Partner ·{" "}
+            <span className="font-normal opacity-80">
+              25/2, Masakalipalayam, Peelamedu, Coimbatore, Tamil Nadu 641028
+            </span>
+          </p>
+        </motion.div>
 
         <div className="relative space-y-10">
           {roles.map((role, i) => (
