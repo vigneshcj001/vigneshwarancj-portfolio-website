@@ -253,12 +253,41 @@ const Home = () => {
             <div className="relative">
               {/* Outer glow ring */}
               <div className="absolute -inset-3 rounded-full bg-linear-to-br from-blue-500/30 via-violet-500/20 to-pink-500/30 blur-xl" />
-              {/* Animated ring */}
+
+              {/* Rotating dashed ring */}
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
                 className="absolute -inset-1.5 rounded-full border border-dashed border-blue-500/25"
               />
+
+              {/* "Hi 👋" speech bubble — enters after photo, loops float */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: [0, -8, 0] }}
+                transition={{
+                  opacity: { delay: 1.2, duration: 0.4 },
+                  scale:   { delay: 1.2, duration: 0.4, type: "spring", stiffness: 260, damping: 18 },
+                  y:       { delay: 1.6, duration: 2.8, repeat: Infinity, ease: "easeInOut" },
+                }}
+                className="absolute -top-12 -left-6 z-10"
+              >
+                <div className="relative bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm font-bold px-4 py-2 rounded-2xl shadow-xl border border-gray-200 dark:border-white/10 flex items-center gap-2 whitespace-nowrap">
+                  {/* Waving hand */}
+                  <motion.span
+                    animate={{ rotate: [0, 20, -10, 20, -5, 0] }}
+                    transition={{ delay: 1.8, duration: 1.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+                    className="text-lg inline-block origin-bottom-right"
+                    style={{ display: "inline-block" }}
+                  >
+                    👋
+                  </motion.span>
+                  Hi, I'm Vigneshwaran!
+                  {/* Tail */}
+                  <span className="absolute -bottom-2 left-8 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-white dark:border-t-gray-900" />
+                </div>
+              </motion.div>
+
               {/* Photo container */}
               <div className="relative w-64 h-64 md:w-72 md:h-72 xl:w-80 xl:h-80 rounded-full overflow-hidden border-2 border-white/10 shadow-2xl shadow-blue-900/40">
                 <img
@@ -266,10 +295,10 @@ const Home = () => {
                   alt="Vigneshwaran C. J."
                   className="w-full h-full object-cover object-top"
                 />
-                {/* Subtle overlay */}
                 <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-blue-950/30" />
               </div>
-              {/* Floating badge — role */}
+
+              {/* Floating role badge */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
