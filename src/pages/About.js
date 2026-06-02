@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import profilePhoto from "../../images/image.jpeg";
+import profilePhoto from "../assets/image.jpeg";
 import { education, accentMap, researchInterests } from "../data/education.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 
