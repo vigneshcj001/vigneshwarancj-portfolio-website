@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FiMessageSquare, FiX, FiSend } from "react-icons/fi";
 import { SiOpenai } from "react-icons/si";
-import botAvatar from "../../images/vignesh.png";
+import botAvatar from "../../images/image.jpeg";
 
 const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 

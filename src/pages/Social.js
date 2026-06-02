@@ -1,102 +1,47 @@
 import React from "react";
-import {
-  FaLinkedin,
-  FaGithub,
-  FaXTwitter,
-  FaYoutube,
-  FaInstagram,
-} from "react-icons/fa6";
-import { SiBuymeacoffee } from "react-icons/si";
-
-import {
-  LINKEDIN_LINK,
-  INSTAGRAM_LINK,
-  GITHUB_LINK,
-  X_LINK,
-  YOUTUBE_LINK,
-  BUY_ME_A_COFFEE_LINK,
-} from "../Utils/const.js";
-
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    url: LINKEDIN_LINK,
-    icon: (
-      <FaLinkedin className="w-12 h-12 text-white group-hover:scale-110 group-hover:-rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-blue-500 to-blue-700",
-    emoji: "💼",
-  },
-  {
-    name: "Instagram",
-    url: INSTAGRAM_LINK,
-    icon: (
-      <FaInstagram className="w-12 h-12 text-white group-hover:scale-110 group-hover:rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-pink-500 to-purple-700",
-    emoji: "📸",
-  },
-  {
-    name: "GitHub",
-    url: GITHUB_LINK,
-    icon: (
-      <FaGithub className="w-12 h-12 text-white group-hover:scale-110 group-hover:-rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-gray-800 to-gray-900",
-    emoji: "💻",
-  },
-  {
-    name: "X (Twitter)",
-    url: X_LINK,
-    icon: (
-      <FaXTwitter className="w-12 h-12 text-white group-hover:scale-110 group-hover:rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-black to-gray-700",
-    emoji: "🐦",
-  },
-  {
-    name: "YouTube",
-    url: YOUTUBE_LINK,
-    icon: (
-      <FaYoutube className="w-12 h-12 text-white group-hover:scale-110 group-hover:-rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-red-500 to-red-700",
-    emoji: "🎥",
-  },
-  {
-    name: "Buy Me a Coffee",
-    url: BUY_ME_A_COFFEE_LINK,
-    icon: (
-      <SiBuymeacoffee className="w-12 h-12 text-white group-hover:scale-110 group-hover:rotate-6 transition-transform" />
-    ),
-    bg: "bg-gradient-to-br from-yellow-400 to-yellow-600",
-    emoji: "☕",
-  },
-];
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { socialLinks } from "../data/social.js";
+import PageHeader from "../Components/ui/PageHeader.js";
 
 const Social = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-16">
-      <h2 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-12 animate-pulse">
-        🌐 Connect with Me
-      </h2>
+    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
+      <div className="max-w-4xl mx-auto">
+        <PageHeader
+          title="Connect"
+          subtitle="Find me across platforms — professional, academic, and creative."
+        />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
-        {socialLinks.map((link, index) => (
-          <a
-            key={index}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`group relative flex flex-col items-center justify-center p-8 rounded-3xl shadow-2xl border border-white/10 hover:border-blue-300 transition-all duration-300 hover:scale-105 ${link.bg}`}
-          >
-            <div className="absolute top-2 right-2 bg-white/10 px-2 py-1 text-sm rounded-full text-white font-semibold backdrop-blur-md">
-              {link.emoji}
-            </div>
-            {link.icon}
-            <p className="mt-4 text-lg font-bold text-white">{link.name}</p>
-          </a>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {socialLinks.map(({ name, handle, description, url, Icon, gradient, ring }, idx) => (
+            <motion.a
+              key={name}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: idx * 0.07 }}
+              className={`group flex items-center gap-4 p-5 rounded-2xl border border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800/60 hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 ring-0 hover:ring-2 ${ring}`}
+            >
+              {/* Icon */}
+              <div className={`shrink-0 w-12 h-12 rounded-xl bg-linear-to-br ${gradient} flex items-center justify-center shadow-md`}>
+                <Icon className="w-6 h-6 text-white" />
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-gray-900 dark:text-white">{name}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">{handle}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 truncate">{description}</p>
+              </div>
+
+              {/* Arrow */}
+              <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200 transition-colors shrink-0" />
+            </motion.a>
+          ))}
+        </div>
       </div>
     </div>
   );

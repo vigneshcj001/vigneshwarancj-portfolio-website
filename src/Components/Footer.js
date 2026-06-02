@@ -1,12 +1,5 @@
-import {
-  FaLinkedin,
-  FaGithub,
-  FaXTwitter,
-  FaYoutube,
-  FaInstagram,
-} from "react-icons/fa6";
+import { FaLinkedin, FaGithub, FaXTwitter, FaYoutube, FaInstagram } from "react-icons/fa6";
 import { SiBuymeacoffee } from "react-icons/si";
-
 import {
   LINKEDIN_LINK,
   INSTAGRAM_LINK,
@@ -16,76 +9,37 @@ import {
   BUY_ME_A_COFFEE_LINK,
 } from "../Utils/const";
 
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    url: LINKEDIN_LINK,
-    icon: (
-      <FaLinkedin className="w-8 h-8 text-blue-600 hover:text-blue-800 transition-all" />
-    ),
-  },
-  {
-    name: "Instagram",
-    url: INSTAGRAM_LINK,
-    icon: (
-      <FaInstagram className="w-8 h-8 text-pink-500 hover:text-pink-700 transition-all" />
-    ),
-  },
-  {
-    name: "GitHub",
-    url: GITHUB_LINK,
-    icon: (
-      <FaGithub className="w-8 h-8 text-gray-800 hover:text-gray-900 transition-all" />
-    ),
-  },
-  {
-    name: "X (Twitter)",
-    url: X_LINK,
-    icon: (
-      <FaXTwitter className="w-8 h-8 text-black hover:text-gray-600 transition-all" />
-    ),
-  },
-  {
-    name: "YouTube",
-    url: YOUTUBE_LINK,
-    icon: (
-      <FaYoutube className="w-8 h-8 text-red-500 hover:text-red-700 transition-all" />
-    ),
-  },
-  {
-    name: "Buy Me a Coffee",
-    url: BUY_ME_A_COFFEE_LINK,
-    icon: (
-      <SiBuymeacoffee className="w-8 h-8 text-yellow-600 hover:text-yellow-700 transition-all" />
-    ),
-  },
+const FOOTER_LINKS = [
+  { name: "LinkedIn",        url: LINKEDIN_LINK,        Icon: FaLinkedin    },
+  { name: "GitHub",          url: GITHUB_LINK,          Icon: FaGithub      },
+  { name: "Instagram",       url: INSTAGRAM_LINK,       Icon: FaInstagram   },
+  { name: "X",               url: X_LINK,               Icon: FaXTwitter    },
+  { name: "YouTube",         url: YOUTUBE_LINK,         Icon: FaYoutube     },
+  { name: "Buy Me a Coffee", url: BUY_ME_A_COFFEE_LINK, Icon: SiBuymeacoffee },
 ];
 
-const Footer = () => {
-  return (
-    <footer className="p-6 bg-gray-100 dark:bg-gray-900 text-center text-gray-700 dark:text-gray-300 border-t border-gray-300 dark:border-gray-700">
-      <p className="text-lg font-semibold">
-        © {new Date().getFullYear()} Vigneshwaran.C.J | All Rights Reserved
+const Footer = () => (
+  <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80 backdrop-blur-sm">
+    <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p className="text-xs text-gray-400 dark:text-gray-500">
+        © {new Date().getFullYear()} Vigneshwaran C. J. — All rights reserved.
       </p>
-
-      {/* Social Media Icons */}
-      <div className="flex justify-center gap-6 mt-4 flex-wrap">
-        {socialLinks.map((link, index) => (
+      <div className="flex items-center gap-4">
+        {FOOTER_LINKS.map(({ name, url, Icon }) => (
           <a
-            key={index}
-            href={link.url}
+            key={name}
+            href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center p-3 hover:scale-110 transition-transform"
-            aria-label={link.name}
+            aria-label={name}
+            className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200"
           >
-            {link.icon}
-            <p className="mt-2 text-sm font-medium">{link.name}</p>
+            <Icon className="w-4 h-4" />
           </a>
         ))}
       </div>
-    </footer>
-  );
-};
+    </div>
+  </footer>
+);
 
 export default Footer;
