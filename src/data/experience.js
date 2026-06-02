@@ -2,7 +2,7 @@ export const roles = [
   {
     id: "jsd",
     title: "Junior Software Developer",
-    company: "iSenseHub",
+    company: "Ceiyone Tech Works Pvt. Ltd.",
     period: "Dec 2025 – Present",
     type: "Full-time",
     accent: "blue",
@@ -77,7 +77,7 @@ export const roles = [
   {
     id: "intern",
     title: "AI Engineer Intern",
-    company: "iSenseHub",
+    company: "Ceiyone Tech Works Pvt. Ltd.",
     period: "Oct 2025 – Dec 2025",
     type: "Internship",
     accent: "violet",
