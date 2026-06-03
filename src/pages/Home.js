@@ -75,27 +75,18 @@ const STATS = [
   { label: "Research Areas", value: "2"   },
 ];
 
-function seededLCG(seed) {
-  let s = seed;
-  return () => {
-    s = (s * 1664525 + 1013904223) & 0x7fffffff;
-    return s / 0x7fffffff;
-  };
-}
-
-const BUBBLE_DATA = SKILL_BUBBLES.map((skill, i) => {
-  const rand = seededLCG(i * 137 + 31);
-  return {
-    ...skill,
-    x:     rand() * 88 + 2,
-    y:     rand() * 56 + 20,
-    size:  Math.round(rand() * 22 + 34),
-    dur:   rand() * 10 + 8,
-    phase: rand() * 12,
-    dy:    (rand() - 0.5) * 24,
-    dx:    (rand() - 0.5) * 16,
-  };
-});
+// Random on each page load — computed once at module level so positions
+// don't shift during the session, only on refresh.
+const BUBBLE_DATA = SKILL_BUBBLES.map((skill) => ({
+  ...skill,
+  x:     Math.random() * 88 + 2,
+  y:     Math.random() * 56 + 20,
+  size:  Math.round(Math.random() * 22 + 34),
+  dur:   Math.random() * 10 + 8,
+  phase: Math.random() * 12,
+  dy:    (Math.random() - 0.5) * 24,
+  dx:    (Math.random() - 0.5) * 16,
+}));
 
 function SkillBubble({ data }) {
   const c = CAT_COLORS[data.cat] || CAT_COLORS.Tools;
