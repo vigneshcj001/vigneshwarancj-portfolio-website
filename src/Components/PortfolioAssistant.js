@@ -20,11 +20,11 @@ const STARTER_QUESTIONS = [
 
 const mkId = () => Date.now() + Math.random();
 
-const INITIAL_MESSAGE = {
+const mkInitial = () => ({
   id: 1, from: "bot",
   text: "Hey! I'm CJ's AI — ask me anything about Vigneshwaran's work, projects, or background.",
   ts: Date.now(), done: true,
-};
+});
 
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -34,9 +34,9 @@ function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
   return (
     <button
-      onClick={() => navigator.clipboard.writeText(text).then(() => {
-        setCopied(true); setTimeout(() => setCopied(false), 1600);
-      })}
+      onClick={() => navigator.clipboard.writeText(text)
+        .then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); })
+        .catch(() => {})}
       className="opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-white"
       aria-label="Copy"
     >
@@ -102,7 +102,7 @@ function MessageBubble({ msg }) {
 
 export default function PortfolioAssistant() {
   const [open, setOpen]             = useState(false);
-  const [messages, setMessages]     = useState([INITIAL_MESSAGE]);
+  const [messages, setMessages]     = useState(() => [mkInitial()]);
   const [input, setInput]           = useState("");
   const [activeChip, setActiveChip] = useState(null);
   const [loading, setLoading]       = useState(false);
@@ -117,12 +117,13 @@ export default function PortfolioAssistant() {
 
   useEffect(() => { fetch(BACKEND).catch(() => {}); }, []);
 
-  const scrollToBottom = (smooth = true) => {
+  const scrollToBottom = (smooth = false) => {
     if (!scrollRef.current) return;
     scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: smooth ? "smooth" : "instant" });
   };
 
-  useEffect(() => { scrollToBottom(); }, [messages]);
+  // Instant scroll during typeMessage ticks — smooth only for the manual button
+  useEffect(() => { scrollToBottom(false); }, [messages]);
 
   useEffect(() => {
     if (open) { setTimeout(() => inputRef.current?.focus(), 80); }
@@ -204,7 +205,7 @@ export default function PortfolioAssistant() {
   const clearChat = () => {
     abortRef.current?.abort();
     if (typingRef.current) clearInterval(typingRef.current);
-    setMessages([{ ...INITIAL_MESSAGE, id: mkId(), ts: Date.now() }]);
+    setMessages([mkInitial()]);
     setLoading(false); setInput(""); setActiveChip(null);
     if (inputRef.current) inputRef.current.style.height = "auto";
   };

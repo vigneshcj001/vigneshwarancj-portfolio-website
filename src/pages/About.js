@@ -14,7 +14,7 @@ const STATS = [
 
 const QUICK_LINKS = [
   { label: "LinkedIn", href: LINKEDIN_LINK,              Icon: FaLinkedin, color: "text-blue-600 dark:text-blue-400 border-blue-200 dark:border-blue-800/40 hover:bg-blue-50 dark:hover:bg-blue-900/20" },
-  { label: "GitHub",   href: "https://github.com/vigneshcj001", Icon: FaGithub,   color: "text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/40" },
+  { label: "GitHub",   href: GITHUB_LINK,                       Icon: FaGithub,   color: "text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700/40" },
   { label: "Email",    href: "mailto:vigneshwarancj@gmail.com",  Icon: FaEnvelope, color: "text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" },
 ];
 
