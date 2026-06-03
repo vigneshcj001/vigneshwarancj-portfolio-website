@@ -1,25 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <defs>
     <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <!-- blue-600 #2563eb → purple-600 #9333ea (exact logo gradient) -->
       <stop offset="0%" stop-color="#2563eb"/>
-      <stop offset="100%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#9333ea"/>
     </linearGradient>
   </defs>
-  <!-- Rounded square background -->
+  <!-- Rounded square — matches modern app icon style -->
   <rect width="32" height="32" rx="7" fill="url(#g)"/>
-  <!-- Subtle inner highlight -->
-  <rect x="1" y="1" width="30" height="14" rx="6" fill="white" opacity="0.06"/>
-  <!-- "V" monogram -->
+  <!-- Subtle top highlight for depth -->
+  <rect x="2" y="2" width="28" height="12" rx="5" fill="white" opacity="0.07"/>
+  <!-- Lowercase "v" — mirrors the "vigneshwaran." logo -->
   <text
     x="16"
-    y="23"
-    font-family="Arial Black, Arial, sans-serif"
-    font-size="20"
+    y="22"
+    font-family="'Arial Black', Arial, sans-serif"
+    font-size="18"
     font-weight="900"
     text-anchor="middle"
     fill="white"
-    letter-spacing="-1"
-  >V</text>
-  <!-- Blue dot accent (matches logo style "vigneshwaran.") -->
-  <circle cx="23" cy="25" r="2.5" fill="#60a5fa" opacity="0.9"/>
+    letter-spacing="-0.5"
+  >v</text>
+  <!-- Blue-500 dot accent — mirrors the "." in the logo -->
+  <circle cx="22.5" cy="24.5" r="2.5" fill="#3b82f6"/>
 </svg>
