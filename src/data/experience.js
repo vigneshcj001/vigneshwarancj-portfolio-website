@@ -143,6 +143,59 @@ export const roles = [
       OCR: ["Tesseract OCR"],
     },
   },
+  {
+    id: "mit",
+    title: "Research Intern",
+    company: "Manipal Institute of Technology",
+    period: "Jun 2024 – Jul 2024",
+    duration: "2 mos",
+    type: "Internship",
+    location: "Karnataka, India · On-site",
+    accent: "teal",
+    overview:
+      "Developed ML-based Quantitative Structure-Property Relationship (QSPR) models to predict Posaconazole solubility in Self-Emulsifying Drug Delivery Systems (SEDDS), reducing dependence on costly laboratory screening. Used RDKit cheminformatics, molecular descriptor generation, and VIF-based feature selection across 50+ descriptors. Supervised by Dr. Neha Sureshchandra Gandhi.",
+    researchArea: "Quantitative Structure Activity Relationship (QSAR) & Quantitative Structure Property Relationship (QSPR)",
+    projects: [
+      {
+        name: "QSPR Models for Posaconazole SEDDS",
+        subtitle: "Drug Solubility Prediction · Pharmaceutical Formulation",
+        description:
+          "Built ML models predicting drug solubility in SEDDS formulations. Random Forest achieved R²=0.865, PLS R²=0.733, Linear Regression R²=0.740, SVM R²=0.630, KNN R²=0.590. Key descriptors: ELUMO, EHOMO, MaxQ-, FpDensityMorgan2, HallKierAlpha.",
+        tech: ["Python", "RDKit", "Random Forest", "PLS", "Linear Regression", "SVM", "KNN"],
+        accent: "teal",
+      },
+    ],
+    additionalSkillsLabel: "Impact",
+    additionalSkills: [
+      "Reduced dependence on costly and time-consuming laboratory formulation screening",
+      "Applied cheminformatics (RDKit) to generate 50+ molecular descriptors",
+      "Performed VIF analysis for feature selection — 10 key descriptors identified",
+      "Proposed future web-based recommendation system for drug formulation",
+    ],
+    techStack: {
+      Languages: ["Python"],
+      "ML Models": ["Random Forest", "Linear Regression", "PLS", "KNN", "SVM"],
+      Cheminformatics: ["RDKit", "Mordred"],
+      Frameworks: ["Scikit-Learn"],
+    },
+    hasImage: true,
+    hasCert: true,
+  },
+  {
+    id: "tutor",
+    title: "Tutor",
+    company: "Kamakshi Tuition Centre",
+    period: "Jan 2023 – Jun 2023",
+    duration: "6 mos",
+    type: "Part-time",
+    location: "Mugalivakkam, Chennai · On-site",
+    accent: "amber",
+    overview:
+      "Taught mathematics to 9th grade students and Python programming to 12th grade students at Kamakshi Tuition Centre, Mugalivakkam Arasa Maram.",
+    projects: [],
+    additionalSkills: [],
+    techStack: {},
+  },
 ];
 
 export const tagColors = {
@@ -174,5 +227,21 @@ export const roleAccents = {
     line:   "bg-violet-200 dark:bg-violet-800/50",
     header: "from-violet-600 to-violet-700",
     type:   "bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 border border-violet-200 dark:border-violet-800/40",
+  },
+  teal: {
+    badge:  "bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300",
+    border: "border-teal-200 dark:border-teal-800/50",
+    dot:    "bg-teal-500",
+    line:   "bg-teal-200 dark:bg-teal-800/50",
+    header: "from-teal-600 to-teal-700",
+    type:   "bg-teal-50 dark:bg-teal-900/20 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800/40",
+  },
+  amber: {
+    badge:  "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300",
+    border: "border-amber-200 dark:border-amber-800/50",
+    dot:    "bg-amber-500",
+    line:   "bg-amber-200 dark:bg-amber-800/50",
+    header: "from-amber-500 to-amber-600",
+    type:   "bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40",
   },
 };

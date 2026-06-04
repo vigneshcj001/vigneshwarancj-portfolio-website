@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin } from "react-icons/fi";
+import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin, FiAward } from "react-icons/fi";
+import mitStudentsImg from "url:../../images/Dr. Neha Sureshchandra Gandhi's Students.jpg";
+import mitCertPdf from "url:../../pdfs/Manipal Institute Of Technology Internship Completion Certificate.pdf";
 import { roles, tagColors, roleAccents } from "../data/experience.js";
 import PageHeader from "../Components/ui/PageHeader.js";
+
+const ROLE_IMAGES = { mit: mitStudentsImg };
+const ROLE_CERTS  = { mit: mitCertPdf };
 
 const PROJECT_TAG_COLORS = {
   teal:   "bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300",
@@ -82,7 +87,7 @@ function TechStackSection({ techStack }) {
   );
 }
 
-function RoleCard({ role, index }) {
+function RoleCard({ role, index, image, certPdf }) {
   const [expanded, setExpanded] = useState(true);
   const a = roleAccents[role.accent];
 
@@ -117,6 +122,12 @@ function RoleCard({ role, index }) {
               </div>
               <h3 className="text-xl font-black leading-tight tracking-tight">{role.title}</h3>
               <p className="text-sm opacity-75 mt-1 font-medium">{role.period}</p>
+              {role.location && (
+                <p className="text-xs opacity-60 mt-0.5 flex items-center gap-1">
+                  <FiMapPin className="w-3 h-3" />
+                  {role.location}
+                </p>
+              )}
             </div>
             <button
               onClick={() => setExpanded((v) => !v)}
@@ -143,25 +154,43 @@ function RoleCard({ role, index }) {
             >
               <div className="px-6 py-5">
                 {/* Overview */}
-                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6 border-l-2 border-gray-200 dark:border-gray-600 pl-4">
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4 border-l-2 border-gray-200 dark:border-gray-600 pl-4">
                   {role.overview}
                 </p>
 
-                {/* Projects */}
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">
-                  Key Deliverables · {role.projects.length} Projects
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {role.projects.map((project, i) => (
-                    <ProjectCard key={project.name} project={project} idx={i} />
-                  ))}
-                </div>
+                {/* Research area label */}
+                {role.researchArea && (
+                  <p className="text-xs text-gray-400 dark:text-gray-500 italic mb-5">
+                    Focus: {role.researchArea}
+                  </p>
+                )}
 
-                {/* Additional responsibilities */}
+                {/* Supervisor image */}
+                {image && (
+                  <div className="mb-5 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700/50">
+                    <img src={image} alt="Internship group photo" className="w-full max-h-52 object-cover object-top" />
+                  </div>
+                )}
+
+                {/* Projects */}
+                {role.projects.length > 0 && (
+                  <>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-4">
+                      Key Deliverables · {role.projects.length} Project{role.projects.length > 1 ? "s" : ""}
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {role.projects.map((project, i) => (
+                        <ProjectCard key={project.name} project={project} idx={i} />
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {/* Additional responsibilities / impact */}
                 {role.additionalSkills.length > 0 && (
                   <div className="mt-6 pt-5 border-t border-gray-100 dark:border-gray-700/40">
                     <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
-                      Additional Responsibilities
+                      {role.additionalSkillsLabel || "Additional Responsibilities"}
                     </p>
                     <ul className="space-y-1.5">
                       {role.additionalSkills.map((s) => (
@@ -174,7 +203,24 @@ function RoleCard({ role, index }) {
                   </div>
                 )}
 
-                <TechStackSection techStack={role.techStack} />
+                {Object.keys(role.techStack).length > 0 && (
+                  <TechStackSection techStack={role.techStack} />
+                )}
+
+                {/* Certificate download */}
+                {certPdf && (
+                  <div className="mt-5 pt-5 border-t border-gray-100 dark:border-gray-700/40">
+                    <a
+                      href={certPdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-lg border border-teal-200 dark:border-teal-800/40 bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/40 transition-colors"
+                    >
+                      <FiAward className="w-3.5 h-3.5" />
+                      View Completion Certificate
+                    </a>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}
@@ -212,7 +258,13 @@ const Experience = () => {
 
         <div className="relative space-y-10">
           {roles.map((role, i) => (
-            <RoleCard key={role.id} role={role} index={i} />
+            <RoleCard
+              key={role.id}
+              role={role}
+              index={i}
+              image={ROLE_IMAGES[role.id]}
+              certPdf={ROLE_CERTS[role.id]}
+            />
           ))}
         </div>
       </div>

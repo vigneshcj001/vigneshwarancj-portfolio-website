@@ -3,9 +3,9 @@ export const projects = [
     title: "Syncly",
     subtitle: "Professional Networking Platform",
     description:
-      "Cross-sector networking platform with real-time chat (Socket.IO), portfolio builder, AWS EC2 deployment, SES email notifications, and daily cron jobs.",
+      "Full-stack professional networking platform for Tech, Biology, Commerce, and IT professionals — featuring swipe-based matchmaking (Vibe/Ghost), real-time chat via Socket.IO with typing indicators and active user tracking, a custom portfolio builder (no coding required), AWS SES email automation with cron-based daily summaries, and scalable REST APIs deployed on AWS EC2.",
     link: "https://syncly.co.in",
-    tags: ["React.js", "Node.js", "MongoDB", "Socket.IO", "AWS"],
+    tags: ["React.js", "Node.js", "MongoDB", "Socket.IO", "AWS EC2", "AWS SES", "Redux", "Tailwind CSS"],
     accent: "teal",
     category: "Full-Stack",
   },
@@ -29,11 +29,11 @@ export const projects = [
     category: "AI/Research",
   },
   {
-    title: "Lignocellulosic Bioethanol",
-    subtitle: "ML for Green Energy",
+    title: "Prediction of lignocellulosic components and fermentable sugars for bioethanol production by machine learning approach",
+    subtitle: "ML for Green Energy · Biomass Pretreatment",
     description:
-      "ML models predicting lignocellulosic components and fermentable sugars for bioethanol production. Includes BFuel web platform with dataset hosting.",
-    tags: ["Python", "Random Forest", "SVM", "Web Dev"],
+      "Applied Decision Tree, Random Forest, and LGBM on 20 lignocellulosic biomass samples (fruit peels & agro-wastes) pretreated with nanotechnology, ionic liquids, and ultrasound. Iron nanoparticles synthesised from Musa acuminata peels improved biomass breakdown. Includes BFuel web platform for dataset hosting.",
+    tags: ["Python", "Random Forest", "LGBM", "Decision Tree", "Web Dev"],
     accent: "orange",
     category: "AI/Research",
   },
@@ -47,11 +47,11 @@ export const projects = [
     category: "AI/Research",
   },
   {
-    title: "Guazuma ulmifolia Bioethanol",
-    subtitle: "Suitability Study",
+    title: "Suitability Studies Of Fruits Of West Indian elm Plant (Guazuma ulmifolia) As Feedstock For Biofuel production",
+    subtitle: "Biofuel Feedstock Evaluation",
     description:
-      "Evaluated West Indian Elm fruit as bioethanol feedstock via chemical pretreatment, proximate analysis, and fermentable sugar quantification.",
-    tags: ["Bioinformatics", "Research", "Bioethanol"],
+      "Investigated Guazuma ulmifolia fruits as biofuel feedstock via petroleum ether solvent extraction, confirmatory lipid assays (emulsion & acrolein), and H₂SO₄ acid hydrolysis for sugar testing. Confirmed carbohydrate presence; future work targets nano-catalysis and enzymatic pretreatment.",
+    tags: ["Bioinformatics", "Research", "Bioethanol", "Biomass"],
     accent: "lime",
     category: "Research",
   },

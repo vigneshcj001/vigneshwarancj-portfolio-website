@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
 import profilePhoto from "url:../assets/image.jpeg";
-import { education, accentMap, researchInterests } from "../data/education.js";
+import namasteReactImg from "url:../../images/NamasteReactjs.jpg";
+import namasteNodeImg from "url:../../images/NamasteNodejs.jpg";
+import { education, certifications, accentMap, researchInterests } from "../data/education.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 import { LINKEDIN_LINK, GITHUB_LINK } from "../Utils/const.js";
+
+const CERT_IMAGES = { react: namasteReactImg, node: namasteNodeImg };
 
 const STATS = [
   { value: "9+",  label: "Projects"         },
@@ -156,11 +160,58 @@ const About = () => {
           })}
         </div>
 
+        {/* Certifications */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.5 }}
+          className="mt-8"
+        >
+          <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-5">
+            Certifications
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {certifications.map(({ title, issuer, accent, topics, imageKey }, i) => {
+              const a = accentMap[accent];
+              return (
+                <motion.div
+                  key={title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.45, delay: 0.55 + i * 0.1 }}
+                  className={`rounded-2xl border ${a.border} bg-white dark:bg-gray-800/60 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}
+                >
+                  <div className="h-44 overflow-hidden">
+                    <img
+                      src={CERT_IMAGES[imageKey]}
+                      alt={title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-base font-bold text-gray-900 dark:text-white leading-snug">
+                      {title}
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 mb-3">{issuer}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {topics.map((t) => (
+                        <span key={t} className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${a.tag}`}>
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
         {/* Research interests */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.55 }}
+          transition={{ duration: 0.45, delay: 0.75 }}
           className="mt-8 p-6 rounded-2xl border border-violet-200 dark:border-violet-800/40 bg-white dark:bg-gray-800/60 shadow-sm"
         >
           <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
