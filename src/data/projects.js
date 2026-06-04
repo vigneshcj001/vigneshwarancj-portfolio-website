@@ -13,7 +13,7 @@ export const projects = [
     title: "GlycanBench: integrated resource for working with glycans",
     subtitle: "Glycoinformatics Web-Server · SASTRA University",
     description:
-      "Comprehensive glycoinformatics platform and Python package for glycan research — covering creation, 2D/3D visualisation, comparative fingerprint analysis (Morgan r=2/3, AtomPair, Torsion, RDKit), sequence alignment, hierarchical/k-means clustering with outlier detection, and an optimised MPNN model for immunogenicity prediction with explainable outputs. Includes a glycobiology chat interface. Co-developed with Ashok Palaniappan at SASTRA University Systems Computational Biology Lab. Freely available as a web-server and Python package.",
+      "Comprehensive glycoinformatics platform and Python package for glycan research — covering creation, 2D/3D visualisation, comparative fingerprint analysis (Morgan r=2/3, AtomPair, Torsion, RDKit), sequence alignment, hierarchical/k-means clustering with outlier detection, and an optimised MPNN model for immunogenicity prediction with explainable outputs. Includes a glycobiology chat interface. Developed under the guidance of Ashok Palaniappan at SASTRA University Systems Computational Biology Lab. Freely available as a web-server and Python package.",
     link: "https://glycanbench.sastra.edu/",
     tags: ["Python", "FastAPI", "React.js", "PyTorch", "MPNN", "RDKit", "Tailwind CSS"],
     accent: "blue",
