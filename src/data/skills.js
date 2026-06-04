@@ -1,5 +1,5 @@
 import {
-  SiPython, SiR, SiJavascript, SiCplusplus,
+  SiPython, SiR, SiJavascript,
   SiPandas, SiNumpy, SiScikitlearn, SiPytorch, SiTensorflow,
   SiReact, SiRedux, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
   SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio,
@@ -21,7 +21,6 @@ export const skillCategories = [
       { name: "R",          Icon: SiR          },
       { name: "SQL",        Icon: FaDatabase   },
       { name: "JavaScript", Icon: SiJavascript },
-      { name: "C++",        Icon: SiCplusplus  },
     ],
   },
   {
