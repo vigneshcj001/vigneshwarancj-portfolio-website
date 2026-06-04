@@ -2,14 +2,14 @@ import {
   SiPython, SiR, SiJavascript, SiCplusplus,
   SiPandas, SiNumpy, SiScikitlearn, SiPytorch, SiTensorflow,
   SiReact, SiRedux, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
-  SiNodedotjs, SiExpress, SiFlask, SiFastapi,
-  SiMongodb, SiOracle,
+  SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio,
+  SiMongodb, SiOracle, SiAmazondynamodb,
   SiGooglecloud, SiFirebase,
-  SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos,
+  SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos, SiN8n,
   SiLangchain, SiOpenai,
 } from "react-icons/si";
 import { BiLogoPostgresql } from "react-icons/bi";
-import { FaDatabase, FaNetworkWired, FaMicroscope, FaGlobe, FaAws } from "react-icons/fa";
+import { FaDatabase, FaNetworkWired, FaMicroscope, FaGlobe, FaAws, FaFlask, FaAtom, FaMicrochip, FaChartLine } from "react-icons/fa";
 import { AiOutlineCloud } from "react-icons/ai";
 
 export const skillCategories = [
@@ -33,6 +33,7 @@ export const skillCategories = [
       { name: "Scikit-Learn",Icon: SiScikitlearn },
       { name: "PyTorch",     Icon: SiPytorch     },
       { name: "TensorFlow",  Icon: SiTensorflow  },
+      { name: "SHAP",        Icon: FaChartLine   },
     ],
   },
   {
@@ -51,19 +52,22 @@ export const skillCategories = [
     name: "Backend Development",
     color: "green",
     skills: [
-      { name: "Node.js",    Icon: SiNodedotjs },
-      { name: "Express.js", Icon: SiExpress   },
-      { name: "Flask",      Icon: SiFlask     },
-      { name: "FastAPI",    Icon: SiFastapi   },
+      { name: "Node.js",    Icon: SiNodedotjs   },
+      { name: "Express.js", Icon: SiExpress     },
+      { name: "Flask",      Icon: SiFlask       },
+      { name: "FastAPI",    Icon: SiFastapi     },
+      { name: "Streamlit",  Icon: SiStreamlit   },
+      { name: "Socket.IO",  Icon: SiSocketdotio },
     ],
   },
   {
     name: "Databases",
     color: "orange",
     skills: [
-      { name: "MongoDB",    Icon: SiMongodb         },
-      { name: "Oracle",     Icon: SiOracle          },
-      { name: "PostgreSQL", Icon: BiLogoPostgresql  },
+      { name: "MongoDB",    Icon: SiMongodb          },
+      { name: "PostgreSQL", Icon: BiLogoPostgresql   },
+      { name: "DynamoDB",   Icon: SiAmazondynamodb   },
+      { name: "Oracle",     Icon: SiOracle           },
     ],
   },
   {
@@ -83,6 +87,7 @@ export const skillCategories = [
       { name: "GPT-4",      Icon: SiOpenai       },
       { name: "LangChain",  Icon: SiLangchain    },
       { name: "LangGraph",  Icon: FaNetworkWired },
+      { name: "Groq",       Icon: FaMicrochip    },
       { name: "Agentic AI", Icon: FaNetworkWired },
     ],
   },
@@ -90,6 +95,8 @@ export const skillCategories = [
     name: "Bioinformatics & Research",
     color: "pink",
     skills: [
+      { name: "RDKit",      Icon: FaFlask        },
+      { name: "Mordred",    Icon: FaAtom         },
       { name: "Glycomics",  Icon: FaMicroscope   },
       { name: "Cytoscape",  Icon: FaNetworkWired },
       { name: "Galaxy",     Icon: FaGlobe        },
@@ -101,12 +108,13 @@ export const skillCategories = [
     skills: [
       { name: "Git",        Icon: SiGit            },
       { name: "GitHub",     Icon: SiGithub         },
+      { name: "n8n",        Icon: SiN8n            },
       { name: "Postman",    Icon: SiPostman        },
       { name: "Jupyter",    Icon: SiJupyter        },
-      { name: "Photoshop",  Icon: SiAdobephotoshop },
       { name: "Linux",      Icon: SiLinux          },
       { name: "Vim",        Icon: SiVim            },
       { name: "Arduino",    Icon: SiArduino        },
+      { name: "Photoshop",  Icon: SiAdobephotoshop },
       { name: "macOS",      Icon: SiMacos          },
     ],
   },

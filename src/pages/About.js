@@ -11,7 +11,7 @@ const CERT_IMAGES = { react: namasteReactImg, node: namasteNodeImg };
 
 const STATS = [
   { value: "9+",  label: "Projects"         },
-  { value: "40+", label: "Skills"            },
+  { value: "50+", label: "Skills"            },
   { value: "2",   label: "Research Domains"  },
   { value: "1+",  label: "Yr. Experience"    },
 ];
