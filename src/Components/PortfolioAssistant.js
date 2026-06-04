@@ -196,8 +196,14 @@ export default function PortfolioAssistant() {
         signal: abortRef.current.signal,
       });
       let reply = "Sorry, something went wrong.";
-      if (res.ok) { const d = await res.json(); reply = d.reply || reply; }
-      else { const e = await res.json().catch(() => ({})); reply = e.detail || reply; }
+      if (res.ok) {
+        const d = await res.json();
+        reply = typeof d.reply === "string" ? d.reply : reply;
+      } else {
+        const e = await res.json().catch(() => ({}));
+        // Pydantic v2 returns detail as an array of objects on 422 — only use if string
+        reply = typeof e.detail === "string" ? e.detail : reply;
+      }
       await typeMessage(reply, bId);
     } catch (e) {
       if (e.name !== "AbortError") await typeMessage("Network error — please try again.", bId);
