@@ -23,7 +23,7 @@ export const projects = [
     title: "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer",
     subtitle: "M.Tech Thesis · Explainable AI · Drug Discovery",
     description:
-      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred descriptors (1833 → 179 features via LASSO selection). Six classifiers evaluated — Gradient Boosting achieved 100% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
+      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred descriptors (1833 → 179 features via LASSO selection). Six classifiers evaluated — Gradient Boosting achieved 98.47% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
     tags: ["Python", "SHAP", "Gradient Boosting", "Random Forest", "RDKit", "Mordred", "ChEMBL"],
     accent: "green",
     category: "AI/Research",
