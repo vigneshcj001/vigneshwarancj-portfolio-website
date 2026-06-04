@@ -20,11 +20,11 @@ export const projects = [
     category: "AI/Research",
   },
   {
-    title: "EGFR Inhibitors — Ovarian Cancer",
-    subtitle: "Explainable ML · Drug Discovery",
+    title: "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer",
+    subtitle: "M.Tech Thesis · Explainable AI · Drug Discovery",
     description:
-      "Explainable ML framework for EGFR inhibitor discovery using SHAP, RDKit, Mordred descriptors. Gradient Boosting achieved 92% accuracy on ChEMBL dataset.",
-    tags: ["Python", "SHAP", "Scikit-Learn", "RDKit", "Mordred"],
+      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred descriptors (1833 → 179 features via LASSO selection). Six classifiers evaluated — Gradient Boosting achieved 100% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
+    tags: ["Python", "SHAP", "Gradient Boosting", "Random Forest", "RDKit", "Mordred", "ChEMBL"],
     accent: "green",
     category: "AI/Research",
   },
@@ -39,10 +39,10 @@ export const projects = [
   },
   {
     title: "QSPR for Posaconazole SEDDS",
-    subtitle: "Pharmaceutical Formulation",
+    subtitle: "Drug Solubility Prediction · Manipal Institute of Technology",
     description:
-      "QSPR models predicting Posaconazole solubility in SEDDS using quantum descriptors and VIF analysis. Random Forest achieved R² up to 0.926.",
-    tags: ["Python", "ML", "QSPR", "Pharma"],
+      "Developed ML-based QSPR models to predict Posaconazole solubility in Self-Emulsifying Drug Delivery Systems (SEDDS) at Manipal Institute of Technology (supervised by Dr. Neha Sureshchandra Gandhi). 50+ molecular descriptors generated with RDKit; VIF analysis selected 10 key descriptors (ELUMO, EHOMO, MaxQ-, FpDensityMorgan2, HallKierAlpha). Random Forest achieved R²=0.865, outperforming PLS (0.733), Linear Regression (0.740), SVM (0.630), and KNN (0.590).",
+    tags: ["Python", "RDKit", "Random Forest", "PLS", "QSPR", "Scikit-Learn"],
     accent: "violet",
     category: "AI/Research",
   },
