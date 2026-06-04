@@ -5,7 +5,7 @@ import {
   SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio,
   SiMongodb, SiOracle, SiAmazondynamodb,
   SiGooglecloud, SiFirebase,
-  SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos, SiN8n,
+  SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos, SiN8N,
   SiLangchain, SiOpenai,
 } from "react-icons/si";
 import { BiLogoPostgresql } from "react-icons/bi";
@@ -107,7 +107,7 @@ export const skillCategories = [
     skills: [
       { name: "Git",        Icon: SiGit            },
       { name: "GitHub",     Icon: SiGithub         },
-      { name: "n8n",        Icon: SiN8n            },
+      { name: "n8n",        Icon: SiN8N            },
       { name: "Postman",    Icon: SiPostman        },
       { name: "Jupyter",    Icon: SiJupyter        },
       { name: "Linux",      Icon: SiLinux          },
