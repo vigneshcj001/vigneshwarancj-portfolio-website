@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router";
 import "./index.css";
 
 import Header from "./src/Components/Header";
@@ -13,6 +13,20 @@ import Social from "./src/pages/Social";
 import ContactUs from "./src/pages/ContactUs";
 import Experience from "./src/pages/Experience";
 import PortfolioAssistant from "./src/Components/PortfolioAssistant";
+
+const NotFound = () => (
+  <div className="flex flex-col items-center justify-center flex-1 pt-32 pb-20 px-4 text-center">
+    <p className="text-8xl font-black text-gray-200 dark:text-gray-800 select-none">404</p>
+    <p className="text-xl font-bold text-gray-700 dark:text-gray-300 mt-2 mb-1">Page not found</p>
+    <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">This page doesn't exist.</p>
+    <Link
+      to="/"
+      className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-colors"
+    >
+      Go home
+    </Link>
+  </div>
+);
 
 const App = () => {
   return (
@@ -28,6 +42,7 @@ const App = () => {
             <Route path="/social" element={<Social />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/contact" element={<ContactUs />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <PortfolioAssistant />

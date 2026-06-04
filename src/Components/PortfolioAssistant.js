@@ -108,11 +108,12 @@ export default function PortfolioAssistant() {
   const [loading, setLoading]       = useState(false);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
 
-  const scrollRef  = useRef(null);
-  const inputRef   = useRef(null);
-  const typingRef  = useRef(null);
-  const abortRef   = useRef(null);
-  const msgsRef    = useRef(messages);
+  const scrollRef     = useRef(null);
+  const inputRef      = useRef(null);
+  const typingRef     = useRef(null);
+  const abortRef      = useRef(null);
+  const msgsRef       = useRef(messages);
+  const nearBottomRef = useRef(true);
   useEffect(() => { msgsRef.current = messages; }, [messages]);
 
   useEffect(() => { fetch(BACKEND).catch(() => {}); }, []);
@@ -122,8 +123,8 @@ export default function PortfolioAssistant() {
     scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: smooth ? "smooth" : "instant" });
   };
 
-  // Instant scroll during typeMessage ticks — smooth only for the manual button
-  useEffect(() => { scrollToBottom(false); }, [messages]);
+  // Auto-scroll only when user is already near the bottom (don't hijack manual scroll-up)
+  useEffect(() => { if (nearBottomRef.current) scrollToBottom(false); }, [messages]);
 
   useEffect(() => {
     if (open) { setTimeout(() => inputRef.current?.focus(), 80); }
@@ -137,7 +138,9 @@ export default function PortfolioAssistant() {
   const handleScroll = () => {
     const el = scrollRef.current;
     if (!el) return;
-    setShowScrollBtn(el.scrollHeight - el.scrollTop - el.clientHeight > 90);
+    const dist = el.scrollHeight - el.scrollTop - el.clientHeight;
+    nearBottomRef.current = dist < 100;
+    setShowScrollBtn(dist > 90);
   };
 
   const autoResize = (el) => {
@@ -174,6 +177,7 @@ export default function PortfolioAssistant() {
       .map((m) => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
 
     const uId = mkId(), bId = mkId(), now = Date.now();
+    nearBottomRef.current = true; // always follow scroll when user sends
     setMessages((prev) => [
       ...prev,
       { id: uId, from: "user", text: trimmed, ts: now,     done: true  },
