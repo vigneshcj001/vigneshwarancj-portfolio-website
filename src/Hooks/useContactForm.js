@@ -1,5 +1,5 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
+import emailjs from "@emailjs/browser";
 import { service_id, public_key, Template_ID } from "../Utils/const";
 
 const useContactForm = () => {

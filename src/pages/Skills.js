@@ -27,7 +27,7 @@ const Skills = () => {
         </div>
         <div className="w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
         <div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">5+</p>
+          <p className="text-2xl font-black text-gray-900 dark:text-white">6+</p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">Yrs. Coding</p>
         </div>
       </div>

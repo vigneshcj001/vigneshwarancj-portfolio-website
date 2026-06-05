@@ -80,5 +80,6 @@ export const researchInterests = [
   "Graph Neural Networks",
   "Computational Glycobiology",
   "Agentic AI Systems",
-  "Drug Discovery ML",
+  "Explainable Machine Learning",
+  "Drug Discovery via ML",
 ];

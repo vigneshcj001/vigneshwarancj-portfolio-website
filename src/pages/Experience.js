@@ -237,7 +237,7 @@ const Experience = () => {
         <PageHeader
           badge="Career"
           title="Experience"
-          subtitle="Professional roles at Ceiyone Tech Works Pvt. Ltd. (Zoho Partner), spanning AI engineering, enterprise application development, and cloud infrastructure."
+          subtitle="Professional and research roles spanning Ceiyone Tech Works (Zoho Partner), Manipal Institute of Technology, and teaching — covering AI engineering, enterprise software, pharmaceutical ML research, and education."
         />
 
         {/* Company note */}
