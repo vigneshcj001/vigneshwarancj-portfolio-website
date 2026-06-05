@@ -5,7 +5,7 @@ import { FiBookOpen } from "react-icons/fi";
 import { publications, pubAccentMap, typeLabels } from "../data/publications.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 
-const TYPE_FILTERS = ["All", "Research Paper", "Thesis"];
+const TYPE_FILTERS = ["All", "Research Paper", "Thesis", "UG Project"];
 
 const Publications = () => {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -94,13 +94,17 @@ const Publications = () => {
                       <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">
                         {pub.year}
                       </span>
-                      {pub.status !== "Research Paper" && pub.status !== "Thesis" && (
-                        <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${a.badge}`}>
-                          {pub.status}
-                        </span>
-                      )}
+                      <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full ${a.badge}`}>
+                        {pub.status}
+                      </span>
                     </div>
                   </div>
+                  {/* Context (degree / project type) */}
+                  {pub.context && (
+                    <p className="text-[10px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">
+                      {pub.context}
+                    </p>
+                  )}
 
                   {/* Title */}
                   <h2 className="text-base font-bold text-gray-900 dark:text-white leading-snug mb-2">

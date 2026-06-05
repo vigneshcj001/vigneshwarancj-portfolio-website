@@ -2,12 +2,13 @@ export const publications = [
   {
     id: "glycanbench",
     title: "GlycanBench: integrated resource for working with glycans",
-    authors: "Vigneshwaran CJ & Ashok Palaniappan",
+    authors: "Vigneshwaran CJ",
     guide: "Ashok Palaniappan",
     institution: "Systems Computational Biology Lab, SASTRA Deemed University",
     year: "2025",
-    status: "Submitted",
+    status: "Submitted — Frontiers in Systems Biology",
     type: "Research Paper",
+    context: "PG M.Tech · Main Project",
     abstract:
       "A comprehensive glycoinformatics platform covering glycan creation, 2D/3D visualisation, comparative fingerprint analysis (Morgan, AtomPair, Torsion, RDKit), sequence alignment, hierarchical/k-means clustering with outlier detection, and an optimised MPNN model for immunogenicity prediction with explainable outputs. Freely available as a web-server and Python package for academic and non-profit use.",
     tags: ["Glycomics", "MPNN", "Python", "Bioinformatics", "RDKit"],
@@ -23,6 +24,7 @@ export const publications = [
     year: "2025",
     status: "M.Tech Thesis",
     type: "Thesis",
+    context: "PG M.Tech Big Data Biology · Thesis & Mini Project",
     abstract:
       "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred (1833 → 179 features via LASSO). Gradient Boosting achieved 98.47% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
     tags: ["Drug Discovery", "SHAP", "EGFR", "Ovarian Cancer", "Gradient Boosting", "RDKit"],
@@ -35,8 +37,9 @@ export const publications = [
     authors: "Vigneshwaran CJ",
     institution: "SASTRA Deemed University",
     year: "2024",
-    status: "Research Paper",
-    type: "Research Paper",
+    status: "B.Tech Main Project",
+    type: "UG Project",
+    context: "UG B.Tech Biotechnology · Main Project",
     abstract:
       "Integrated nanotechnology, green pretreatment methods, and machine learning to predict biomass composition and ethanol yield from 20 lignocellulosic samples. Iron nanoparticles synthesised from Musa acuminata peels improved breakdown. Random Forest and Decision Tree showed highest accuracy. BFuel web platform developed for dataset hosting.",
     tags: ["Bioethanol", "Random Forest", "LGBM", "Decision Tree", "Biomass"],
@@ -49,8 +52,9 @@ export const publications = [
     authors: "Vigneshwaran CJ",
     institution: "Prathyusha Engineering College",
     year: "2023",
-    status: "Research Paper",
-    type: "Research Paper",
+    status: "B.Tech Mini Project",
+    type: "UG Project",
+    context: "UG B.Tech Biotechnology · Mini Project",
     abstract:
       "Investigated Guazuma ulmifolia fruits as biofuel feedstock via petroleum ether solvent extraction, confirmatory lipid assays (emulsion & acrolein), and H₂SO₄ acid hydrolysis for fermentable sugar testing. No lipids detected; carbohydrates confirmed — supports bioethanol pathway. Future work targets nano-catalysis and enzymatic pretreatment.",
     tags: ["Biofuel", "Biomass", "Bioethanol", "Guazuma ulmifolia"],
@@ -66,6 +70,7 @@ export const pubAccentMap = {
 };
 
 export const typeLabels = {
-  "Research Paper": { label: "Paper",  cls: "bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/40" },
-  "Thesis":         { label: "Thesis", cls: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40"   },
+  "Research Paper": { label: "Paper",      cls: "bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/40"     },
+  "Thesis":         { label: "Thesis",     cls: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/40"         },
+  "UG Project":     { label: "UG Project", cls: "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/40" },
 };
