@@ -13,7 +13,7 @@ const STATS = [
   { value: "9+",  label: "Projects"         },
   { value: "50+", label: "Skills"            },
   { value: "2",   label: "Research Domains"  },
-  { value: "2+",  label: "Yrs. Experience"   },
+  { value: "< 1", label: "Yr. Experience"    },
 ];
 
 const QUICK_LINKS = [
