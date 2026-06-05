@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { SiBuymeacoffee } from "react-icons/si";
 import { FiMail, FiLinkedin } from "react-icons/fi";
-import { Send } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 import useContactForm from "../Hooks/useContactForm.js";
 import { BUY_ME_A_COFFEE_LINK, LINKEDIN_LINK } from "../Utils/const.js";
 
@@ -16,12 +16,13 @@ const ContactUs = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const formRef = useRef();
-  const { notification, sendEmail } = useContactForm();
+  const { notification, sending, sendEmail } = useContactForm();
 
-  const onSubmit = () => sendEmail(formRef.current);
+  const onSubmit = () => sendEmail(formRef.current, reset);
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
@@ -159,10 +160,14 @@ const ContactUs = () => {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md shadow-blue-500/20 hover:shadow-blue-500/35 hover:scale-[1.01] text-sm"
+                disabled={sending}
+                className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-semibold rounded-xl transition-all duration-200 shadow-md shadow-blue-500/20 hover:shadow-blue-500/35 hover:scale-[1.01] text-sm disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
               >
-                <Send className="w-4 h-4" />
-                Send Message
+                {sending ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" />Sending...</>
+                ) : (
+                  <><Send className="w-4 h-4" />Send Message</>
+                )}
               </button>
             </form>
           </div>

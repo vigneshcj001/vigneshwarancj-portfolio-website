@@ -10,7 +10,7 @@ import { LINKEDIN_LINK, GITHUB_LINK } from "../Utils/const.js";
 const CERT_IMAGES = { react: namasteReactImg, node: namasteNodeImg };
 
 const STATS = [
-  { value: "9+",  label: "Projects"         },
+  { value: "9",   label: "Projects"         },
   { value: "50+", label: "Skills"            },
   { value: "2",   label: "Research Domains"  },
   { value: "< 1", label: "Yr. Experience"    },

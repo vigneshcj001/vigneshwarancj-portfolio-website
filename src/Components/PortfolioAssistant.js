@@ -150,7 +150,12 @@ export default function PortfolioAssistant() {
   };
 
   const typeMessage = useCallback((full, id) => new Promise((resolve) => {
-    if (!full) { resolve(); return; }
+    if (!full) {
+      // Mark done even for empty replies so typing dots don't show forever
+      setMessages((prev) => prev.map((m) => m.id === id ? { ...m, done: true } : m));
+      resolve();
+      return;
+    }
     let i = 0;
     typingRef.current = setInterval(() => {
       i = Math.min(i + CHUNK, full.length);

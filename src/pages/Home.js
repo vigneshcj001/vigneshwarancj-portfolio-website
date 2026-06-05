@@ -78,7 +78,7 @@ const SKILLS_MARQUEE = [
 ];
 
 const STATS = [
-  { label: "Projects",       value: "9+"  },
+  { label: "Projects",       value: "9"   },
   { label: "Skills",         value: "50+" },
   { label: "Research Areas", value: "2"   },
 ];

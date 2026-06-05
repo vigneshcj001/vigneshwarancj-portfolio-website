@@ -49,6 +49,13 @@ const Publications = () => {
             </p>
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">Thesis</p>
           </div>
+          <div className="w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
+          <div>
+            <p className="text-2xl font-black text-gray-900 dark:text-white">
+              {publications.filter((p) => p.type === "UG Project").length}
+            </p>
+            <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">UG Projects</p>
+          </div>
         </motion.div>
 
         {/* Filters */}
