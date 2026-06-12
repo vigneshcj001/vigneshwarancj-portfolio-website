@@ -12,6 +12,9 @@
   },
   "license": "ISC",
   "author": "vigneshwaran",
+  "@parcel/resolver-default": {
+    "packageExports": true
+  },
   "scripts": {
     "start": "parcel index.html",
     "build": "parcel build index.html && cp images/image.jpeg dist/og-image.jpg",
@@ -28,6 +31,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",
