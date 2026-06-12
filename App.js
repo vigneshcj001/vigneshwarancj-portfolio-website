@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router";
+import { Analytics } from "@vercel/analytics/react";
 import "./index.css";
 
 import Header from "./src/Components/Header";
@@ -49,6 +50,7 @@ const App = () => {
         </main>
         <PortfolioAssistant />
         <Footer />
+        <Analytics />
       </div>
     </Router>
   );
