@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { socialLinks } from "../data/social.js";
 import PageHeader from "../Components/ui/PageHeader.js";
+import useMeta from "../Hooks/useMeta.js";
 
 const Social = () => {
+  useMeta("Social", "Connect with Vigneshwaran C.J. on LinkedIn, GitHub, X, Instagram, and YouTube.");
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-3xl mx-auto">

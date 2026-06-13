@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import useMeta from "../Hooks/useMeta.js";
 import { ArrowUpRight } from "lucide-react";
 import { FiBookOpen } from "react-icons/fi";
 import { publications, pubAccentMap, typeLabels } from "../data/publications.js";
@@ -8,6 +9,7 @@ import PageHeader from "../Components/ui/PageHeader.js";
 const TYPE_FILTERS = ["All", "Research Paper", "Thesis", "UG Project"];
 
 const Publications = () => {
+  useMeta("Publications", "Academic research output by Vigneshwaran C.J. — glycoinformatics, explainable drug discovery ML, bioethanol, and biofuel research.");
   const [activeFilter, setActiveFilter] = useState("All");
 
   const filtered =
@@ -21,7 +23,7 @@ const Publications = () => {
         <PageHeader
           badge="Research Output"
           title="Publications"
-          subtitle="Peer-reviewed papers and academic theses spanning glycoinformatics, explainable drug discovery ML, green energy, and biofuel research."
+          subtitle="Academic research output spanning glycoinformatics, explainable drug discovery ML, green energy, and biofuel research — including papers, thesis, and undergraduate projects."
         />
 
         {/* Stats strip */}

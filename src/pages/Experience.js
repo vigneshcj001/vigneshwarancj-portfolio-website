@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import useMeta from "../Hooks/useMeta.js";
 import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin, FiAward } from "react-icons/fi";
 import mitStudentsImg from "url:../../images/Dr. Neha Sureshchandra Gandhi's Students.jpg";
 import mitCertPdf from "url:../../pdfs/Manipal Institute Of Technology Internship Completion Certificate.pdf";
@@ -87,7 +88,7 @@ function TechStackSection({ techStack }) {
   );
 }
 
-function RoleCard({ role, index, image, certPdf }) {
+function RoleCard({ role, index, image, certPdf, isLast }) {
   const [expanded, setExpanded] = useState(true);
   const a = roleAccents[role.accent];
 
@@ -101,9 +102,9 @@ function RoleCard({ role, index, image, certPdf }) {
       {/* Timeline dot */}
       <div className={`absolute left-0 top-6 w-4 h-4 rounded-full ${a.dot} ring-4 ring-white dark:ring-gray-900 z-10`} />
 
-      {/* Timeline vertical line (first card only) */}
-      {index === 0 && (
-        <div className={`absolute left-[7px] top-10 bottom-0 w-0.5 ${a.line}`} />
+      {/* Timeline connector line — all cards except the last */}
+      {!isLast && (
+        <div className={`absolute left-[7px] top-10 bottom-[-2.5rem] w-0.5 ${a.line}`} />
       )}
 
       {/* Role card */}
@@ -231,6 +232,7 @@ function RoleCard({ role, index, image, certPdf }) {
 }
 
 const Experience = () => {
+  useMeta("Experience", "Vigneshwaran C.J.'s professional experience — Junior Software Developer at Ceiyone, AI Engineer Intern, MIT Research Intern, and Tutor.");
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
@@ -262,6 +264,7 @@ const Experience = () => {
               key={role.id}
               role={role}
               index={i}
+              isLast={i === roles.length - 1}
               image={ROLE_IMAGES[role.id]}
               certPdf={ROLE_CERTS[role.id]}
             />

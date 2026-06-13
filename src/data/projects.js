@@ -5,6 +5,8 @@ export const projects = [
     description:
       "Full-stack professional networking platform for Tech, Biology, Commerce, and IT professionals — featuring swipe-based matchmaking (Vibe/Ghost), real-time chat via Socket.IO with typing indicators and active user tracking, a custom portfolio builder (no coding required), AWS SES email automation with cron-based daily summaries, and scalable REST APIs deployed on AWS EC2.",
     link: "https://syncly.co.in",
+    github: "https://github.com/vigneshcj001/Syncly_fronend",
+    githubBackend: "https://github.com/vigneshcj001/Syncly_Backend",
     tags: ["React.js", "Node.js", "MongoDB", "Socket.IO", "AWS EC2", "AWS SES", "Redux", "Tailwind CSS"],
     accent: "teal",
     category: "Full-Stack",
@@ -15,6 +17,7 @@ export const projects = [
     description:
       "Comprehensive glycoinformatics platform and Python package for glycan research — covering creation, 2D/3D visualisation, comparative fingerprint analysis (Morgan r=2/3, AtomPair, Torsion, RDKit), sequence alignment, hierarchical/k-means clustering with outlier detection, and an optimised MPNN model for immunogenicity prediction with explainable outputs. Includes a glycobiology chat interface. Developed under the guidance of Ashok Palaniappan at SASTRA University Systems Computational Biology Lab. Freely available as a web-server and Python package.",
     link: "https://glycanbench.sastra.edu/",
+    github: "https://github.com/APalaniaLab/GlycanBench",
     tags: ["Python", "FastAPI", "React.js", "PyTorch", "MPNN", "RDKit", "Tailwind CSS"],
     accent: "blue",
     category: "AI/Research",
@@ -24,6 +27,7 @@ export const projects = [
     subtitle: "M.Tech Thesis · Explainable AI · Drug Discovery",
     description:
       "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred descriptors (1833 → 179 features via LASSO selection). Six classifiers evaluated — Gradient Boosting achieved 98.47% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
+    github: null,
     tags: ["Python", "SHAP", "Gradient Boosting", "Random Forest", "RDKit", "Mordred", "ChEMBL"],
     accent: "green",
     category: "AI/Research",
@@ -33,6 +37,7 @@ export const projects = [
     subtitle: "ML for Green Energy · Biomass Pretreatment",
     description:
       "Applied Decision Tree, Random Forest, and LGBM on 20 lignocellulosic biomass samples (fruit peels & agro-wastes) pretreated with nanotechnology, ionic liquids, and ultrasound. Iron nanoparticles synthesised from Musa acuminata peels improved biomass breakdown. Includes BFuel web platform for dataset hosting.",
+    github: null,
     tags: ["Python", "Random Forest", "LGBM", "Decision Tree", "Web Dev"],
     accent: "orange",
     category: "AI/Research",
@@ -42,6 +47,7 @@ export const projects = [
     subtitle: "Drug Solubility Prediction · Manipal Institute of Technology",
     description:
       "Developed ML-based QSPR models to predict Posaconazole solubility in Self-Emulsifying Drug Delivery Systems (SEDDS) at Manipal Institute of Technology (supervised by Dr. Neha Sureshchandra Gandhi). 50+ molecular descriptors generated with RDKit; VIF analysis selected 10 key descriptors (ELUMO, EHOMO, MaxQ-, FpDensityMorgan2, HallKierAlpha). Random Forest achieved R²=0.865, outperforming PLS (0.733), Linear Regression (0.740), SVM (0.630), and KNN (0.590).",
+    github: null,
     tags: ["Python", "RDKit", "Random Forest", "PLS", "QSPR", "Scikit-Learn"],
     accent: "violet",
     category: "AI/Research",
@@ -51,6 +57,7 @@ export const projects = [
     subtitle: "Biofuel Feedstock Evaluation",
     description:
       "Investigated Guazuma ulmifolia fruits as biofuel feedstock via petroleum ether solvent extraction, confirmatory lipid assays (emulsion & acrolein), and H₂SO₄ acid hydrolysis for sugar testing. Confirmed carbohydrate presence; future work targets nano-catalysis and enzymatic pretreatment.",
+    github: null,
     tags: ["Bioinformatics", "Research", "Bioethanol", "Biomass"],
     accent: "lime",
     category: "Research",
@@ -61,6 +68,7 @@ export const projects = [
     description:
       "Frontend-only React.js SPA consuming the Swiggy API in real time. Displays live restaurant listings, menus, and filters with a responsive, performance-optimised UI.",
     link: "https://cj-foods.vercel.app/",
+    github: "https://github.com/vigneshcj001/CJFoods",
     tags: ["React.js", "Swiggy API", "JavaScript"],
     accent: "yellow",
     category: "Frontend",
@@ -71,6 +79,7 @@ export const projects = [
     description:
       "Playful dog-dating website built with Bootstrap and HTML for mastering responsive design patterns.",
     link: "https://tindog-for-dogs.vercel.app/",
+    github: "https://github.com/vigneshcj001/Tindog_for_dogs",
     tags: ["Bootstrap", "HTML", "CSS"],
     accent: "pink",
     category: "Frontend",
@@ -81,6 +90,7 @@ export const projects = [
     description:
       "Autonomous singing biped robot built on Arduino Nano ATMEGA328 with obstacle detection sensors.",
     link: "https://www.instagram.com/reel/C1Qg2iCy7D-/?igsh=MWtka3U3dWZzMjZ0OA==",
+    github: null,
     tags: ["Arduino", "C++", "Robotics", "Sensors"],
     accent: "slate",
     category: "Hardware",

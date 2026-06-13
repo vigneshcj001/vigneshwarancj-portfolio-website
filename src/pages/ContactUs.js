@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
+import useMeta from "../Hooks/useMeta.js";
 import { motion } from "framer-motion";
 import { SiBuymeacoffee } from "react-icons/si";
 import { FiMail, FiLinkedin } from "react-icons/fi";
@@ -13,6 +14,7 @@ const CONTACT_INFO = [
 ];
 
 const ContactUs = () => {
+  useMeta("Contact", "Get in touch with Vigneshwaran C.J. for research collaborations, technical projects, or professional opportunities.");
   const {
     register,
     handleSubmit,

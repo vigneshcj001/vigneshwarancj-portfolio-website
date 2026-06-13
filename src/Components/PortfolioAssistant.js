@@ -4,10 +4,8 @@ import { FiX, FiSend, FiTrash2, FiCopy, FiCheck, FiChevronDown } from "react-ico
 import { HiSparkles } from "react-icons/hi2";
 import botAvatar from "url:../assets/image.jpeg";
 
-const BACKEND    = "https://vigneshwarancj-portfolio-backend.onrender.com";
+const BACKEND     = "https://vigneshwarancj-portfolio-backend.onrender.com";
 const MAX_HISTORY = 20;
-const CHUNK      = 7;
-const TICK_MS    = 14;
 
 const STARTER_QUESTIONS = [
   { text: "Main skills?",         icon: "⚡" },
@@ -110,7 +108,6 @@ export default function PortfolioAssistant() {
 
   const scrollRef     = useRef(null);
   const inputRef      = useRef(null);
-  const typingRef     = useRef(null);
   const abortRef      = useRef(null);
   const msgsRef       = useRef(messages);
   const nearBottomRef = useRef(true);
@@ -130,10 +127,13 @@ export default function PortfolioAssistant() {
     if (open) { setTimeout(() => inputRef.current?.focus(), 80); }
   }, [open]);
 
-  useEffect(() => () => {
-    abortRef.current?.abort();
-    if (typingRef.current) clearInterval(typingRef.current);
-  }, []);
+  useEffect(() => {
+    const handler = (e) => { if (e.key === "Escape" && open) setOpen(false); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [open]);
+
+  useEffect(() => () => { abortRef.current?.abort(); }, []);
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -149,25 +149,9 @@ export default function PortfolioAssistant() {
     el.style.height = Math.min(el.scrollHeight, 90) + "px";
   };
 
-  const typeMessage = useCallback((full, id) => new Promise((resolve) => {
-    if (!full) {
-      // Mark done even for empty replies so typing dots don't show forever
-      setMessages((prev) => prev.map((m) => m.id === id ? { ...m, done: true } : m));
-      resolve();
-      return;
-    }
-    let i = 0;
-    typingRef.current = setInterval(() => {
-      i = Math.min(i + CHUNK, full.length);
-      setMessages((prev) => prev.map((m) => m.id === id ? { ...m, text: full.slice(0, i) } : m));
-      if (i >= full.length) {
-        clearInterval(typingRef.current);
-        typingRef.current = null;
-        setMessages((prev) => prev.map((m) => m.id === id ? { ...m, done: true } : m));
-        resolve();
-      }
-    }, TICK_MS);
-  }), []);
+  const patchMsg = useCallback((id, patch) => {
+    setMessages((prev) => prev.map((m) => m.id === id ? { ...m, ...patch } : m));
+  }, []);
 
   const sendMessage = useCallback(async (text) => {
     const trimmed = text.trim();
@@ -182,44 +166,69 @@ export default function PortfolioAssistant() {
       .map((m) => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
 
     const uId = mkId(), bId = mkId(), now = Date.now();
-    nearBottomRef.current = true; // always follow scroll when user sends
+    nearBottomRef.current = true;
     setMessages((prev) => [
       ...prev,
       { id: uId, from: "user", text: trimmed, ts: now,     done: true  },
       { id: bId, from: "bot",  text: "",       ts: now + 1, done: false },
     ]);
     setInput("");
-    if (inputRef.current) { inputRef.current.style.height = "auto"; }
+    if (inputRef.current) inputRef.current.style.height = "auto";
     setActiveChip(null);
     setLoading(true);
 
     try {
-      const res = await fetch(`${BACKEND}/api/assistant`, {
+      const res = await fetch(`${BACKEND}/api/assistant/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: trimmed, history }),
         signal: abortRef.current.signal,
       });
-      let reply = "Sorry, something went wrong.";
-      if (res.ok) {
-        const d = await res.json();
-        reply = typeof d.reply === "string" ? d.reply : reply;
-      } else {
+
+      if (!res.ok || !res.body) {
         const e = await res.json().catch(() => ({}));
-        // Pydantic v2 returns detail as an array of objects on 422 — only use if string
-        reply = typeof e.detail === "string" ? e.detail : reply;
+        const msg = typeof e.detail === "string" ? e.detail : "Sorry, something went wrong.";
+        patchMsg(bId, { text: msg, done: true });
+        return;
       }
-      await typeMessage(reply, bId);
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          try {
+            const data = JSON.parse(line.slice(6));
+            if (data.error) {
+              patchMsg(bId, { text: data.error, done: true });
+            } else if (data.done) {
+              patchMsg(bId, { text: data.full, done: true });
+            } else if (data.text) {
+              setMessages((prev) => prev.map((m) =>
+                m.id === bId ? { ...m, text: (m.text || "") + data.text } : m
+              ));
+              if (nearBottomRef.current) scrollToBottom(false);
+            }
+          } catch { /* malformed chunk — skip */ }
+        }
+      }
     } catch (e) {
-      if (e.name !== "AbortError") await typeMessage("Network error — please try again.", bId);
+      if (e.name !== "AbortError") patchMsg(bId, { text: "Network error — please try again.", done: true });
     } finally {
       setLoading(false);
     }
-  }, [loading, typeMessage]);
+  }, [loading, patchMsg]);
 
   const clearChat = () => {
     abortRef.current?.abort();
-    if (typingRef.current) clearInterval(typingRef.current);
     setMessages([mkInitial()]);
     setLoading(false); setInput(""); setActiveChip(null);
     if (inputRef.current) inputRef.current.style.height = "auto";

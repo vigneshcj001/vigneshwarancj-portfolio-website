@@ -11,13 +11,19 @@
     "url": "git+https://github.com/vigneshcj001/vigneshwarancj-portfolio-website.git"
   },
   "license": "ISC",
+  "alias": {
+    "@vercel/analytics/react": "@vercel/analytics/dist/react/index.js"
+  },
   "author": "vigneshwaran",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html && cp images/image.jpeg dist/og-image.jpg",
+    "build": "parcel build index.html && node -e \"const f=require('fs');f.copyFileSync('images/image.jpeg','dist/og-image.jpg');f.copyFileSync('sitemap.xml','dist/sitemap.xml');f.copyFileSync('robots.txt','dist/robots.txt');\"",
     "test": "jest"
   },
   "devDependencies": {
+    "@parcel/packager-raw-url": "^2.15.4",
+    "@parcel/transformer-jsonld": "^2.15.4",
+    "@parcel/transformer-webmanifest": "^2.15.4",
     "autoprefixer": "^10.4.21",
     "buffer": "^6.0.3",
     "parcel": "^2.15.4",
@@ -28,6 +34,7 @@
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "@vercel/analytics": "^1.5.0",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",

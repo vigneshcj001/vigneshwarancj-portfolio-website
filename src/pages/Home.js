@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import { Typewriter } from "react-simple-typewriter";
@@ -127,8 +127,23 @@ function SkillBubble({ data }) {
 }
 
 const Home = () => {
+  const spotlightRef = useRef(null);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!spotlightRef.current) return;
+    const rect = spotlightRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    spotlightRef.current.style.background =
+      `radial-gradient(circle 500px at ${x}px ${y}px, rgba(99,102,241,0.13) 0%, rgba(59,130,246,0.07) 30%, transparent 70%)`;
+  }, []);
+
   return (
-    <div className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#060610] text-white">
+    <div
+      ref={spotlightRef}
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#060610] text-white"
+    >
       {/* Background gradients */}
       <div className="absolute inset-0 bg-linear-to-br from-blue-950/60 via-[#060610] to-purple-950/60" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_40%,rgba(99,102,241,0.12),transparent_55%)]" />

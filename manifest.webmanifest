@@ -1,0 +1,14 @@
+{
+  "name": "Vigneshwaran C.J. — Portfolio",
+  "short_name": "VCJ Portfolio",
+  "description": "AI/ML Engineer, Full-Stack Developer, and Bioinformatics Researcher",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060610",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

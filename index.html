@@ -37,8 +37,38 @@
   <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
 
+  <!-- PWA manifest -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+
   <!-- Browser theme -->
   <meta name="theme-color" content="#2563eb" />
+
+  <!-- Preconnect to backend (warm-up latency reduction) -->
+  <link rel="preconnect" href="https://vigneshwarancj-portfolio-backend.onrender.com" />
+  <link rel="dns-prefetch" href="https://vigneshwarancj-portfolio-backend.onrender.com" />
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Vigneshwaran C.J.",
+    "url": "https://vigneshwarancj-portfolio-website.vercel.app/",
+    "image": "https://vigneshwarancj-portfolio-website.vercel.app/og-image.jpg",
+    "jobTitle": "AI/ML Engineer & Full-Stack Developer",
+    "worksFor": { "@type": "Organization", "name": "Ceiyone Tech Works Private Limited" },
+    "alumniOf": [
+      { "@type": "CollegeOrUniversity", "name": "SASTRA Deemed University" },
+      { "@type": "CollegeOrUniversity", "name": "Prathyusha Engineering College" }
+    ],
+    "sameAs": [
+      "https://www.linkedin.com/in/vigneshwarancj1/",
+      "https://github.com/vigneshcj001",
+      "https://x.com/vigneshwarancj"
+    ],
+    "knowsAbout": ["Machine Learning", "Bioinformatics", "Full-Stack Development", "Glycomics", "Agentic AI"]
+  }
+  </script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="index.css" />

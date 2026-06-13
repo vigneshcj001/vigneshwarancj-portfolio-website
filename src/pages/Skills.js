@@ -2,10 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { skillCategories, colorMap } from "../data/skills.js";
 import PageHeader from "../Components/ui/PageHeader.js";
+import useMeta from "../Hooks/useMeta.js";
 
 const totalSkills = skillCategories.reduce((acc, c) => acc + c.skills.length, 0);
 
 const Skills = () => {
+  useMeta("Skills", "50+ skills across AI/ML, full-stack web development, bioinformatics, and cloud infrastructure — Vigneshwaran C.J.'s technical expertise.");
   return (
     <section className="w-full max-w-6xl mx-auto px-4 pt-24 pb-20">
       <PageHeader

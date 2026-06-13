@@ -6,6 +6,7 @@ import namasteNodeImg from "url:../../images/NamasteNodejs.jpg";
 import { education, certifications, accentMap, researchInterests } from "../data/education.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 import { LINKEDIN_LINK, GITHUB_LINK } from "../Utils/const.js";
+import useMeta from "../Hooks/useMeta.js";
 
 const CERT_IMAGES = { react: namasteReactImg, node: namasteNodeImg };
 
@@ -23,6 +24,7 @@ const QUICK_LINKS = [
 ];
 
 const About = () => {
+  useMeta("About", "Learn about Vigneshwaran C.J. — his education, research interests, skills, and certifications in AI/ML and bioinformatics.");
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
