@@ -19,6 +19,7 @@ const Skills       = lazy(() => import("./src/pages/Skills"));
 const Social       = lazy(() => import("./src/pages/Social"));
 const ContactUs    = lazy(() => import("./src/pages/ContactUs"));
 const Experience   = lazy(() => import("./src/pages/Experience"));
+const Resume       = lazy(() => import("./src/pages/Resume"));
 
 const NAV_LINKS = [
   { label: "Home",         to: "/" },
@@ -29,6 +30,7 @@ const NAV_LINKS = [
   { label: "Skills",       to: "/skills" },
   { label: "Social",       to: "/social" },
   { label: "Contact",      to: "/contact" },
+  { label: "Resume",       to: "/resume" },
 ];
 
 const NotFound = () => (
@@ -106,6 +108,7 @@ function AppContent() {
                   <Route path="/social"       element={<Social />} />
                   <Route path="/skills"       element={<Skills />} />
                   <Route path="/contact"      element={<ContactUs />} />
+                  <Route path="/resume"       element={<Resume />} />
                   <Route path="*"             element={<NotFound />} />
                 </Routes>
               </motion.div>

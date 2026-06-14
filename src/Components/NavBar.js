@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router";
 import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import { useState, useEffect } from "react";
 
-const NAV_LINKS = ["About", "Experience", "Projects", "Publications", "Skills", "Social", "Contact"];
+const NAV_LINKS = ["About", "Experience", "Projects", "Publications", "Skills", "Social", "Contact", "Resume"];
 
 const NavBar = ({ mobile = false }) => {
   const [dark, setDark] = useState(() => {
