@@ -7,7 +7,7 @@ export const roles = [
     type: "Full-time",
     accent: "blue",
     overview:
-      "Designing, developing, and maintaining enterprise-grade applications and AI-powered platforms. Work spans backend APIs, WhatsApp automation, cloud deployments, AI/LLM integration, and internal monitoring systems.",
+      "Designing, developing, and maintaining enterprise-grade applications and AI-powered platforms — including AIORA, a multi-tenant WhatsApp business platform (bookings, storefronts, and n8n-driven AI conversations). Work spans backend APIs, WhatsApp automation, cloud deployments, AI/LLM integration, and internal monitoring systems. Also mentoring 2 engineering interns on the AIORA platform.",
     projects: [
       {
         name: "Bullion Handler",
@@ -37,9 +37,57 @@ export const roles = [
         name: "Oblion",
         subtitle: "WhatsApp Auth & Session Manager",
         description:
-          "QR-based WhatsApp authentication and session lifecycle management platform with webhook integration and n8n connectivity for workflow automation.",
-        tech: ["Node.js", "PostgreSQL", "WhatsApp Web API", "n8n"],
+          "Multi-number WhatsApp gateway — one whatsapp-web.js session per business number, BullMQ-queued outbound sends with retries and a dead-letter queue, and HMAC-signed inbound webhooks feeding n8n.",
+        tech: ["TypeScript", "Node.js", "Express.js", "BullMQ", "Redis", "PostgreSQL", "WhatsApp Web API", "n8n"],
         accent: "green",
+      },
+      {
+        name: "meridian-api",
+        subtitle: "AIORA Booking & Platform Backend",
+        description:
+          "Shared service layer every AIORA WhatsApp conversation runs through — slot availability, bookings, operator-authored intake questions, per-agent bot configuration, broadcast campaigns, document ingest, and the single outbound /send endpoint that formats every WhatsApp reply.",
+        tech: ["Node.js", "Express.js", "PostgreSQL", "Joi", "Winston"],
+        accent: "blue",
+      },
+      {
+        name: "Meridian",
+        subtitle: "Customer Booking Site (+ Healthora integration)",
+        description:
+          "Customer-facing appointment booking page — pre-filled from WhatsApp, backed by meridian-api for slots and intake questions. Recently integrated Healthora's dietician-appointment booking flow into Meridian, consolidating both products onto one booking experience.",
+        tech: ["React 19", "Vite", "Tailwind CSS"],
+        accent: "indigo",
+      },
+      {
+        name: "polaris-ui",
+        subtitle: "AIORA Operator Dashboard",
+        description:
+          "Business-owner dashboard for bookings, orders, inventory, bot settings, document uploads, broadcast campaigns, and WhatsApp session status — fans out to meridian-api, Oblion, and ecomm-api, proxying e-commerce calls server-side so the API key never reaches the browser.",
+        tech: ["React 19", "Vite", "Tailwind CSS", "Node.js"],
+        accent: "pink",
+      },
+      {
+        name: "AIORA E-Commerce",
+        subtitle: "Multi-Store WhatsApp Commerce Platform",
+        description:
+          "Next.js storefront platform where several shops can share one WhatsApp number — catalogue, orders with idempotency keys, storefront config, and a customer directory upserted from inbound WhatsApp messages, with order confirmations dispatched via Oblion.",
+        tech: ["Next.js", "React", "TypeScript", "PostgreSQL"],
+        accent: "slate",
+      },
+      {
+        name: "Client Onboarding Portal",
+        subtitle: "Internal Client & Agent Provisioning Tool",
+        description:
+          "Operator tool that provisions a client and all of its WhatsApp agents (booking, storefront, or both) in a single all-or-nothing transaction — client, agents, subscription limits, WhatsApp status, intake questions, and seeded slots either all land or none do.",
+        tech: ["React", "Vite", "Node.js", "Express.js", "PostgreSQL", "Zod"],
+        accent: "teal",
+      },
+      {
+        name: "AIORA Agent Router (n8n)",
+        subtitle: "Multi-Agent WhatsApp Conversation Orchestration",
+        description:
+          "n8n-driven conversation layer letting one WhatsApp number serve multiple bots — a Redis-backed router greets the customer, offers a menu when a business runs more than one bot, and hands off to AI-agent workflows (OpenAI chat model, per-agent Redis memory) that run the booking or shopping conversation end to end.",
+        tech: ["n8n", "OpenAI", "Redis", "WhatsApp"],
+        accent: "violet",
       },
       {
         name: "Orbit",
@@ -60,17 +108,20 @@ export const roles = [
     ],
     additionalSkills: [
       "WhatsApp Automation (booking, onboarding, notifications)",
-      "REST API design with FastAPI",
+      "REST API design with FastAPI & Express.js",
       "PostgreSQL & MongoDB management, query optimisation",
+      "Multi-tenant platform design (shared WhatsApp numbers, multi-agent routing)",
       "Server deployment & production maintenance",
       "IAM, Secrets Manager, CloudWatch on AWS",
+      "Mentoring interns (code review, architecture guidance)",
     ],
     techStack: {
-      Backend: ["Python", "FastAPI", "Node.js"],
-      Frontend: ["ReactJS", "Streamlit"],
+      Backend: ["Python", "FastAPI", "Node.js", "Express.js", "TypeScript"],
+      Frontend: ["ReactJS", "Next.js", "Streamlit"],
       Databases: ["PostgreSQL", "MongoDB", "DynamoDB"],
       "AI & LLMs": ["OpenAI GPT-4o", "Groq LLaMA"],
       Automation: ["n8n", "WhatsApp Web API"],
+      "Messaging & Queues": ["Redis", "BullMQ"],
       Cloud: ["AWS Lambda", "API Gateway", "EC2", "CloudWatch", "Secrets Manager"],
     },
   },
