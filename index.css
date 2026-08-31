@@ -12,3 +12,13 @@
 *:focus:not(:focus-visible) {
   outline: none;
 }
+
+/* Print — resume page only: hide chrome, keep the document itself */
+@media print {
+  nav, footer, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}

@@ -1,9 +1,9 @@
 import {
-  SiPython, SiR, SiJavascript,
+  SiPython, SiR, SiJavascript, SiTypescript,
   SiPandas, SiNumpy, SiScikitlearn, SiPytorch, SiTensorflow,
-  SiReact, SiRedux, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
+  SiReact, SiRedux, SiNextdotjs, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
   SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio,
-  SiMongodb, SiOracle, SiAmazondynamodb,
+  SiMongodb, SiOracle, SiAmazondynamodb, SiRedis,
   SiGooglecloud, SiFirebase,
   SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos, SiN8N,
   SiLangchain, SiOpenai,
@@ -21,6 +21,7 @@ export const skillCategories = [
       { name: "R",          Icon: SiR          },
       { name: "SQL",        Icon: FaDatabase   },
       { name: "JavaScript", Icon: SiJavascript },
+      { name: "TypeScript", Icon: SiTypescript },
     ],
   },
   {
@@ -40,6 +41,7 @@ export const skillCategories = [
     color: "sky",
     skills: [
       { name: "React.js",    Icon: SiReact      },
+      { name: "Next.js",     Icon: SiNextdotjs  },
       { name: "Redux",       Icon: SiRedux      },
       { name: "HTML5",       Icon: SiHtml5      },
       { name: "CSS3",        Icon: SiCss3       },
@@ -57,6 +59,7 @@ export const skillCategories = [
       { name: "FastAPI",    Icon: SiFastapi     },
       { name: "Streamlit",  Icon: SiStreamlit   },
       { name: "Socket.IO",  Icon: SiSocketdotio },
+      { name: "BullMQ",     Icon: FaNetworkWired},
     ],
   },
   {
@@ -67,6 +70,7 @@ export const skillCategories = [
       { name: "PostgreSQL", Icon: BiLogoPostgresql   },
       { name: "DynamoDB",   Icon: SiAmazondynamodb   },
       { name: "Oracle",     Icon: SiOracle           },
+      { name: "Redis",      Icon: SiRedis            },
     ],
   },
   {
