@@ -2,23 +2,10 @@ import { Link, useLocation } from "react-router";
 import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import { useState, useEffect } from "react";
 
-const NAV_LINKS = ["About", "Experience", "Projects", "Publications", "Skills", "Social", "Contact", "Resume"];
+const NAV_LINKS = ["Projects", "Experience", "About", "Contact"];
 
-const NavBar = ({ mobile = false }) => {
-  const [dark, setDark] = useState(() => {
-    return (
-      localStorage.getItem("theme") === "dark" ||
-      (!localStorage.getItem("theme") &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    );
-  });
-
+const NavBar = ({ mobile = false, dark, setDark }) => {
   const location = useLocation();
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
 
   const isActive = (path) => {
     if (path === "/") return location.pathname === "/";
@@ -40,7 +27,7 @@ const NavBar = ({ mobile = false }) => {
     ) : null;
 
   return (
-    <nav
+    <div
       className={`${
         mobile
           ? "flex flex-col space-y-1"
@@ -55,13 +42,14 @@ const NavBar = ({ mobile = false }) => {
       {NAV_LINKS.map((item) => {
         const path = `/${item.toLowerCase()}`;
         return (
-          <Link key={item} to={path} className={linkClass(path)}>
+          <Link key={item} to={path} aria-current={isActive(path) ? "page" : undefined} className={linkClass(path)}>
             {item}
             {activeDot(path)}
           </Link>
         );
       })}
 
+      <Link to="/resume" className="primary-action">Résumé</Link>
       <button
         onClick={() => setDark((prev) => !prev)}
         className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all shadow-sm ${
@@ -75,7 +63,7 @@ const NavBar = ({ mobile = false }) => {
           <IoIosMoon className="w-5 h-5" />
         )}
       </button>
-    </nav>
+    </div>
   );
 };
 

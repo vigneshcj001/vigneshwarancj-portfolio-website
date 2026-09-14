@@ -1,10 +1,16 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import NavBar from "./NavBar";
 
 const Header = () => {
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark" || (!localStorage.getItem("theme") && matchMedia("(prefers-color-scheme: dark)").matches));
+  useEffect(() => { document.documentElement.classList.toggle("dark", dark); localStorage.setItem("theme", dark ? "dark" : "light"); }, [dark]);
+  useEffect(() => { setIsOpen(false); }, [location.pathname]);
+  useEffect(() => { const close = e => { if (e.key === "Escape") { setIsOpen(false); document.getElementById("menu-toggle")?.focus(); } }; if (isOpen) document.addEventListener("keydown", close); return () => document.removeEventListener("keydown", close); }, [isOpen]);
+
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -30,26 +36,26 @@ const Header = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex">
-        <NavBar />
+      <nav className="hidden lg:flex">
+        <NavBar dark={dark} setDark={setDark} />
       </nav>
 
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label="Toggle Menu"
+        id="menu-toggle" aria-label="Toggle Menu" aria-expanded={isOpen} aria-controls="mobile-navigation"
       >
         {isOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
 
       {/* Mobile Navigation Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-xl md:hidden">
-          <div className="px-6 py-4" onClick={() => setIsOpen(false)}>
-            <NavBar mobile />
+        <nav id="mobile-navigation" aria-label="Mobile navigation" className="absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-xl lg:hidden">
+          <div className="px-6 py-4" onClick={e => { if (e.target.closest("a")) setIsOpen(false); }}>
+            <NavBar mobile dark={dark} setDark={setDark} />
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

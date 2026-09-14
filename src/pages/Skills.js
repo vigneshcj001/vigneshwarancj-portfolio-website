@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router";
+import { projects } from "../data/projects";
 import { motion } from "framer-motion";
 import { skillCategories, colorMap } from "../data/skills.js";
 import PageHeader from "../Components/ui/PageHeader.js";
@@ -13,13 +15,13 @@ const Skills = () => {
       <PageHeader
         badge="Technical Competencies"
         title="Skills"
-        subtitle="Comprehensive expertise spanning data science, AI engineering, full-stack development, cloud infrastructure, and computational biology research."
+        subtitle="Select an arrow-marked skill to see project evidence. Skills span data science, AI engineering, full-stack development, cloud infrastructure, and computational biology research."
       />
 
       {/* Summary strip */}
       <div className="flex flex-wrap justify-center gap-6 mb-10 text-center">
         <div>
-          <p className="text-2xl font-black text-gray-900 dark:text-white">{totalSkills}+</p>
+          <p className="text-2xl font-black text-gray-900 dark:text-white">{totalSkills}</p>
           <p className="text-[10px] text-gray-400 uppercase tracking-widest mt-0.5">Technologies</p>
         </div>
         <div className="w-px bg-gray-200 dark:bg-gray-700 self-stretch" />
@@ -52,15 +54,13 @@ const Skills = () => {
               </div>
               {/* Skills */}
               <div className="p-4 flex flex-wrap gap-2">
-                {skills.map(({ name: sName, Icon }) => (
-                  <span
-                    key={sName}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-transform duration-200 hover:scale-105 cursor-default ${c.badge}`}
-                  >
-                    <Icon className="text-base shrink-0" />
-                    {sName}
-                  </span>
-                ))}
+                {skills.map(({ name: sName, Icon }) => {
+                  const query = sName === "HTML5" ? "HTML" : sName === "CSS3" ? "CSS" : sName;
+                  const hasEvidence = projects.some(project => project.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase())));
+                  const classes = `flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium ${c.badge}`;
+                  const content = <><Icon className="text-base shrink-0" />{sName}{hasEvidence && " ↗"}</>;
+                  return hasEvidence ? <Link key={sName} className={classes} to={`/projects?q=${encodeURIComponent(query)}`} title={`See projects using ${sName}`}>{content}</Link> : <span key={sName} className={classes}>{content}</span>;
+                })}
               </div>
             </motion.div>
           );

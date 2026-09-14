@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackConversion } from "../Utils/analytics";
 import emailjs from "@emailjs/browser";
 import { service_id, public_key, Template_ID } from "../Utils/const";
 
@@ -12,6 +13,7 @@ const useContactForm = () => {
     try {
       await emailjs.sendForm(service_id, Template_ID, form, public_key);
       setNotification("success");
+      trackConversion("contact_success");
       form.reset();
       if (onSuccess) onSuccess();
     } catch {

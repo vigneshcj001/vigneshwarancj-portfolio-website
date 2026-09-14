@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import { Link, useSearchParams } from "react-router";
+import { caseStudies, projectMedia } from "../data/showcase";
+import ProjectPreview from "../Components/ProjectPreview";
+import { trackConversion } from "../Utils/analytics";
 import useMeta from "../Hooks/useMeta.js";
 import { ArrowUpRight } from "lucide-react";
 import { FiSearch, FiX, FiGithub } from "react-icons/fi";
@@ -19,11 +23,13 @@ const TOP_BORDER = {
 };
 
 const Projects = () => {
-  useMeta("Projects", "9 projects spanning AI/ML research, full-stack engineering, computational biology, and embedded systems — Vigneshwaran C.J.'s portfolio.");
+  useMeta("Projects", `${projects.length} projects spanning AI/ML research, full-stack engineering, computational biology, and embedded systems — Vigneshwaran C.J.'s portfolio.`);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [search, setSearch] = useState("");
+  const [params, setParams] = useSearchParams();
+  const search = params.get("q") || "";
+  const setSearch = value => setParams(value ? { q: value } : {}, { replace: true });
 
-  const q = search.toLowerCase();
+  const q = search.trim().toLowerCase();
   const filtered = projects
     .filter((p) => activeFilter === "All" || p.category === activeFilter)
     .filter((p) => !q ||
@@ -48,7 +54,7 @@ const Projects = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search projects, tags…"
+            aria-label="Search projects by name or technology" placeholder="Search projects, tags…"
             className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
           {search && (
@@ -67,6 +73,7 @@ const Projects = () => {
           {categoryFilters.map((f) => (
             <button
               key={f}
+              aria-pressed={activeFilter === f}
               onClick={() => setActiveFilter(f)}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 border ${
                 activeFilter === f
@@ -94,12 +101,13 @@ const Projects = () => {
               transition={{ duration: 0.4, delay: idx * 0.06 }}
               className="relative flex flex-col rounded-2xl border border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800/50 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-gray-300 dark:hover:border-gray-600"
             >
+              {Object.entries(caseStudies).filter(([, s]) => projects[s.index].title === title).map(([slug, study]) => <Link key={slug} to={`/projects/${slug}`} aria-label={`Read ${study.title} case study`}><ProjectPreview study={study} /></Link>)}
               {/* Top accent bar */}
               <div className={`h-0.5 w-full bg-linear-to-r ${TOP_BORDER[accent] || TOP_BORDER.slate}`} />
 
               <div className="flex flex-col flex-1 p-5">
                 {/* Category badge */}
-                <span className="absolute top-4 right-4 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <span className="inline-flex self-start mb-3 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {category}
                 </span>
 
@@ -113,7 +121,7 @@ const Projects = () => {
                 </div>
 
                 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed flex-1 mb-4">
-                  {description}
+                  {description.length > 190 ? description.slice(0, 187) + "…" : description}
                 </p>
 
                 <div className="flex flex-wrap gap-1.5 mb-4">
@@ -125,9 +133,12 @@ const Projects = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-auto">
-                  {link && (
+                  {Object.entries(caseStudies).filter(([, s]) => projects[s.index].title === title).map(([slug]) => <Link key={slug} className="text-link" to={`/projects/${slug}`}>Read case study →</Link>)}
+                  {description.length > 190 && <details className="w-full text-sm mb-3"><summary className="cursor-pointer">Full project description</summary><p className="mt-2">{description}</p></details>}
+                  {link && !Object.entries(caseStudies).some(([slug, study]) => projects[study.index].title === title && projectMedia[slug]?.liveAvailable === false) && (
                     <a
                       href={link}
+                      onClick={() => trackConversion("project_demo_click", { project: title })}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 px-3 py-1.5 rounded-lg"

@@ -1,3 +1,4 @@
+import { trackConversion } from "../Utils/analytics";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin } from "react-icons/fi";
@@ -282,7 +283,7 @@ const Resume = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BACKEND}/api/resume`);
+      const res = await fetch(`${BACKEND}/api/resume`, { signal: AbortSignal.timeout(15000) });
       if (!res.ok) throw new Error(`Server error: ${res.status}`);
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -290,9 +291,12 @@ const Resume = () => {
       a.href = url;
       a.download = "Vigneshwaran_CJ_Resume.pdf";
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      trackConversion("resume_download", { source: "resume", version: "live" });
     } catch (err) {
-      setError("Failed to download. Please try again.");
+      const a = document.createElement("a"); a.href = "/resume.pdf"; a.download = "Vigneshwaran_CJ_Resume.pdf"; a.click();
+      trackConversion("resume_download", { source: "resume", version: "static" });
+      setError("The live service is unavailable. Your saved PDF download has started.");
     } finally {
       setLoading(false);
     }
@@ -310,8 +314,7 @@ const Resume = () => {
             Resume
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-5">
-            ATS-friendly PDF generated on-the-fly from live portfolio data.
-            Always reflects the latest updates.
+            Download a text-based PDF or use the print preview. A saved copy is available if the live service is unavailable.
           </p>
 
           <div className="flex items-center justify-center gap-3">
@@ -340,7 +343,7 @@ const Resume = () => {
           </div>
 
           {error && (
-            <p className="mt-3 text-xs text-red-500 dark:text-red-400">{error}</p>
+            <p role="status" className="mt-3 text-xs text-gray-600 dark:text-gray-300">{error}</p>
           )}
         </div>
 

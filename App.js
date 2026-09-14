@@ -1,7 +1,7 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, MotionConfig } from "framer-motion";
 import { Analytics } from "@vercel/analytics/react";
 import "./index.css";
 
@@ -11,6 +11,8 @@ import PortfolioAssistant from "./src/Components/PortfolioAssistant";
 import ErrorBoundary from "./src/Components/ErrorBoundary";
 import BackToTop from "./src/Components/BackToTop";
 
+const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
+const Writing = lazy(() => import("./src/pages/Writing"));
 const Home         = lazy(() => import("./src/pages/Home"));
 const About        = lazy(() => import("./src/pages/About"));
 const Projects     = lazy(() => import("./src/pages/Project"));
@@ -74,6 +76,7 @@ const pageVariants = {
 
 function AppContent() {
   const location = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); document.getElementById("main-content")?.focus({ preventScroll: true }); }, [location.pathname]);
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen w-full text-gray-900 dark:text-gray-100 flex flex-col">
@@ -87,7 +90,7 @@ function AppContent() {
 
       <Header />
 
-      <main id="main-content" className="flex-1 flex flex-col">
+      <main tabIndex={-1} id="main-content" className="flex-1 flex flex-col">
         <ErrorBoundary>
           <Suspense fallback={<PageLoader />}>
             <AnimatePresence mode="wait" initial={false}>
@@ -103,6 +106,9 @@ function AppContent() {
                   <Route path="/"             element={<Home />} />
                   <Route path="/about"        element={<About />} />
                   <Route path="/experience"   element={<Experience />} />
+                  <Route path="/projects/:slug" element={<CaseStudy />} />
+                  <Route path="/writing" element={<Writing />} />
+                  <Route path="/writing/:slug" element={<Writing />} />
                   <Route path="/projects"     element={<Projects />} />
                   <Route path="/publications" element={<Publications />} />
                   <Route path="/social"       element={<Social />} />
@@ -127,7 +133,7 @@ function AppContent() {
 
 const App = () => (
   <Router>
-    <AppContent />
+    <MotionConfig reducedMotion="user"><AppContent /></MotionConfig>
   </Router>
 );
 

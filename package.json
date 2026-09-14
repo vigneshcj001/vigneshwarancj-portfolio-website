@@ -17,8 +17,9 @@
   "author": "vigneshwaran",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html && node -e \"const f=require('fs');f.copyFileSync('images/image.jpeg','dist/og-image.jpg');f.copyFileSync('sitemap.xml','dist/sitemap.xml');f.copyFileSync('robots.txt','dist/robots.txt');\"",
-    "test": "jest"
+    "build": "parcel build index.html --public-url / --no-cache && node scripts/postbuild.mjs",
+    "test": "node --test tests/build.test.cjs",
+    "test:browser": "node tests/browser.cjs"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.15.4",

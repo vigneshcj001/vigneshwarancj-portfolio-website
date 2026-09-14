@@ -2,6 +2,61 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/about",
+      "destination": "/about/index.html"
+    },
+    {
+      "source": "/experience",
+      "destination": "/experience/index.html"
+    },
+    {
+      "source": "/projects",
+      "destination": "/projects/index.html"
+    },
+    {
+      "source": "/publications",
+      "destination": "/publications/index.html"
+    },
+    {
+      "source": "/skills",
+      "destination": "/skills/index.html"
+    },
+    {
+      "source": "/social",
+      "destination": "/social/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/resume",
+      "destination": "/resume/index.html"
+    },
+    {
+      "source": "/writing",
+      "destination": "/writing/index.html"
+    },
+    {
+      "source": "/projects/syncly",
+      "destination": "/projects/syncly/index.html"
+    },
+    {
+      "source": "/projects/glycanbench",
+      "destination": "/projects/glycanbench/index.html"
+    },
+    {
+      "source": "/writing/rest-and-real-time",
+      "destination": "/writing/rest-and-real-time/index.html"
+    },
+    {
+      "source": "/writing/interpreting-research-models",
+      "destination": "/writing/interpreting-research-models/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }

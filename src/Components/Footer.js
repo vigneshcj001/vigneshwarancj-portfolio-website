@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { FaLinkedin, FaGithub, FaXTwitter, FaYoutube, FaInstagram } from "react-icons/fa6";
 import { SiBuymeacoffee } from "react-icons/si";
 import {
@@ -21,6 +22,7 @@ const FOOTER_LINKS = [
 const Footer = () => (
   <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80 backdrop-blur-sm">
     <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <nav aria-label="Explore more" className="flex flex-wrap gap-4 text-sm">{["Skills", "Publications", "Writing", "Social"].map(label => <Link key={label} to={`/${label.toLowerCase()}`}>{label}</Link>)}</nav>
       <p className="text-xs text-gray-400 dark:text-gray-500">
         © {new Date().getFullYear()} Vigneshwaran C. J. — All rights reserved.
       </p>

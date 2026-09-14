@@ -81,7 +81,7 @@ const ContactUs = () => {
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`mb-6 p-4 rounded-xl text-sm font-medium text-center ${
+            role="status" aria-live="polite" className={`mb-6 p-4 rounded-xl text-sm font-medium text-center ${
               notification === "success"
                 ? "bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50"
                 : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/50"
@@ -109,25 +109,23 @@ const ContactUs = () => {
               {/* Name + Email row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Full Name
-                  </label>
+                  <label htmlFor="from_name" className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Full Name</label>
                   <input
                     type="text"
+                    id="from_name" aria-invalid={!!errors.from_name} aria-describedby={errors.from_name ? "from_name-error" : undefined}
                     {...register("from_name", { required: "Name is required" })}
                     placeholder="Your full name"
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                   />
                   {errors.from_name && (
-                    <p className="text-red-500 text-xs mt-1">{errors.from_name.message}</p>
+                    <p id="from_name-error" className="text-red-500 text-xs mt-1">{errors.from_name.message}</p>
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                    Email Address
-                  </label>
+                  <label htmlFor="from_email" className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Email Address</label>
                   <input
                     type="email"
+                    id="from_email" aria-invalid={!!errors.from_email} aria-describedby={errors.from_email ? "from_email-error" : undefined}
                     {...register("from_email", {
                       required: "Email address is required",
                       pattern: {
@@ -139,24 +137,23 @@ const ContactUs = () => {
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm"
                   />
                   {errors.from_email && (
-                    <p className="text-red-500 text-xs mt-1">{errors.from_email.message}</p>
+                    <p id="from_email-error" className="text-red-500 text-xs mt-1">{errors.from_email.message}</p>
                   )}
                 </div>
               </div>
 
               {/* Message */}
               <div>
-                <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">
-                  Message
-                </label>
+                <label htmlFor="message" className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wider">Message</label>
                 <textarea
-                  {...register("message", { required: "Message is required" })}
+                  id="message" aria-invalid={!!errors.message} aria-describedby={errors.message ? "message-error" : undefined}
+                    {...register("message", { required: "Message is required" })}
                   rows={5}
                   placeholder="Describe your project, research enquiry, or collaboration proposal..."
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-sm resize-none"
                 />
                 {errors.message && (
-                  <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
+                  <p id="message-error" className="text-red-500 text-xs mt-1">{errors.message.message}</p>
                 )}
               </div>
 
