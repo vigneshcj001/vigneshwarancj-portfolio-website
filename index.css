@@ -44,7 +44,7 @@
 .dark .hero-note { color: #a3b3c8; }
 .portrait-wrap { position: relative; border-radius: 22px; overflow: hidden; background: #dce5ee; }
 .portrait-wrap img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
-.portrait-caption { position: absolute; inset: auto 16px 16px; padding: 16px; border-radius: 12px; background: #0f172aee; color: white; display: grid; gap: 5px; }
+.portrait-caption { padding: 14px 18px; background: #0f172a; color: white; display: grid; gap: 4px; }
 .portrait-caption span { font-size: 11px; color: #cbd5e1; }
 .stats-strip { border-block: 1px solid #cbd5e1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; padding-block: 24px; font-size: 13px; }
 .dark .stats-strip { border-color: #334155; }
