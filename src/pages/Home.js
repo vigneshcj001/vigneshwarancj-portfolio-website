@@ -1,5 +1,8 @@
 import { Link } from "react-router";
-import profilePhoto from "url:../assets/image.jpeg";
+import portrait640 from "url:../assets/portrait-640.webp";
+import portrait960 from "url:../assets/portrait-960.webp";
+import portrait1536 from "url:../assets/portrait-1536.webp";
+import portraitFallback from "url:../assets/portrait-960.jpg";
 import { projects } from "../data/projects";
 import { skillCategories } from "../data/skills";
 import { caseStudies, testimonials, articles } from "../data/showcase";
@@ -14,7 +17,7 @@ export default function Home() {
       <div><p className="eyebrow">AI / ML engineer · Full-stack developer</p><h1>Useful software.<br /><span>Thoughtful AI.</span></h1><p className="lead">I’m Vigneshwaran C. J. I build web platforms and AI tools that turn complex workflows into usable products—from developer networking to computational biology.</p>
         <div className="action-row"><Link className="primary-action" to="/projects">Explore my work →</Link><a className="secondary-action" href="/resume.pdf" download="Vigneshwaran_CJ_Resume.pdf" onClick={() => trackConversion("resume_download", { source: "home", version: "static" })}>Download résumé ↓</a></div>
         <p className="hero-note">Coimbatore, India · Open to professional opportunities</p>
-      </div><div className="portrait-wrap"><img src={profilePhoto} width="1536" height="1024" alt="Vigneshwaran C. J." fetchPriority="high" /><div className="portrait-caption"><strong>Engineering × Research</strong><span>M.Tech · Big Data Biology · SASTRA</span></div></div>
+      </div><div className="portrait-wrap"><picture><source type="image/webp" srcSet={`${portrait640} 640w, ${portrait960} 960w, ${portrait1536} 1536w`} sizes="(max-width: 767px) 100vw, 440px" /><img src={portraitFallback} width="960" height="640" alt="Vigneshwaran C. J." fetchPriority="high" decoding="async" /></picture><div className="portrait-caption"><strong>Engineering × Research</strong><span>M.Tech · Big Data Biology · SASTRA</span></div></div>
     </section>
     <div className="portfolio-section stats-strip"><span><b>{projects.length}</b> selected projects</span><span><b>{skillCategories.reduce((sum, c) => sum + c.skills.length, 0)}</b> technologies</span><span><b>Web + AI + Bio</b> connected expertise</span></div>
     <section className="portfolio-section section-spacing"><div className="section-heading"><div><p className="eyebrow">Selected work</p><h2>From idea to working product.</h2></div><Link className="text-link" to="/projects">All projects ↗</Link></div>

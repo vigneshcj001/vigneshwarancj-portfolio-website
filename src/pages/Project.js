@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router";
 import { caseStudies, projectMedia } from "../data/showcase";
 import ProjectPreview from "../Components/ProjectPreview";

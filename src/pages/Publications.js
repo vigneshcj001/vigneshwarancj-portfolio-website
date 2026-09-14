@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import useMeta from "../Hooks/useMeta.js";
 import { ArrowUpRight } from "lucide-react";
 import { FiBookOpen } from "react-icons/fi";
@@ -125,7 +125,7 @@ const Publications = () => {
                     <FiBookOpen className="w-3.5 h-3.5 text-gray-400 shrink-0 mt-0.5" />
                     <p className="text-xs text-gray-600 dark:text-gray-300 font-medium">{pub.authors}</p>
                   </div>
-                  <p className="text-xs text-gray-400 dark:text-gray-500 mb-4 pl-5">{pub.institution}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-4 pl-5">{pub.institution}</p>
 
                   {/* Abstract */}
                   <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">

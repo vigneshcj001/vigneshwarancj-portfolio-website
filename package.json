@@ -17,9 +17,13 @@
   "author": "vigneshwaran",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html --public-url / --no-cache && node scripts/postbuild.mjs",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "prebuild": "npm run clean",
+    "build": "parcel build index.html --public-url / --no-cache --no-source-maps && node scripts/postbuild.mjs",
+    "preview": "node scripts/preview.mjs",
     "test": "node --test tests/build.test.cjs",
-    "test:browser": "node tests/browser.cjs"
+    "test:browser": "node tests/browser.cjs",
+    "test:all": "npm test && npm run test:browser"
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.15.4",
@@ -28,9 +32,11 @@
     "autoprefixer": "^10.4.21",
     "buffer": "^6.0.3",
     "parcel": "^2.15.4",
+    "playwright": "^1.63.0",
     "postcss": "^8.5.6",
     "process": "^0.11.10",
-    "tailwindcss": "^4.1.12"
+    "tailwindcss": "^4.1.12",
+    "wait-on": "^9.1.0"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -43,7 +49,7 @@
     "react-hook-form": "^7.62.0",
     "react-icons": "^5.5.0",
     "react-router": "^7.17.0",
-    "react-router-dom": "^7.8.2",
     "react-simple-typewriter": "^5.0.1"
-  }
+  },
+  "type": "module"
 }

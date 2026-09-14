@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { FiX, FiSend, FiTrash2, FiCopy, FiCheck, FiChevronDown } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
-import botAvatar from "url:../assets/image.jpeg";
+import botAvatar from "url:../assets/portrait-640.webp";
 
 const BACKEND     = "https://vigneshwarancj-portfolio-backend.onrender.com";
 const MAX_HISTORY = 20;
@@ -278,7 +278,6 @@ export default function PortfolioAssistant() {
             type="button"
             onClick={() => setOpen(true)}
             className="fixed bottom-6 right-6 z-50 group flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-2xl shadow-blue-600/40 hover:shadow-blue-600/60 hover:scale-105 transition-all duration-200"
-            aria-label="Open AI Assistant"
           >
             {/* Avatar */}
             <div className="relative shrink-0">

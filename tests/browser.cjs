@@ -28,7 +28,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.getByRole('button',{name:/Send Message/}).click();await page.getByRole('status').filter({hasText:'Message sent successfully'}).waitFor();
  await page.goto(base+'/resume');await page.route('**/api/resume',route=>route.fulfill({status:503,body:'Unavailable'}));
  const fallbackPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Download PDF'}).click();await fallbackPromise;await page.getByRole('status').filter({hasText:'saved PDF download has started'}).waitFor();
- await page.goto(base);await page.getByRole('button',{name:'Open AI Assistant'}).click();
+ await page.goto(base);await page.getByRole('button',{name:"Ask CJ's AI"}).click();
  await page.route('**/api/assistant/stream',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({detail:'Service unavailable'})}));
  await page.getByRole('textbox',{name:'Message',exact:true}).fill('What is Syncly?');await page.getByRole('button',{name:'Send',exact:true}).click();await page.getByRole('button',{name:'Retry question'}).waitFor();
  await page.route('**/api/assistant/stream',route=>route.fulfill({status:200,contentType:'text/event-stream',body:'data: {"text":"Syncly connects professionals."}\n\ndata: {"done":true,"full":"Syncly connects professionals."}'}));

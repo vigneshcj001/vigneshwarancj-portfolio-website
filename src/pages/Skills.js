@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router";
 import { projects } from "../data/projects";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { skillCategories, colorMap } from "../data/skills.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 import useMeta from "../Hooks/useMeta.js";
@@ -50,7 +50,7 @@ const Skills = () => {
               {/* Category header */}
               <div className={`flex items-center justify-between px-4 py-3 border-b ${c.header} border-current/10`}>
                 <span className="text-xs font-bold uppercase tracking-wider">{name}</span>
-                <span className="text-[10px] font-semibold opacity-70">{skills.length} tools</span>
+                <span className="text-[10px] font-semibold">{skills.length} tools</span>
               </div>
               {/* Skills */}
               <div className="p-4 flex flex-wrap gap-2">

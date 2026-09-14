@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { socialLinks } from "../data/social.js";
 import PageHeader from "../Components/ui/PageHeader.js";

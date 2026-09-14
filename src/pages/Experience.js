@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import useMeta from "../Hooks/useMeta.js";
 import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin, FiAward } from "react-icons/fi";
 import mitStudentsImg from "url:../../images/Dr. Neha Sureshchandra Gandhi's Students.jpg";
@@ -45,9 +45,9 @@ function ProjectCard({ project, idx }) {
       className={`p-5 rounded-xl border ${bordCls} bg-white dark:bg-gray-800/50 hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}
     >
       <div className="mb-2">
-        <h4 className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
+        <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-snug">
           {project.name}
-        </h4>
+        </h3>
         <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 font-medium">
           {project.subtitle}
         </p>
@@ -121,7 +121,7 @@ function RoleCard({ role, index, image, certPdf, isLast }) {
                   {role.type}
                 </span>
               </div>
-              <h3 className="text-xl font-black leading-tight tracking-tight">{role.title}</h3>
+              <h2 className="text-xl font-black leading-tight tracking-tight">{role.title}</h2>
               <p className="text-sm opacity-75 mt-1 font-medium">{role.period}</p>
               {role.location && (
                 <p className="text-xs opacity-60 mt-0.5 flex items-center gap-1">
@@ -161,7 +161,7 @@ function RoleCard({ role, index, image, certPdf, isLast }) {
 
                 {/* Research area label */}
                 {role.researchArea && (
-                  <p className="text-xs text-gray-400 dark:text-gray-500 italic mb-5">
+                  <p className="text-xs text-gray-500 dark:text-gray-400 italic mb-5">
                     Focus: {role.researchArea}
                   </p>
                 )}
@@ -252,7 +252,7 @@ const Experience = () => {
           <FiMapPin className="w-3.5 h-3.5 text-blue-500 shrink-0" />
           <p className="text-xs text-blue-700 dark:text-blue-400 font-medium">
             Ceiyone Tech Works Private Limited — Zoho Partner ·{" "}
-            <span className="font-normal opacity-80">
+            <span className="font-normal">
               25/2, Masakalipalayam, Peelamedu, Coimbatore, Tamil Nadu 641028
             </span>
           </p>

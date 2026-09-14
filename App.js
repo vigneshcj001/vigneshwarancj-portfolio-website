@@ -1,7 +1,8 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router";
-import { motion, AnimatePresence, MotionConfig } from "framer-motion";
+import { m as motion, AnimatePresence, MotionConfig, LazyMotion } from "framer-motion";
+import { IconContext } from "react-icons";
 import { Analytics } from "@vercel/analytics/react";
 import "./index.css";
 
@@ -131,9 +132,19 @@ function AppContent() {
   );
 }
 
+// Animation features load in a separate chunk so the main bundle only ships
+// the lightweight `m` components. All icons are decorative; controls that
+// show only an icon carry their own aria-label.
+const loadMotionFeatures = () => import("./src/Utils/motionFeatures.js").then((mod) => mod.default);
+const iconProps = { attr: { "aria-hidden": "true", focusable: "false" } };
+
 const App = () => (
   <Router>
-    <MotionConfig reducedMotion="user"><AppContent /></MotionConfig>
+    <LazyMotion features={loadMotionFeatures} strict>
+      <MotionConfig reducedMotion="user">
+        <IconContext.Provider value={iconProps}><AppContent /></IconContext.Provider>
+      </MotionConfig>
+    </LazyMotion>
   </Router>
 );
 

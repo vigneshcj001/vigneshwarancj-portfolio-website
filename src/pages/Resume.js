@@ -1,6 +1,6 @@
 import { trackConversion } from "../Utils/analytics";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 import { roles } from "../data/experience.js";
@@ -379,7 +379,7 @@ const Resume = () => {
           </div>
         </motion.div>
 
-        <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-4 no-print">
+        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4 no-print">
           The downloaded PDF is a single-column, plain-text layout formatted for ATS parsers —
           this page's two-column view is for on-screen reading only.
         </p>

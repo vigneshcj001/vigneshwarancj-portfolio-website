@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import useMeta from "../Hooks/useMeta.js";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { SiBuymeacoffee } from "react-icons/si";
 import { FiMail, FiLinkedin } from "react-icons/fi";
 import { Send, Loader2 } from "lucide-react";
@@ -179,7 +179,7 @@ const ContactUs = () => {
           transition={{ delay: 0.4 }}
           className="mt-8 text-center"
         >
-          <p className="text-xs text-gray-400 dark:text-gray-500 mb-3">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
             If my work has been helpful, consider supporting it.
           </p>
           <a

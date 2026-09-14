@@ -6,7 +6,7 @@ export const projects = [
       "Developer-to-developer networking platform built solo end to end. Members pick a mentorship role (mentor, learner, both) and swipe a paginated feed of developers they have not met — Vibe to connect, Ghost to pass; the recipient replies Link or Noped, and a mutual Link unlocks real-time 1:1 chat over Socket.IO with persisted history. Every member gets a shareable portfolio page at their profile slug (projects, experience, education, certifications, theme, SEO, visibility). httpOnly JWT cookie auth with bcrypt, AWS SES email on every swipe, and a daily 08:00 node-cron reminder for pending Vibes. Loop: Discover → Vibe → Link → Chat → Showcase.",
     link: "https://syncly.co.in",
     github: "https://github.com/vigneshcj001/Syncly_fronend",
-    githubBackend: "https://github.com/vigneshcj001/Syncly_Backend",
+    githubBackend: null, // backend repository is private
     tags: ["React.js", "Vite", "Redux Toolkit", "Node.js", "Express.js", "MongoDB", "Mongoose", "Socket.IO", "JWT", "AWS SES", "AWS EC2", "Tailwind CSS"],
     accent: "teal",
     category: "Full-Stack",
@@ -17,7 +17,7 @@ export const projects = [
     description:
       "Full-stack glycoinformatics platform and installable Python package (SDK, CLI, server) with eight tool groups behind one React UI and one FastAPI API: Create (click-to-build glycans with SNFG 2D + 3D conformers, Cytoscape.js biosynthetic networks, IUPAC/WURCS/GlycoCT/SMILES conversion), Visualize (2D SNFG, 3Dmol.js, KEGG pathways), Analyse (characterisation, GlyTouCan insight, RDKit descriptors + fingerprints, motif mutation), Compare (Tanimoto over five fingerprints), Align (Needleman-Wunsch with the GLYSUM matrix), Cluster (agglomerative/K-means, elbow, outliers), Predict (PyTorch Geometric MPNN immunogenicity classifier with confidence score and motif flags), and GlycomicsChat (Groq gpt-oss-120b with an LLM tool router over PubMed, ArXiv, GlyTouCan). Developed under Ashok Palaniappan at SASTRA's Systems Computational Biology Lab; free for academic use.",
     link: "https://glycanbench.sastra.edu/",
-    github: "https://github.com/APalaniaLab/GlycanBench",
+    github: null, // lab repository is private until publication
     tags: ["Python", "FastAPI", "React.js", "TypeScript", "PyTorch", "PyTorch Geometric", "MPNN", "RDKit", "glycowork", "LangChain", "Groq", "Tailwind CSS"],
     accent: "blue",
     category: "AI/Research",

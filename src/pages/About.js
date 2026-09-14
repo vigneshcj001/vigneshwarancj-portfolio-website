@@ -1,9 +1,11 @@
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { FaLinkedin, FaGithub, FaEnvelope } from "react-icons/fa";
-import profilePhoto from "url:../assets/image.jpeg";
+import profilePhoto from "url:../assets/portrait-640.webp";
 import namasteReactImg from "url:../../images/NamasteReactjs.jpg";
 import namasteNodeImg from "url:../../images/NamasteNodejs.jpg";
 import { education, certifications, accentMap, researchInterests } from "../data/education.js";
+import { projects } from "../data/projects.js";
+import { skillCategories } from "../data/skills.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 import { LINKEDIN_LINK, GITHUB_LINK } from "../Utils/const.js";
 import useMeta from "../Hooks/useMeta.js";
@@ -11,8 +13,8 @@ import useMeta from "../Hooks/useMeta.js";
 const CERT_IMAGES = { react: namasteReactImg, node: namasteNodeImg };
 
 const STATS = [
-  { value: "9",   label: "Projects"         },
-  { value: "50+", label: "Skills"            },
+  { value: String(projects.length), label: "Projects" },
+  { value: String(skillCategories.reduce((sum, c) => sum + c.skills.length, 0)), label: "Skills" },
   { value: "2",   label: "Research Domains"  },
   { value: "< 1", label: "Yr. Experience"    },
 ];
