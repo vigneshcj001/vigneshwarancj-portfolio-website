@@ -11,7 +11,7 @@ export default function Home() {
   useMeta();
   return <div className="home-page">
     <section className="portfolio-section hero-section">
-      <div><p className="eyebrow">AI / ML engineer · Full-stack developer</p><h1>Useful software.<br /><span>Thoughtful AI.</span></h1><p className="lead">I’m Vigneshwaran C. J. I build web platforms and AI tools that turn complex workflows into usable products—from professional networking to computational biology.</p>
+      <div><p className="eyebrow">AI / ML engineer · Full-stack developer</p><h1>Useful software.<br /><span>Thoughtful AI.</span></h1><p className="lead">I’m Vigneshwaran C. J. I build web platforms and AI tools that turn complex workflows into usable products—from developer networking to computational biology.</p>
         <div className="action-row"><Link className="primary-action" to="/projects">Explore my work →</Link><a className="secondary-action" href="/resume.pdf" download="Vigneshwaran_CJ_Resume.pdf" onClick={() => trackConversion("resume_download", { source: "home", version: "static" })}>Download résumé ↓</a></div>
         <p className="hero-note">Coimbatore, India · Open to professional opportunities</p>
       </div><div className="portrait-wrap"><img src={profilePhoto} width="420" height="480" alt="Vigneshwaran C. J." fetchPriority="high" /><div className="portrait-caption"><strong>Engineering × Research</strong><span>M.Tech · Big Data Biology · SASTRA</span></div></div>

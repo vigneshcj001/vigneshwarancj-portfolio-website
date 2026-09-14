@@ -15,7 +15,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  const downloaded=await download.path(); assert.equal(fs.readFileSync(downloaded).subarray(0,5).toString(),'%PDF-');
  await page.getByRole('link',{name:'Explore my work →'}).click();
  await page.getByRole('textbox',{name:'Search projects by name or technology'}).fill('FastAPI');
- assert.deepEqual(await page.locator('h2').allTextContents(),['GlycanBench: integrated resource for working with glycans']);
+ assert.deepEqual(await page.locator('h2').allTextContents(),['GlycanBench: a unified resource for working with glycans']);
  await page.goto(base+'/skills');await page.getByRole('link',{name:'React.js ↗',exact:true}).click();
  assert.match(page.url(),/q=React/); await page.getByRole('heading',{name:'Syncly',exact:true}).waitFor(); assert.ok((await page.locator('h2').count())>=3);
  for (const slug of ['syncly','glycanbench']) {

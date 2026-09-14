@@ -22,7 +22,7 @@ story += [para('EXPERIENCE','SectionResume')]
 for role in data['work_experience']:
  story += [para(role['role']+' | '+role['company'],'ItemResume'),para(role['period']),para(role['overview'])]
 story += [para('SELECTED PROJECTS','SectionResume')]
-for name in ['Syncly','GlycanBench: integrated resource for working with glycans']:
+for name in ['Syncly','GlycanBench: a unified resource for working with glycans']:
  project=data['projects'].get(name)
  if project:
   story += [para(name,'ItemResume'),para(project.get('description','')),para('Technologies: '+', '.join(project.get('tech_stack',[])))]

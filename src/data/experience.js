@@ -7,30 +7,30 @@ export const roles = [
     type: "Full-time",
     accent: "blue",
     overview:
-      "Designing, developing, and maintaining enterprise-grade applications and AI-powered platforms — including AIORA, a multi-tenant WhatsApp business platform (bookings, storefronts, and n8n-driven AI conversations). Work spans backend APIs, WhatsApp automation, cloud deployments, AI/LLM integration, and internal monitoring systems. Also mentoring 2 engineering interns on the AIORA platform.",
+      "Designing, developing, and maintaining enterprise-grade applications and AI-powered platforms — including AIORA, a multi-tenant WhatsApp business platform of 14 services (bookings, storefronts, and n8n-driven AI conversations) running on a shared VPS under systemd/PM2 behind nginx, with Render- and Railway-hosted front ends. Work spans backend APIs, WhatsApp automation, cloud deployments, AI/LLM integration, and internal monitoring systems. Also mentoring 2 engineering interns on the AIORA platform.",
     projects: [
       {
         name: "Bullion Handler",
-        subtitle: "AI Document Processing Platform",
+        subtitle: "AI Document Validation Engine",
         description:
-          "Core platform for document ingestion, OCR extraction, AI analysis, validation, report generation, and OpenAI token usage tracking.",
-        tech: ["Python", "FastAPI", "PostgreSQL", "OpenAI"],
+          "FastAPI service that reads gold-shipment AWB and invoice PDFs with GPT-4o vision, runs a two-stage rules engine (Stage 1 checks the invoice alone — weight, purity, calculations; Stage 2 compares it against its matched AWB), and produces bilingual EN/ES PDF reports delivered by email. PostgreSQL for records, Redis Streams/Pub-Sub for job pickup and SHA-256 dedup.",
+        tech: ["Python", "FastAPI", "OpenAI GPT-4o", "PostgreSQL", "Redis", "ReportLab", "systemd"],
         accent: "teal",
       },
       {
         name: "Bullion Listener",
-        subtitle: "Event-Driven Processing Service",
+        subtitle: "WhatsApp Document Intake Bot",
         description:
-          "Event listener service that monitors incoming events, validates payloads, and triggers downstream Bullion Handler processing pipelines asynchronously.",
-        tech: ["Python", "FastAPI", "PostgreSQL"],
+          "Node.js WhatsApp bot bridging group chats and Bullion Handler — saves incoming PDFs to the shared filesystem, hands them to the Python service via HTTP/n8n, and watches report directories with chokidar to deliver finished reports back to the originating group.",
+        tech: ["Node.js", "whatsapp-web.js", "Chokidar", "Redis", "PM2"],
         accent: "sky",
       },
       {
         name: "Splendor",
-        subtitle: "OpenAI Token & Subscription Monitor",
+        subtitle: "AI Token Quota & Subscription API",
         description:
-          "Centralized platform tracking prompt/completion/total token usage per model and API key, managing subscription quotas, and sending WhatsApp alert notifications.",
-        tech: ["Python", "FastAPI", "PostgreSQL", "WhatsApp API"],
+          "Express 5 REST API that meters AI token consumption and subscription quotas per client/agent, enforces plan limits, and fires low-balance WhatsApp alerts through Oblion with a 4-hour cooldown. OpenAPI docs served at /api-docs.",
+        tech: ["Node.js", "Express.js", "PostgreSQL", "Joi", "Winston", "Swagger/OpenAPI", "Docker", "PM2"],
         accent: "violet",
       },
       {
@@ -38,7 +38,7 @@ export const roles = [
         subtitle: "WhatsApp Auth & Session Manager",
         description:
           "Multi-number WhatsApp gateway — one whatsapp-web.js session per business number, BullMQ-queued outbound sends with retries and a dead-letter queue, and HMAC-signed inbound webhooks feeding n8n.",
-        tech: ["TypeScript", "Node.js", "Express.js", "BullMQ", "Redis", "PostgreSQL", "WhatsApp Web API", "n8n"],
+        tech: ["TypeScript", "Node.js", "Express.js", "BullMQ", "Redis", "PostgreSQL", "Zod", "whatsapp-web.js", "n8n"],
         accent: "green",
       },
       {
@@ -61,24 +61,24 @@ export const roles = [
         name: "polaris-ui",
         subtitle: "AIORA Operator Dashboard",
         description:
-          "Business-owner dashboard for bookings, orders, inventory, bot settings, document uploads, broadcast campaigns, and WhatsApp session status — fans out to meridian-api, Oblion, and ecomm-api, proxying e-commerce calls server-side so the API key never reaches the browser.",
-        tech: ["React 19", "Vite", "Tailwind CSS", "Node.js"],
+          "Business-owner dashboard fanning out to four backends (healthora-api, meridian-api, Oblion, ecomm-api) — bookings, orders, inventory, bot settings, document uploads, broadcast campaigns, WhatsApp session status, a Shiprocket connection page, and a home dashboard of revenue, booking/order status, low-stock and campaign charts. E-commerce calls are proxied server-side so the API key never reaches the browser.",
+        tech: ["React 19", "TypeScript", "Vite", "Tailwind CSS", "Axios", "Node.js", "Railway"],
         accent: "pink",
       },
       {
         name: "AIORA E-Commerce",
         subtitle: "Multi-Store WhatsApp Commerce Platform",
         description:
-          "Next.js storefront platform where several shops can share one WhatsApp number — catalogue, orders with idempotency keys, storefront config, and a customer directory upserted from inbound WhatsApp messages, with order confirmations dispatched via Oblion.",
-        tech: ["Next.js", "React", "TypeScript", "PostgreSQL"],
+          "Next.js 16 multi-store platform where several shops share one WhatsApp number — catalogue, orders with idempotency keys, storefront config, a customer directory upserted from inbound WhatsApp, order confirmations via Oblion, and per-client Shiprocket shipping: orders sync when marked ready, a deduplicated webhook normalises ~30 courier statuses into 8, and customers get shipped / out-for-delivery / delivered WhatsApp updates. Credentials stored AES-256-GCM.",
+        tech: ["Next.js 16", "React 19", "TypeScript", "PostgreSQL", "Tailwind CSS", "Shiprocket API"],
         accent: "slate",
       },
       {
         name: "Client Onboarding Portal",
         subtitle: "Internal Client & Agent Provisioning Tool",
         description:
-          "Operator tool that provisions a client and all of its WhatsApp agents (booking, storefront, or both) in a single all-or-nothing transaction — client, agents, subscription limits, WhatsApp status, intake questions, and seeded slots either all land or none do.",
-        tech: ["React", "Vite", "Node.js", "Express.js", "PostgreSQL", "Zod"],
+          "Operator tool that provisions a client and all of its WhatsApp agents (booking, storefront, or both) in a single all-or-nothing transaction — client, agents, subscription limits, WhatsApp status, intake questions, seeded slots, storefronts, and optional Shiprocket config either all land or none do; a failure names the module that broke.",
+        tech: ["React 18", "Vite", "shadcn/ui", "Node.js", "Express.js", "PostgreSQL", "Zod", "Nodemailer"],
         accent: "teal",
       },
       {
@@ -91,10 +91,10 @@ export const roles = [
       },
       {
         name: "Orbit",
-        subtitle: "Centralized Service Health Monitor",
+        subtitle: "Platform Health & OpenAI Balance Monitor",
         description:
-          "Internal monitoring and management dashboard aggregating health checks, system diagnostics, API status, and incident detection across all services.",
-        tech: ["Python", "FastAPI", "ReactJS"],
+          "Express utility service that aggregates health across all AIORA services via GET /api/health/all and scrapes the OpenAI account balance with Playwright for billing visibility.",
+        tech: ["Node.js", "Express.js", "Playwright", "PM2"],
         accent: "orange",
       },
       {
@@ -111,7 +111,7 @@ export const roles = [
       "REST API design with FastAPI & Express.js",
       "PostgreSQL & MongoDB management, query optimisation",
       "Multi-tenant platform design (shared WhatsApp numbers, multi-agent routing)",
-      "Server deployment & production maintenance",
+      "Multi-environment VPS deployment (dev/SIT/prod) with systemd, PM2, nginx and isolated Postgres/Redis",
       "IAM, Secrets Manager, CloudWatch on AWS",
       "Mentoring interns (code review, architecture guidance)",
     ],
@@ -119,10 +119,10 @@ export const roles = [
       Backend: ["Python", "FastAPI", "Node.js", "Express.js", "TypeScript"],
       Frontend: ["ReactJS", "Next.js", "Streamlit"],
       Databases: ["PostgreSQL", "MongoDB", "DynamoDB"],
-      "AI & LLMs": ["OpenAI GPT-4o", "Groq LLaMA"],
-      Automation: ["n8n", "WhatsApp Web API"],
+      "AI & LLMs": ["OpenAI GPT-4o", "Groq"],
+      Automation: ["n8n", "whatsapp-web.js", "Shiprocket API"],
       "Messaging & Queues": ["Redis", "BullMQ"],
-      Cloud: ["AWS Lambda", "API Gateway", "EC2", "CloudWatch", "Secrets Manager"],
+      "Cloud & Ops": ["Hostinger VPS", "systemd", "PM2", "nginx", "Docker", "Render", "Railway", "AWS Lambda", "API Gateway", "EC2", "CloudWatch", "Secrets Manager"],
     },
   },
   {

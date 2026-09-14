@@ -15,7 +15,7 @@ const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 
 const FEATURED_PROJECT_TITLES = [
   "Syncly",
-  "GlycanBench: integrated resource for working with glycans",
+  "GlycanBench: a unified resource for working with glycans",
   "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer",
   "QSPR for Posaconazole SEDDS",
   "Prediction of lignocellulosic components and fermentable sugars for bioethanol production by machine learning approach",

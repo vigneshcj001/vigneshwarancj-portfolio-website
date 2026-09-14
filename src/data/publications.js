@@ -1,16 +1,16 @@
 export const publications = [
   {
     id: "glycanbench",
-    title: "GlycanBench: integrated resource for working with glycans",
-    authors: "Vigneshwaran CJ",
+    title: "GlycanBench: a unified resource for working with glycans",
+    authors: "Vigneshwaran CJ & Ashok Palaniappan",
     guide: "Ashok Palaniappan",
     institution: "Systems Computational Biology Lab, SASTRA Deemed University",
-    year: "2025",
+    year: "2026",
     status: "Submitted — Frontiers in Systems Biology",
     type: "Research Paper",
     context: "PG M.Tech · Main Project",
     abstract:
-      "A comprehensive glycoinformatics platform covering glycan creation, 2D/3D visualisation, comparative fingerprint analysis (Morgan, AtomPair, Torsion, RDKit), sequence alignment, hierarchical/k-means clustering with outlier detection, and an optimised MPNN model for immunogenicity prediction with explainable outputs. Freely available as a web-server and Python package for academic and non-profit use.",
+      "A unified glycoinformatics web server and Python package covering glycan creation, 2D/3D visualisation, fingerprint comparison (Morgan, AtomPair, Torsion, RDKit), GLYSUM sequence alignment, hierarchical/k-means clustering with outlier detection, an MPNN immunogenicity classifier with confidence scores and motif flags, and a glycomics chat assistant with live PubMed, ArXiv, and GlyTouCan tools. Freely available for academic and non-profit use.",
     tags: ["Glycomics", "MPNN", "Python", "Bioinformatics", "RDKit"],
     link: "https://glycanbench.sastra.edu/",
     accent: "blue",
