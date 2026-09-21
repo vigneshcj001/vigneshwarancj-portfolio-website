@@ -37,6 +37,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.getByRole('button',{name:'Close',exact:true}).click(); await page.getByRole('region',{name:'Portfolio assistant'}).waitFor({state:'detached'});
  for(const width of [320,390,768,1024]) {
   await page.setViewportSize({width,height:844});
+  // Let responsive layout and animation transforms settle after resizing.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Overflow at ${width}`);
  }
  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Toggle Menu'}).click();assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'true');
@@ -47,6 +49,5 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  assert.deepEqual(errors,[]);console.log('PASS: navigation, search, skill evidence, metadata, PDF downloads, contact success (mocked), chat failure/retry/stream completion, mobile widths, theme persistence.');
  } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1;});
-
 
 

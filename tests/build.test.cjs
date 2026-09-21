@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const path=require('node:path');
 const dist=path.resolve(__dirname,'../dist');
 test('production pages contain their own share metadata and resolvable assets',()=>{
- for(const slug of ['syncly','glycanbench']) {
+ for(const slug of ['syncly','glycanbench','pocketpet','pocketpet-web']) {
   const html=fs.readFileSync(path.join(dist,'projects',slug,'index.html'),'utf8');
   assert.ok(html.includes(`https://vigneshwarancj-portfolio-website.vercel.app/projects/${slug}`));
   assert.ok(html.includes(`/images/sharing/${slug}.png`));

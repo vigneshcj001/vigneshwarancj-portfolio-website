@@ -44,7 +44,7 @@ const Projects = () => {
         <PageHeader
           badge="Portfolio"
           title="Projects"
-          subtitle="Selected work spanning AI/ML research, full-stack engineering, computational biology platforms, and embedded systems."
+          subtitle="Selected work spanning desktop AI agents, full-stack engineering, interactive websites, computational biology, and embedded systems."
         />
 
         {/* Search */}

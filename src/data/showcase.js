@@ -1,4 +1,26 @@
 export const caseStudies = {
+  pocketpet: {
+    title: "PocketPet", index: 9, label: "Desktop engineering + agentic AI",
+    summary: "An animated desktop companion that combines native window interaction with a browser-task agent.",
+    problem: "A desktop companion needs to feel present without blocking everyday work, while making an AI agent's actions visible and controllable.",
+    role: "Development of the Tauri/Rust application, JavaScript pet behaviour and settings, native Windows integration, browser-task agent, and cross-platform packaging.",
+    steps: ["Choose a pet and personalise its behaviour", "Give it a task and follow its browser progress", "Review approval requests and read the result"],
+    architecture: ["Tauri 2 + Rust + plain JavaScript/SVG", "Win32 + UI Automation for Windows interaction", "Tokio + reqwest for streamed model calls", "Chrome DevTools Protocol + dedicated Chromium profile", "GitHub Actions platform builds and releases"],
+    decisions: ["Report pet hit regions to Rust so the overlay can pass clicks through outside the pet without taking keyboard focus.", "Keep model calls and credential access in Rust; support Anthropic and OpenAI-compatible protocols, including local servers.", "Use a separate browser profile with code-level approval checks, secret-field refusal, spend limits, pause, and cancellation controls.", "Separate platform modules: native window tricks run on Windows while macOS and Linux retain companion and task features."],
+    result: "Built a customisable companion with games, reminders, streamed browser tasks, follow-ups, scheduling, and release packaging for three desktop platforms.",
+    caveat: "Window tricks are Windows-only. macOS uses one display; Linux click-through requires X11/XWayland. Sensitive-action detection is heuristic and cannot guarantee detection of every risky action.",
+  },
+  "pocketpet-web": {
+    title: "PocketPet Website", index: 10, label: "Interactive frontend engineering",
+    summary: "A hands-on pet demo and download site that connects the desktop experience to GitHub releases.",
+    problem: "Visitors need to try the companion's personality, understand platform differences, and find the right installer without manually browsing release assets.",
+    role: "React/TypeScript website development, shared pet state, sprite animation, GitHub release integration, responsive UI, and Vercel deployment configuration.",
+    steps: ["Play with and personalise the demo pet", "Compare desktop platform capabilities", "Find a matching GitHub release download"],
+    architecture: ["React 19 + TypeScript + Vite", "Tailwind CSS 4 + SVG/CSS animation", "React context + requestAnimationFrame", "GitHub repository and release APIs", "Static hosting on Vercel"],
+    decisions: ["Reuse the desktop app's sprites and recolouring rules so the web demo reflects the product.", "Keep animation positions in mutable refs and update transforms directly, while React manages controls and shared appearance.", "Match release assets by platform suffix and fall back to GitHub Releases when an asset or API response is unavailable.", "Include keyboard actions, reduced-motion handling, persisted theme choice, and explicit platform capability comparisons."],
+    result: "Delivered a static product site with an interactive demo, a scrolling pet companion, live repository data, release notes, and OS-aware download links.",
+    caveat: "The website has no application backend. Its agent sequence is an illustrative demo; the actual browser-task agent runs in the desktop app. GitHub API limits or missing release assets can trigger fallback links.",
+  },
   syncly: {
     title: "Syncly", index: 0, label: "Full-stack engineering",
     summary: "A developer network connecting swipe-based discovery, mutual matching, real-time conversation, and a personal portfolio.",

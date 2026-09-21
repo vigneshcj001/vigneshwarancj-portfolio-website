@@ -1,5 +1,5 @@
 import {
-  SiPython, SiR, SiJavascript, SiTypescript,
+  SiPython, SiR, SiJavascript, SiTypescript, SiRust, SiTauri,
   SiPandas, SiNumpy, SiScikitlearn, SiPytorch, SiTensorflow,
   SiReact, SiRedux, SiNextdotjs, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
   SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio, SiMongoose,
@@ -22,6 +22,7 @@ export const skillCategories = [
       { name: "SQL",        Icon: FaDatabase   },
       { name: "JavaScript", Icon: SiJavascript },
       { name: "TypeScript", Icon: SiTypescript },
+      { name: "Rust",       Icon: SiRust       },
     ],
   },
   {
@@ -61,6 +62,7 @@ export const skillCategories = [
       { name: "Socket.IO",  Icon: SiSocketdotio },
       { name: "BullMQ",     Icon: FaNetworkWired},
       { name: "Mongoose",   Icon: SiMongoose    },
+      { name: "Tauri",      Icon: SiTauri       },
     ],
   },
   {
@@ -87,6 +89,7 @@ export const skillCategories = [
       { name: "nginx",        Icon: SiNginx        },
       { name: "Render",       Icon: SiRender       },
       { name: "Railway",      Icon: SiRailway      },
+      { name: "GitHub Actions", Icon: SiGithub       },
       { name: "Cloud",        Icon: AiOutlineCloud },
     ],
   },
