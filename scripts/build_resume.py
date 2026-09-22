@@ -17,12 +17,12 @@ def safe(text):
 def para(text, style='BodyResume'):
  return Paragraph(safe(text), styles[style])
 story=[Paragraph(safe(data['personal']['name']),styles['Title']),para('AI / ML Engineer and Full-Stack Developer'),para('Coimbatore, India | '+data['personal']['email']),para(data['personal']['linkedin']+' | '+data['personal']['github']),Spacer(1,5)]
-story += [para('PROFILE','SectionResume'),para('Full-stack developer and AI / ML engineer with an M.Tech in Big Data Biology. Work spans enterprise applications, WhatsApp automation, real-time networking, and computational biology tools.')]
+story += [para('PROFILE','SectionResume'),para('Full-stack developer and AI / ML engineer with an M.Tech in Big Data Biology. Work spans desktop agents, enterprise applications, WhatsApp automation, real-time networking, and computational biology tools.')]
 story += [para('EXPERIENCE','SectionResume')]
 for role in data['work_experience']:
  story += [para(role['role']+' | '+role['company'],'ItemResume'),para(role['period']),para(role['overview'])]
 story += [para('SELECTED PROJECTS','SectionResume')]
-for name in ['Syncly','GlycanBench: a unified resource for working with glycans']:
+for name in ['PocketPet','Syncly','GlycanBench: a unified resource for working with glycans']:
  project=data['projects'].get(name)
  if project:
   story += [para(name,'ItemResume'),para(project.get('description','')),para('Technologies: '+', '.join(project.get('tech_stack',[])))]

@@ -14,6 +14,7 @@ import useMeta from "../Hooks/useMeta.js";
 const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
 
 const FEATURED_PROJECT_TITLES = [
+  "PocketPet",
   "Syncly",
   "GlycanBench: a unified resource for working with glycans",
   "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer",
@@ -72,8 +73,8 @@ function SummarySection() {
         Currently a Junior Software Developer at Ceiyone Tech Works (Zoho Partner), building <strong className="font-semibold text-gray-900 dark:text-white">AIORA</strong> — a
         multi-tenant WhatsApp business platform spanning a WhatsApp gateway (Oblion), booking and commerce
         backends, n8n-orchestrated AI conversation agents, and operator/customer dashboards — and mentoring
-        2 engineering interns on it. Also built production-grade platforms independently: Syncly (MERN + Socket.IO + AWS)
-        and GlycanBench (glycoinformatics + MPNN). M.Tech thesis achieved 98.47% accuracy in EGFR inhibitor
+        2 engineering interns on it. Also built production-grade products independently: PocketPet (Tauri/Rust desktop companion + browser agent),
+        Syncly (MERN + Socket.IO + AWS), and GlycanBench (glycoinformatics + MPNN). M.Tech thesis achieved 98.47% accuracy in EGFR inhibitor
         classification for ovarian cancer using Gradient Boosting and SHAP.
       </p>
     </div>
