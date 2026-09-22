@@ -97,25 +97,15 @@ export const projects = [
   },
   {
     title: "PocketPet",
-    subtitle: "Desktop Companion + AI Browser Agent",
+    subtitle: "Desktop Companion, AI Browser Agent + Download Website",
     description:
-      "A Tauri 2 desktop companion built with Rust and plain JavaScript. Four animated pets follow the cursor, play fetch, support custom appearances, and offer break reminders. A Rust task agent searches the web, reads pages, and drives a dedicated Chromium profile through the Chrome DevTools Protocol, with streamed progress, follow-ups, scheduled tasks, approval gates, and spend limits. Supports Anthropic and OpenAI-compatible providers, including local Ollama. Windows adds titlebar perching and caption-button actions through Win32 and UI Automation; macOS and Linux have a reduced feature set. Packaged through GitHub Actions for Windows, macOS, and Linux.",
+      "One cross-platform product comprising a Tauri 2/Rust desktop companion and its React/TypeScript download website. Four animated pets follow the cursor, play fetch, support custom appearances, and offer break reminders. A Rust task agent searches the web, reads pages, and drives a dedicated Chromium profile through the Chrome DevTools Protocol, with streamed progress, follow-ups, scheduled tasks, approval gates, and spend limits. The website reuses the app's sprites as an interactive demo, explains platform support, reads GitHub Releases, and directs each visitor to the correct Windows, macOS, or Linux download. Windows adds titlebar perching and caption-button actions through Win32 and UI Automation; macOS and Linux have a reduced feature set.",
     link: "https://pocketpet-web.vercel.app/",
     github: "https://github.com/vigneshcj001/Pocketpet",
-    tags: ["Rust", "Tauri", "JavaScript", "Tokio", "Win32", "Chrome DevTools Protocol", "Agentic AI", "GitHub Actions"],
+    githubWebsite: "https://github.com/vigneshcj001/Pocketpet-web",
+    tags: ["Rust", "Tauri", "JavaScript", "React.js", "TypeScript", "Tokio", "Win32", "Chrome DevTools Protocol", "Agentic AI", "GitHub API", "GitHub Actions", "Vercel"],
     accent: "violet",
     category: "Desktop/AI",
-  },
-  {
-    title: "PocketPet Website",
-    subtitle: "Interactive Product Demo + Release Downloads",
-    description:
-      "React 19 and TypeScript companion website for PocketPet, built with Vite and Tailwind CSS 4. Visitors can switch between four pets, feed, drag, toss, recolour, and accessorise them; shared React context keeps the hero, scrolling companion, and footer in sync. Animation uses requestAnimationFrame and the desktop app's SVG sprites. GitHub APIs supply repository stats, release notes, and platform-specific downloads with release-page fallbacks. Includes desktop OS detection, a platform feature matrix, keyboard controls, reduced-motion support, and a persistent light/dark theme. Deployed as a static site on Vercel with no application backend.",
-    link: "https://pocketpet-web.vercel.app/",
-    github: "https://github.com/vigneshcj001/Pocketpet-web",
-    tags: ["React.js", "TypeScript", "Vite", "Tailwind CSS", "SVG Animation", "GitHub API", "Vercel"],
-    accent: "orange",
-    category: "Frontend",
   },
 ];
 

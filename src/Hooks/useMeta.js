@@ -9,7 +9,7 @@ export default function useMeta(title, description) {
     const pageTitle = title ? `${title} | Vigneshwaran C.J.` : BASE_TITLE;
     const desc = description || BASE_DESC;
     document.title = pageTitle;
-    const image = ["/projects/syncly", "/projects/glycanbench", "/projects/pocketpet", "/projects/pocketpet-web"].includes(pathname) ? `${BASE}/images/sharing/${pathname.split("/").pop()}.png` : `${BASE}/og-image.jpg`;
+    const image = ["/projects/syncly", "/projects/glycanbench", "/projects/pocketpet"].includes(pathname) ? `${BASE}/images/sharing/${pathname.split("/").pop()}.png` : `${BASE}/og-image.jpg`;
     for (const [key, value] of Object.entries({ description: desc, "og:title": pageTitle, "og:description": desc, "og:url": BASE + pathname, "og:image": image, "twitter:title": pageTitle, "twitter:description": desc, "twitter:image": image })) {
       const attr = key.startsWith("og:") ? "property" : "name";
       let el = document.querySelector(`meta[${attr}="${key}"]`);

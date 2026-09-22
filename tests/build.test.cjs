@@ -3,8 +3,16 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const path=require('node:path');
 const dist=path.resolve(__dirname,'../dist');
+test('PocketPet application and download website are represented as one project',async()=>{
+ const {projects}=await import('../src/data/projects.js');
+ const pocketPet=projects.filter(project=>project.title.toLowerCase().includes('pocketpet'));
+ assert.equal(pocketPet.length,1);
+ assert.equal(pocketPet[0].github,'https://github.com/vigneshcj001/Pocketpet');
+ assert.equal(pocketPet[0].githubWebsite,'https://github.com/vigneshcj001/Pocketpet-web');
+ assert.equal(pocketPet[0].link,'https://pocketpet-web.vercel.app/');
+});
 test('production pages contain their own share metadata and resolvable assets',()=>{
- for(const slug of ['syncly','glycanbench','pocketpet','pocketpet-web']) {
+ for(const slug of ['syncly','glycanbench','pocketpet']) {
   const html=fs.readFileSync(path.join(dist,'projects',slug,'index.html'),'utf8');
   assert.ok(html.includes(`https://vigneshwarancj-portfolio-website.vercel.app/projects/${slug}`));
   assert.ok(html.includes(`/images/sharing/${slug}.png`));

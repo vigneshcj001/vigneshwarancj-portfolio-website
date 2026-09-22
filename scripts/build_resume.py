@@ -25,7 +25,9 @@ story += [para('SELECTED PROJECTS','SectionResume')]
 for name in ['PocketPet','Syncly','GlycanBench: a unified resource for working with glycans']:
  project=data['projects'].get(name)
  if project:
-  story += [para(name,'ItemResume'),para(project.get('description','')),para('Technologies: '+', '.join(project.get('tech_stack',[])))]
+  description = project.get('description','')
+  summary = description[:620] + ('...' if len(description) > 620 else '')
+  story += [para(name,'ItemResume'),para(summary),para('Technologies: '+', '.join(project.get('tech_stack',[])))]
 story += [para('EDUCATION','SectionResume')]
 for item in data['education']:
  story += [para(item['degree'],'ItemResume'),para(item['institution']+' | '+item['period']+' | '+item['grade'])]

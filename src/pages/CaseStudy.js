@@ -14,7 +14,7 @@ export default function CaseStudy() {
   return <article className="portfolio-section case-study">
     <Link className="text-link" to="/projects">← All projects</Link>
     <p className="eyebrow mt-8">{study.label} / Case study</p><h1>{study.title}</h1><p className="lead">{study.summary}</p>
-    <div className="action-row">{media?.liveAvailable !== false && <a className="primary-action" href={project.link} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("project_demo_click", { project: slug })}>Open live project ↗</a>}<a className="secondary-action" href={project.github} target="_blank" rel="noopener noreferrer">Source code ↗</a></div>
+    <div className="action-row">{media?.liveAvailable !== false && <a className="primary-action" href={project.link} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("project_demo_click", { project: slug })}>Open live project ↗</a>}<a className="secondary-action" href={project.github} target="_blank" rel="noopener noreferrer">Application source ↗</a>{project.githubWebsite && <a className="secondary-action" href={project.githubWebsite} target="_blank" rel="noopener noreferrer">Website source ↗</a>}</div>
     {media?.liveAvailable === false && <p className="mb-6 text-sm">Live preview is currently unavailable. Explore the workflow and source code below.</p>}
     <ProjectPreview study={study} />
     {media?.poster && <img className="rounded-2xl my-8" src={media.poster} alt={`${study.title} application screenshot`} loading="lazy" />}
