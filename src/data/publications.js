@@ -13,6 +13,8 @@ export const publications = [
       "A unified glycoinformatics web server and Python package covering glycan creation, 2D/3D visualisation, fingerprint comparison (Morgan, AtomPair, Torsion, RDKit), GLYSUM sequence alignment, hierarchical/k-means clustering with outlier detection, an MPNN immunogenicity classifier with confidence scores and motif flags, and a glycomics chat assistant with live PubMed, ArXiv, and GlyTouCan tools. Freely available for academic and non-profit use.",
     tags: ["Glycomics", "MPNN", "Python", "Bioinformatics", "RDKit"],
     link: "https://glycanbench.sastra.edu/",
+    github: "https://github.com/APalaniaLab/GlycanBench",
+    pypi: "https://pypi.org/project/glycanbench/",
     accent: "blue",
   },
   {

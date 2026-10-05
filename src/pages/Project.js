@@ -93,7 +93,7 @@ const Projects = () => {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map(({ title, subtitle, description, link, github, githubBackend, githubWebsite, tags, accent, category }, idx) => (
+          {filtered.map(({ title, subtitle, description, link, github, githubBackend, githubWebsite, pypi, tags, accent, category }, idx) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 24 }}
@@ -177,6 +177,17 @@ const Projects = () => {
                       aria-label="PocketPet website GitHub repository"
                     >
                       <FiGithub className="w-3.5 h-3.5" /> Website source
+                    </a>
+                  )}
+                  {pypi && (
+                    <a
+                      href={pypi}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-yellow-400 dark:hover:border-yellow-500 px-3 py-1.5 rounded-lg"
+                      aria-label="PyPI package"
+                    >
+                      PyPI <ArrowUpRight className="w-3.5 h-3.5" />
                     </a>
                   )}
                 </div>

@@ -17,7 +17,8 @@ export const projects = [
     description:
       "Full-stack glycoinformatics platform and installable Python package (SDK, CLI, server) with eight tool groups behind one React UI and one FastAPI API: Create (click-to-build glycans with SNFG 2D + 3D conformers, Cytoscape.js biosynthetic networks, IUPAC/WURCS/GlycoCT/SMILES conversion), Visualize (2D SNFG, 3Dmol.js, KEGG pathways), Analyse (characterisation, GlyTouCan insight, RDKit descriptors + fingerprints, motif mutation), Compare (Tanimoto over five fingerprints), Align (Needleman-Wunsch with the GLYSUM matrix), Cluster (agglomerative/K-means, elbow, outliers), Predict (PyTorch Geometric MPNN immunogenicity classifier with confidence score and motif flags), and GlycomicsChat (Groq gpt-oss-120b with an LLM tool router over PubMed, ArXiv, GlyTouCan). Developed under Ashok Palaniappan at SASTRA's Systems Computational Biology Lab; free for academic use.",
     link: "https://glycanbench.sastra.edu/",
-    github: null, // lab repository is private until publication
+    github: "https://github.com/APalaniaLab/GlycanBench",
+    pypi: "https://pypi.org/project/glycanbench/",
     tags: ["Python", "FastAPI", "React.js", "TypeScript", "PyTorch", "PyTorch Geometric", "MPNN", "RDKit", "glycowork", "LangChain", "Groq", "Tailwind CSS"],
     accent: "blue",
     category: "AI/Research",

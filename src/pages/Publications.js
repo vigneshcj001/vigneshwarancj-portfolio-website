@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { m as motion } from "framer-motion";
 import useMeta from "../Hooks/useMeta.js";
 import { ArrowUpRight } from "lucide-react";
-import { FiBookOpen } from "react-icons/fi";
+import { FiBookOpen, FiGithub } from "react-icons/fi";
+import { SiPypi } from "react-icons/si";
 import { publications, pubAccentMap, typeLabels } from "../data/publications.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 
@@ -141,16 +142,39 @@ const Publications = () => {
                         </span>
                       ))}
                     </div>
-                    {pub.link && (
-                      <a
-                        href={pub.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 px-3 py-1.5 rounded-lg"
-                      >
-                        View <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
-                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {pub.link && (
+                        <a
+                          href={pub.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 px-3 py-1.5 rounded-lg"
+                        >
+                          View <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                      {pub.github && (
+                        <a
+                          href={pub.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors border border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 px-3 py-1.5 rounded-lg"
+                        >
+                          <FiGithub className="w-3.5 h-3.5" /> Source
+                        </a>
+                      )}
+                      {pub.pypi && (
+                        <a
+                          href={pub.pypi}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-yellow-400 dark:hover:border-yellow-500 px-3 py-1.5 rounded-lg"
+                          aria-label="PyPI package"
+                        >
+                          <SiPypi className="w-3.5 h-3.5" /> PyPI
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               </motion.div>

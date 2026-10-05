@@ -30,6 +30,7 @@ export const caseStudies = {
     architecture: ["React 19 + TypeScript + Vite", "FastAPI + Pydantic", "RDKit + glycowork + glypy + BioPython", "PyTorch Geometric MPNN", "Groq LLM + LangChain tools"],
     decisions: ["Keep scientific logic framework-free in core/ so the same code serves the API, the SDK, and the CLI.", "Surface unsupported conversion paths as explicit notices instead of silent failures.", "Route chat questions through an LLM tool selector with a keyword fallback so external tools degrade gracefully."],
     result: "Made glycan creation, visualisation, analysis, comparison, alignment, clustering, prediction, and literature chat available through one web server and one Python package, deployed at glycanbench.sastra.edu.",
+    pypi: "https://pypi.org/project/glycanbench/",
     caveat: "Model evaluation metrics are not reproduced on this page; consult the project materials for methodology and limitations.",
   },
 };
@@ -38,7 +39,6 @@ export const caseStudies = {
 export const testimonials = [];
 export const projectMedia = {
   syncly: { liveAvailable: false },
-  glycanbench: { liveAvailable: false },
 };
 
 export const articles = [
