@@ -1,9 +1,10 @@
 import { FaLinkedin, FaGithub, FaXTwitter, FaYoutube, FaInstagram } from "react-icons/fa6";
-import { SiBuymeacoffee } from "react-icons/si";
+import { SiBuymeacoffee, SiLeetcode } from "react-icons/si";
 import {
   LINKEDIN_LINK,
   INSTAGRAM_LINK,
   GITHUB_LINK,
+  LEETCODE_LINK,
   X_LINK,
   YOUTUBE_LINK,
   BUY_ME_A_COFFEE_LINK,
@@ -27,6 +28,15 @@ export const socialLinks = [
     Icon: FaGithub,
     gradient: "from-gray-700 to-gray-900",
     ring: "ring-gray-500/30",
+  },
+  {
+    name: "LeetCode",
+    handle: "@vigneshcj001",
+    description: "Algorithms and problem solving",
+    url: LEETCODE_LINK,
+    Icon: SiLeetcode,
+    gradient: "from-amber-500 to-orange-600",
+    ring: "ring-amber-500/30",
   },
   {
     name: "Instagram",

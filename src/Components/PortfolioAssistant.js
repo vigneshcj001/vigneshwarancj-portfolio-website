@@ -276,6 +276,7 @@ export default function PortfolioAssistant() {
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
             type="button"
+            aria-label="Ask CJ's AI"
             onClick={() => setOpen(true)}
             className="fixed bottom-6 right-6 z-50 group flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-2xl shadow-blue-600/40 hover:shadow-blue-600/60 hover:scale-105 transition-all duration-200"
           >

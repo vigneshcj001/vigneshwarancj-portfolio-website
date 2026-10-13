@@ -10,24 +10,26 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.route('**/_vercel/**', route => route.fulfill({contentType:'application/javascript',body:''}));
  const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  await page.goto(base); await page.getByRole('heading',{name:/Useful software/}).waitFor();
- const downloadPromise=page.waitForEvent('download'); await page.getByRole('link',{name:/Download résumé/}).click(); const download=await downloadPromise;
- assert.equal(download.suggestedFilename(),'Vigneshwaran_CJ_Resume.pdf');
- const downloaded=await download.path(); assert.equal(fs.readFileSync(downloaded).subarray(0,5).toString(),'%PDF-');
+ await page.getByRole('link',{name:/Download résumé/}).click(); await page.getByRole('heading',{name:'Resume',exact:true}).waitFor();
+ await page.route('**/api/resume',route=>route.fulfill({status:503,body:'Unavailable'}));
+ const downloadPromise=page.waitForEvent('download'); await page.getByRole('button',{name:'Download PDF'}).click(); const download=await downloadPromise;
+ assert.equal(download.suggestedFilename(),'Vigneshwaran_CJ_Resume.pdf'); const downloaded=await download.path(); assert.equal(fs.readFileSync(downloaded).subarray(0,5).toString(),'%PDF-');
+ await page.goto(base);
  await page.getByRole('link',{name:'Explore my work →'}).click();
  await page.getByRole('textbox',{name:'Search projects by name or technology'}).fill('FastAPI');
- assert.deepEqual(await page.locator('h2').allTextContents(),['GlycanBench: a unified resource for working with glycans']);
+ assert.deepEqual(await page.locator('h2').allTextContents(),['AIORA','GlycanBench: a unified resource for working with glycans']);
  await page.goto(base+'/skills');await page.getByRole('link',{name:'React.js ↗',exact:true}).click();
  assert.match(page.url(),/q=React/); await page.getByRole('heading',{name:'Syncly',exact:true}).waitFor(); assert.ok((await page.locator('h2').count())>=3);
- for (const slug of ['syncly','glycanbench']) {
-  await page.goto(base+'/projects/'+slug);await page.getByRole('heading',{name:slug==='syncly'?'Syncly':'GlycanBench',exact:true}).waitFor();
+ for (const slug of ['aiora','pocketpet','syncly','glycanbench']) {
+  const title={aiora:'AIORA',pocketpet:'PocketPet',syncly:'Syncly',glycanbench:'GlycanBench'}[slug]; await page.goto(base+'/projects/'+slug);await page.getByRole('heading',{name:title,exact:true}).waitFor();
   assert.equal(await page.locator('link[rel=canonical]').getAttribute('href'),'https://vigneshwarancj-portfolio-website.vercel.app/projects/'+slug);
   const raw=await (await page.request.get(base+'/projects/'+slug)).text();assert.ok(raw.includes(`/images/sharing/${slug}.png`));
  }
  await page.goto(base+'/contact');await page.getByLabel('Full Name').fill('Browser test');await page.getByLabel('Email Address').fill('test@example.com');await page.getByLabel('Message',{exact:true}).fill('Test message, intercepted locally.');
+ await page.route('**/api/contact',route=>route.fulfill({status:202,contentType:'application/json',body:'{"accepted":true}'}));
  await page.route('https://api.emailjs.com/**',route=>route.fulfill({status:200,body:'OK'}));
  await page.getByRole('button',{name:/Send Message/}).click();await page.getByRole('status').filter({hasText:'Message sent successfully'}).waitFor();
- await page.goto(base+'/resume');await page.route('**/api/resume',route=>route.fulfill({status:503,body:'Unavailable'}));
- const fallbackPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Download PDF'}).click();await fallbackPromise;await page.getByRole('status').filter({hasText:'saved PDF download has started'}).waitFor();
+ await page.goto(base+'/resume');const fallbackPromise=page.waitForEvent('download');await page.getByRole('button',{name:'Download PDF'}).click();await fallbackPromise;await page.getByRole('status').filter({hasText:'Saved PDF download started'}).waitFor();
  await page.goto(base);await page.getByRole('button',{name:"Ask CJ's AI"}).click();
  await page.route('**/api/assistant/stream',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({detail:'Service unavailable'})}));
  await page.getByRole('textbox',{name:'Message',exact:true}).fill('What is Syncly?');await page.getByRole('button',{name:'Send',exact:true}).click();await page.getByRole('button',{name:'Retry question'}).waitFor();
@@ -42,12 +44,11 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,`Overflow at ${width}`);
  }
  await page.setViewportSize({width:390,height:844});await page.getByRole('button',{name:'Toggle Menu'}).click();assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'true');
- await page.getByRole('button',{name:'Toggle Theme'}).last().click();const dark=await page.evaluate(()=>document.documentElement.classList.contains('dark'));await page.keyboard.press('Escape');
+ await page.getByRole('button',{name:/Theme:/}).last().click();const dark=await page.evaluate(()=>document.documentElement.classList.contains('dark'));await page.keyboard.press('Escape');
  assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'false');
  await page.reload();await page.getByRole('heading',{name:/Useful software/}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('dark')),dark);
  await page.screenshot({path:path.resolve('homepage-mobile.png'),fullPage:true});
  assert.deepEqual(errors,[]);console.log('PASS: navigation, search, skill evidence, metadata, PDF downloads, contact success (mocked), chat failure/retry/stream completion, mobile widths, theme persistence.');
  } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1;});
-
 

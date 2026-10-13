@@ -106,6 +106,7 @@ const ContactUs = () => {
               Send a Message
             </p>
             <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div className="absolute -left-[10000px]" aria-hidden="true"><label htmlFor="website">Website</label><input id="website" tabIndex={-1} autoComplete="off" {...register("website")} /></div>
               {/* Name + Email row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -171,6 +172,8 @@ const ContactUs = () => {
             </form>
           </div>
         </motion.div>
+
+        <a href="mailto:vigneshwarancj@gmail.com?subject=30-minute%20portfolio%20conversation&body=Hi%20Vigneshwaran%2C%0A%0AI%27d%20like%20to%20schedule%20a%2030-minute%20conversation.%20My%20preferred%20times%20are%3A%0A" className="mt-5 w-full inline-flex justify-center secondary-action">Request a 30-minute call</a>
 
         {/* Support */}
         <motion.div

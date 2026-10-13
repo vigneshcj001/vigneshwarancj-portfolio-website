@@ -9,6 +9,7 @@ import {
   YOUTUBE_LINK,
   BUY_ME_A_COFFEE_LINK,
 } from "../Utils/const";
+import Newsletter from "./Newsletter";
 
 const FOOTER_LINKS = [
   { name: "LinkedIn",        url: LINKEDIN_LINK,        Icon: FaLinkedin    },
@@ -21,7 +22,8 @@ const FOOTER_LINKS = [
 
 const Footer = () => (
   <footer className="border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900/80 backdrop-blur-sm">
-    <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div className="max-w-6xl mx-auto px-6 py-6 flex flex-col lg:flex-row items-center justify-between gap-5">
+      <Newsletter />
       <nav aria-label="Explore more" className="flex flex-wrap gap-4 text-sm">{["Skills", "Publications", "Writing", "Social"].map(label => <Link key={label} to={`/${label.toLowerCase()}`}>{label}</Link>)}</nav>
       <p className="text-xs text-gray-500 dark:text-gray-400">
         © {new Date().getFullYear()} Vigneshwaran C. J. — All rights reserved.

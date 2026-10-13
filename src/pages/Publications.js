@@ -174,6 +174,17 @@ const Publications = () => {
                           <SiPypi className="w-3.5 h-3.5" /> PyPI
                         </a>
                       )}
+                      {pub.doi && (
+                        <a
+                          href={pub.doi}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-violet-400 dark:hover:border-violet-500 px-3 py-1.5 rounded-lg"
+                          aria-label="DOI record"
+                        >
+                          DOI <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>

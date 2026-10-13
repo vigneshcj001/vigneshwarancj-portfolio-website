@@ -11,8 +11,14 @@ test('PocketPet application and download website are represented as one project'
  assert.equal(pocketPet[0].githubWebsite,'https://github.com/vigneshcj001/Pocketpet-web');
  assert.equal(pocketPet[0].link,'https://pocketpet-web.vercel.app/');
 });
+test('GlycanBench uses the SASTRA deployment and public lab repository',async()=>{
+ const {projects}=await import('../src/data/projects.js');
+ const glycanBench=projects.find(project=>project.title.startsWith('GlycanBench'));
+ assert.equal(glycanBench.link,'https://glycanbench.sastra.edu/');
+ assert.equal(glycanBench.github,'https://github.com/APalaniaLab/GlycanBench');
+});
 test('production pages contain their own share metadata and resolvable assets',()=>{
- for(const slug of ['syncly','glycanbench','pocketpet']) {
+ for(const slug of ['aiora','syncly','glycanbench','pocketpet']) {
   const html=fs.readFileSync(path.join(dist,'projects',slug,'index.html'),'utf8');
   assert.ok(html.includes(`https://vigneshwarancj-portfolio-website.vercel.app/projects/${slug}`));
   assert.ok(html.includes(`/images/sharing/${slug}.png`));
@@ -24,5 +30,5 @@ test('production pages contain their own share metadata and resolvable assets',(
 test('the saved download is a PDF and the new routes appear in the sitemap',()=>{
  assert.equal(fs.readFileSync(path.join(dist,'resume.pdf')).subarray(0,5).toString(),'%PDF-');
  const sitemap=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8');
- for(const route of ['projects/syncly','projects/glycanbench','writing/rest-and-real-time','writing/interpreting-research-models']) assert.ok(sitemap.includes(route));
+ for(const route of ['projects/aiora','projects/syncly','projects/glycanbench','projects/pocketpet','writing/aiora-routing','writing/pocketpet-safety','writing/glycanbench-mpnn']) assert.ok(sitemap.includes(route));
 });

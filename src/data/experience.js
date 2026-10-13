@@ -7,7 +7,7 @@ export const roles = [
     type: "Full-time",
     accent: "blue",
     overview:
-      "Designing, developing, and maintaining enterprise-grade applications and AI-powered platforms — including AIORA, a multi-tenant WhatsApp business platform of 14 services (bookings, storefronts, and n8n-driven AI conversations) running on a shared VPS under systemd/PM2 behind nginx, with Render- and Railway-hosted front ends. Work spans backend APIs, WhatsApp automation, cloud deployments, AI/LLM integration, and internal monitoring systems. Also mentoring 2 engineering interns on the AIORA platform.",
+      "Designing and maintaining AIORA, a multi-tenant WhatsApp commerce platform spanning 13 microservices for bookings, e-commerce, document validation, payments, logistics, and AI interactions. Work covers Node.js/TypeScript and Python APIs, concurrent messaging sessions, Redis queues, OCR and GPT-4o Vision, PostgreSQL usage tracking, Razorpay and Shiprocket integrations, n8n workflows, and production deployment on Ubuntu VPS and Railway.",
     projects: [
       {
         name: "Bullion Handler",
@@ -211,7 +211,7 @@ export const roles = [
         name: "QSPR Models for Posaconazole SEDDS",
         subtitle: "Drug Solubility Prediction · Pharmaceutical Formulation",
         description:
-          "Built ML models predicting drug solubility in SEDDS formulations. Random Forest achieved R²=0.865, PLS R²=0.733, Linear Regression R²=0.740, SVM R²=0.630, KNN R²=0.590. Key descriptors: ELUMO, EHOMO, MaxQ-, FpDensityMorgan2, HallKierAlpha.",
+          "Built QSPR models predicting Posaconazole solubility in SEDDS formulations. Generated molecular descriptors with RDKit, reduced multicollinearity using VIF, compared regression models, and reported R²=0.926.",
         tech: ["Python", "RDKit", "Random Forest", "PLS", "Linear Regression", "SVM", "KNN"],
         accent: "teal",
       },

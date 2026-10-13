@@ -6,8 +6,16 @@ import NavBar from "./NavBar";
 const Header = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark" || (!localStorage.getItem("theme") && matchMedia("(prefers-color-scheme: dark)").matches));
-  useEffect(() => { document.documentElement.classList.toggle("dark", dark); localStorage.setItem("theme", dark ? "dark" : "light"); }, [dark]);
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "system");
+  const [systemDark, setSystemDark] = useState(() => matchMedia("(prefers-color-scheme: dark)").matches);
+  const dark = theme === "dark" || (theme === "system" && systemDark);
+  useEffect(() => {
+    const query = matchMedia("(prefers-color-scheme: dark)");
+    const update = (event) => setSystemDark(event.matches);
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  useEffect(() => { document.documentElement.classList.toggle("dark", dark); localStorage.setItem("theme", theme); }, [dark, theme]);
   useEffect(() => { setIsOpen(false); }, [location.pathname]);
   useEffect(() => { const close = e => { if (e.key === "Escape") { setIsOpen(false); document.getElementById("menu-toggle")?.focus(); } }; if (isOpen) document.addEventListener("keydown", close); return () => document.removeEventListener("keydown", close); }, [isOpen]);
 
@@ -37,7 +45,7 @@ const Header = () => {
 
       {/* Desktop Navigation */}
       <nav className="hidden lg:flex">
-        <NavBar dark={dark} setDark={setDark} />
+        <NavBar dark={dark} theme={theme} setTheme={setTheme} />
       </nav>
 
       {/* Mobile Menu Button */}
@@ -53,7 +61,7 @@ const Header = () => {
       {isOpen && (
         <nav id="mobile-navigation" aria-label="Mobile navigation" className="absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-xl lg:hidden">
           <div className="px-6 py-4" onClick={e => { if (e.target.closest("a")) setIsOpen(false); }}>
-            <NavBar mobile dark={dark} setDark={setDark} />
+            <NavBar mobile dark={dark} theme={theme} setTheme={setTheme} />
           </div>
         </nav>
       )}

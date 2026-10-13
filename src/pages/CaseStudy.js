@@ -5,6 +5,9 @@ import ProjectPreview from "../Components/ProjectPreview";
 import useMeta from "../Hooks/useMeta";
 import { trackConversion } from "../Utils/analytics";
 import { SiPypi } from "react-icons/si";
+import ArchitectureDiagram from "../Components/ArchitectureDiagram";
+import PocketPetDemo from "../Components/PocketPetDemo";
+import ApiPlayground from "../Components/ApiPlayground";
 export default function CaseStudy() {
   const { slug } = useParams();
   const study = caseStudies[slug];
@@ -15,13 +18,19 @@ export default function CaseStudy() {
   return <article className="portfolio-section case-study">
     <Link className="text-link" to="/projects">← All projects</Link>
     <p className="eyebrow mt-8">{study.label} / Case study</p><h1>{study.title}</h1><p className="lead">{study.summary}</p>
-    <div className="action-row">{media?.liveAvailable !== false && <a className="primary-action" href={project.link} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("project_demo_click", { project: slug })}>Open live project ↗</a>}<a className="secondary-action" href={project.github} target="_blank" rel="noopener noreferrer">{project.githubWebsite ? "Application source" : "Source code"} ↗</a>{project.githubWebsite && <a className="secondary-action" href={project.githubWebsite} target="_blank" rel="noopener noreferrer">Website source ↗</a>}{study.pypi && <a className="secondary-action" href={study.pypi} target="_blank" rel="noopener noreferrer"><SiPypi style={{display:"inline",verticalAlign:"middle",marginRight:"4px"}} />PyPI ↗</a>}</div>
+    <div className="action-row">{project.link && media?.liveAvailable !== false && <a className="primary-action" href={project.link} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("project_demo_click", { project: slug })}>Open live project ↗</a>}{project.github && <a className="secondary-action" href={project.github} target="_blank" rel="noopener noreferrer">{project.githubWebsite ? "Application source" : "Source code"} ↗</a>}{project.githubWebsite && <a className="secondary-action" href={project.githubWebsite} target="_blank" rel="noopener noreferrer">Website source ↗</a>}{study.pypi && <a className="secondary-action" href={study.pypi} target="_blank" rel="noopener noreferrer"><SiPypi style={{display:"inline",verticalAlign:"middle",marginRight:"4px"}} />PyPI ↗</a>}{study.doi && <a className="secondary-action" href={study.doi} target="_blank" rel="noopener noreferrer">DOI ↗</a>}</div>
     {media?.liveAvailable === false && <p className="mb-6 text-sm">Live preview is currently unavailable. Explore the workflow and source code below.</p>}
     <ProjectPreview study={study} />
+    {study.metrics && <dl className="evidence-grid">{study.metrics.map(metric => <div key={metric.label}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>}
+    {slug === "pocketpet" && <PocketPetDemo />}
+    {["aiora", "pocketpet", "glycanbench"].includes(slug) && <ApiPlayground slug={slug} />}
     {media?.poster && <img className="rounded-2xl my-8" src={media.poster} alt={`${study.title} application screenshot`} loading="lazy" />}
     {media?.video && <section><h2>Product walkthrough</h2><video className="w-full rounded-2xl" controls preload="none" poster={media.poster}><source src={media.video} type="video/mp4" />{media.captions && <track kind="captions" src={media.captions} srcLang="en" label="English" default />}</video>{media.transcript && <p>{media.transcript}</p>}</section>}
     <div className="editorial-grid"><section><h2>The problem</h2><p>{study.problem}</p></section><section><h2>My contribution</h2><p>{study.role}</p></section></div>
-    <section><h2>Architecture at a glance</h2><p>A high-level map of the technologies used.</p><ol className="architecture-list">{study.architecture.map(item => <li key={item}>{item}</li>)}</ol></section>
+    <section><h2>Architecture at a glance</h2><p>High-level system map. Confidential infrastructure details omitted.</p><ArchitectureDiagram nodes={study.diagram} /><ol className="architecture-list">{study.architecture.map(item => <li key={item}>{item}</li>)}</ol></section>
+    {study.install && <section className="surface-card"><p className="eyebrow">Install package</p><pre className="install-command"><code>{study.install}</code></pre></section>}
+    {study.validation && <section><h2>Validation</h2><p>{study.validation}</p></section>}
+    {study.limitations && <section><h2>Model limitations</h2><ul className="space-y-3 list-disc pl-5">{study.limitations.map(item => <li key={item}>{item}</li>)}</ul></section>}
     <section><h2>Design decisions</h2><ul className="space-y-4 list-disc pl-5">{study.decisions.map(item => <li key={item}>{item}</li>)}</ul></section>
     <section className="surface-card"><p className="eyebrow">Delivered</p><h2>{study.result}</h2><p>{study.caveat}</p></section>
     <div className="flex flex-wrap gap-2 my-8">{project.tags.map(tag => <Link className="skill-pill" key={tag} to={`/projects?q=${encodeURIComponent(tag)}`}>{tag}</Link>)}</div>

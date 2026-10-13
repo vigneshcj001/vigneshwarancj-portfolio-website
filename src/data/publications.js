@@ -10,11 +10,12 @@ export const publications = [
     type: "Research Paper",
     context: "PG M.Tech · Main Project",
     abstract:
-      "A unified glycoinformatics web server and Python package covering glycan creation, 2D/3D visualisation, fingerprint comparison (Morgan, AtomPair, Torsion, RDKit), GLYSUM sequence alignment, hierarchical/k-means clustering with outlier detection, an MPNN immunogenicity classifier with confidence scores and motif flags, and a glycomics chat assistant with live PubMed, ArXiv, and GlyTouCan tools. Freely available for academic and non-profit use.",
+      "A unified glycoinformatics web server and Python package with 20 tools for glycan creation, 2D/3D visualisation, fingerprint comparison, GLYSUM sequence alignment, clustering, immunogenicity prediction, and literature-aware chat. The MPNN workflow uses 1,344 curated glycans after correcting 12 contradictory labels across two datasets.",
     tags: ["Glycomics", "MPNN", "Python", "Bioinformatics", "RDKit"],
     link: "https://glycanbench.sastra.edu/",
     github: "https://github.com/APalaniaLab/GlycanBench",
     pypi: "https://pypi.org/project/glycanbench/",
+    doi: "https://doi.org/10.5281/zenodo.22756268",
     accent: "blue",
   },
   {
@@ -28,7 +29,7 @@ export const publications = [
     type: "Thesis",
     context: "PG M.Tech Big Data Biology · Thesis & Mini Project",
     abstract:
-      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred (1833 → 179 features via LASSO). Gradient Boosting achieved 98.47% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
+      "M.Tech thesis developing an explainable ML framework for EGFR inhibitor discovery in ovarian cancer. More than 1,800 molecular descriptors were reduced through LASSO selection. Six classifiers were evaluated with GridSearchCV and four-fold cross-validation; Random Forest reached 93% accuracy and tuned Gradient Boosting reached 98.28%. SHAP explained the model's key activity-driving descriptors.",
     tags: ["Drug Discovery", "SHAP", "EGFR", "Ovarian Cancer", "Gradient Boosting", "RDKit"],
     accent: "green",
   },

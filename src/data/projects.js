@@ -1,4 +1,15 @@
-export const projects = [
+const projectCatalog = [
+  {
+    title: "AIORA",
+    subtitle: "Multi-Tenant WhatsApp Commerce Platform · Ceiyone Tech Works",
+    description:
+      "Production platform spanning 13 microservices for WhatsApp messaging, bookings, storefronts, document validation, payments, logistics, AI conversations, usage metering, onboarding, and operations. Built across Node.js, TypeScript, Python, React, Next.js, PostgreSQL, Redis, BullMQ, n8n, Razorpay, Shiprocket, and GPT-4o Vision, then deployed to Ubuntu VPS and Railway environments.",
+    link: null,
+    github: null,
+    tags: ["Node.js", "TypeScript", "FastAPI", "React.js", "PostgreSQL", "Redis", "BullMQ", "n8n", "Razorpay", "Shiprocket", "GPT-4o Vision", "Docker"],
+    accent: "indigo",
+    category: "Full-Stack",
+  },
   {
     title: "Syncly",
     subtitle: "Developer Networking Platform",
@@ -15,10 +26,11 @@ export const projects = [
     title: "GlycanBench: a unified resource for working with glycans",
     subtitle: "Glycoinformatics Web Server + Python Package · SASTRA University",
     description:
-      "Full-stack glycoinformatics platform and installable Python package (SDK, CLI, server) with eight tool groups behind one React UI and one FastAPI API: Create (click-to-build glycans with SNFG 2D + 3D conformers, Cytoscape.js biosynthetic networks, IUPAC/WURCS/GlycoCT/SMILES conversion), Visualize (2D SNFG, 3Dmol.js, KEGG pathways), Analyse (characterisation, GlyTouCan insight, RDKit descriptors + fingerprints, motif mutation), Compare (Tanimoto over five fingerprints), Align (Needleman-Wunsch with the GLYSUM matrix), Cluster (agglomerative/K-means, elbow, outliers), Predict (PyTorch Geometric MPNN immunogenicity classifier with confidence score and motif flags), and GlycomicsChat (Groq gpt-oss-120b with an LLM tool router over PubMed, ArXiv, GlyTouCan). Developed under Ashok Palaniappan at SASTRA's Systems Computational Biology Lab; free for academic use.",
+      "Full-stack glycoinformatics platform and installable Python package with 20 tools behind one React 19 UI and FastAPI API. Its PyTorch Geometric MPNN uses 1,344 curated glycans after correcting 12 contradictory labels across two datasets. Workflows cover SNFG 2D and on-demand 3D conformers, Cytoscape biosynthetic networks, format conversion, descriptors, fingerprints, motif mutation, GLYSUM Needleman-Wunsch alignment, clustering, immunogenicity prediction, and GlycomicsChat with PubMed, ArXiv, and GlyTouCan tools. Developed with Ashok Palaniappan at SASTRA's Systems Computational Biology Lab; available as web app, Python SDK, CLI, and server.",
     link: "https://glycanbench.sastra.edu/",
     github: "https://github.com/APalaniaLab/GlycanBench",
     pypi: "https://pypi.org/project/glycanbench/",
+    doi: "https://doi.org/10.5281/zenodo.22756268",
     tags: ["Python", "FastAPI", "React.js", "TypeScript", "PyTorch", "PyTorch Geometric", "MPNN", "RDKit", "glycowork", "LangChain", "Groq", "Tailwind CSS"],
     accent: "blue",
     category: "AI/Research",
@@ -27,7 +39,7 @@ export const projects = [
     title: "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer",
     subtitle: "M.Tech Thesis · Explainable AI · Drug Discovery",
     description:
-      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with RDKit and Mordred descriptors (1833 → 179 features via LASSO selection). Six classifiers evaluated — Gradient Boosting achieved 98.47% accuracy, Random Forest 98.28% (ROC-AUC ≈ 1.00). SHAP force and waterfall plots identified key activity-driving descriptors: PEOE_VSA9, SM_VSA10, fr_bicyclic.",
+      "M.Tech thesis developing an explainable ML framework to identify potent EGFR inhibitors for ovarian cancer. 310 compounds from ChEMBL encoded with more than 1,800 RDKit and Mordred descriptors, then reduced through LASSO selection. Six classifiers were tuned with GridSearchCV and four-fold cross-validation. Random Forest reached 93% accuracy; tuned Gradient Boosting reached 98.28%. SHAP force and waterfall plots explained activity-driving descriptors.",
     github: null,
     tags: ["Python", "SHAP", "Gradient Boosting", "Random Forest", "RDKit", "Mordred", "ChEMBL"],
     accent: "green",
@@ -47,7 +59,7 @@ export const projects = [
     title: "QSPR for Posaconazole SEDDS",
     subtitle: "Drug Solubility Prediction · Manipal Institute of Technology",
     description:
-      "Developed ML-based QSPR models to predict Posaconazole solubility in Self-Emulsifying Drug Delivery Systems (SEDDS) at Manipal Institute of Technology (supervised by Dr. Neha Sureshchandra Gandhi). 50+ molecular descriptors generated with RDKit; VIF analysis selected 10 key descriptors (ELUMO, EHOMO, MaxQ-, FpDensityMorgan2, HallKierAlpha). Random Forest achieved R²=0.865, outperforming PLS (0.733), Linear Regression (0.740), SVM (0.630), and KNN (0.590).",
+      "Developed QSPR models for Posaconazole solubility in Self-Emulsifying Drug Delivery Systems at Manipal Institute of Technology under Dr. Neha Sureshchandra Gandhi. Generated molecular descriptors with RDKit, reduced multicollinearity through VIF analysis, and compared regression models. Reported model performance reached R²=0.926.",
     github: null,
     tags: ["Python", "RDKit", "Random Forest", "PLS", "QSPR", "Scikit-Learn"],
     accent: "violet",
@@ -110,6 +122,35 @@ export const projects = [
   },
 ];
 
+const projectMeta = {
+  "AIORA": { date: "2025–Present", status: "Production", sourceAvailability: "Private", contribution: "Backend APIs, messaging gateway, AI/OCR workflows, commerce integrations, cloud deployment, and platform operations." },
+  "PocketPet": { date: "2026", status: "Maintained", sourceAvailability: "Public", contribution: "Independent end-to-end product engineering across desktop, native Windows integration, browser automation, and download website." },
+  "GlycanBench: a unified resource for working with glycans": { date: "2025–2026", status: "Research", sourceAvailability: "Public", contribution: "Full-stack development, ML integration, glycoinformatics pipelines, package SDK/CLI, tests, and deployment." },
+  "Syncly": { date: "2025", status: "Live", sourceAvailability: "Frontend public · Backend private", contribution: "Independent MERN development, real-time messaging, AWS deployment, email automation, and portfolio builder." },
+  "Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer": { date: "2025", status: "Research", sourceAvailability: "Private", contribution: "Data preparation, descriptor generation, feature selection, model tuning, validation, and SHAP analysis." },
+  "Prediction of lignocellulosic components and fermentable sugars for bioethanol production by machine learning approach": { date: "2024", status: "Research", sourceAvailability: "Private", contribution: "Experimental data preparation, model comparison, evaluation, and web database development." },
+  "QSPR for Posaconazole SEDDS": { date: "2024", status: "Research", sourceAvailability: "Private", contribution: "Descriptor generation, VIF analysis, regression modelling, and result interpretation." },
+  "Suitability Studies Of Fruits Of West Indian elm Plant (Guazuma ulmifolia) As Feedstock For Biofuel production": { date: "2023", status: "Completed", sourceAvailability: "Private", contribution: "Experimental design, extraction, confirmatory assays, hydrolysis, and research reporting." },
+  "CJFoods": { date: "2023", status: "Archived", sourceAvailability: "Public", contribution: "Independent frontend development and responsive API-driven interface." },
+  "TinDog": { date: "2023", status: "Archived", sourceAvailability: "Public", contribution: "Independent responsive landing-page development." },
+  "CJBoT — Cookie": { date: "2023", status: "Completed", sourceAvailability: "Demo", contribution: "Robot assembly, Arduino programming, sensors, and motion behaviour." },
+};
+
+const priority = [
+  "AIORA",
+  "PocketPet",
+  "GlycanBench: a unified resource for working with glycans",
+  "Syncly",
+];
+
+export const projects = [...projectCatalog]
+  .sort((a, b) => {
+    const ai = priority.indexOf(a.title);
+    const bi = priority.indexOf(b.title);
+    return (ai < 0 ? 999 : ai) - (bi < 0 ? 999 : bi);
+  })
+  .map((project) => ({ ...project, ...projectMeta[project.title] }));
+
 export const accentMap = {
   teal:   "from-teal-500/15 to-teal-600/5 border-teal-500/20 hover:border-teal-400/50",
   blue:   "from-blue-500/15 to-blue-600/5 border-blue-500/20 hover:border-blue-400/50",
@@ -120,6 +161,7 @@ export const accentMap = {
   yellow: "from-yellow-500/15 to-yellow-600/5 border-yellow-500/20 hover:border-yellow-400/50",
   pink:   "from-pink-500/15 to-pink-600/5 border-pink-500/20 hover:border-pink-400/50",
   slate:  "from-slate-500/15 to-slate-600/5 border-slate-500/20 hover:border-slate-400/50",
+  indigo: "from-indigo-500/15 to-indigo-600/5 border-indigo-500/20 hover:border-indigo-400/50",
 };
 
 export const tagColorMap = {
@@ -132,6 +174,7 @@ export const tagColorMap = {
   yellow: "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300",
   pink:   "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300",
   slate:  "bg-slate-100 dark:bg-slate-700/40 text-slate-700 dark:text-slate-300",
+  indigo: "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300",
 };
 
-export const categoryFilters = ["All", "Full-Stack", "Desktop/AI", "AI/Research", "Research", "Frontend", "Hardware"];
+export const categoryFilters = ["All", "AI", "Full-Stack", "Research", "Desktop", "Cloud", "Frontend", "Hardware"];

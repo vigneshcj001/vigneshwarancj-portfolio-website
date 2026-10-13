@@ -11,6 +11,8 @@ import Footer from "./src/Components/Footer";
 import PortfolioAssistant from "./src/Components/PortfolioAssistant";
 import ErrorBoundary from "./src/Components/ErrorBoundary";
 import BackToTop from "./src/Components/BackToTop";
+import CommandPalette from "./src/Components/CommandPalette";
+import { LanguageProvider } from "./src/Contexts/LanguageContext";
 
 const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
 const Writing = lazy(() => import("./src/pages/Writing"));
@@ -23,6 +25,7 @@ const Social       = lazy(() => import("./src/pages/Social"));
 const ContactUs    = lazy(() => import("./src/pages/ContactUs"));
 const Experience   = lazy(() => import("./src/pages/Experience"));
 const Resume       = lazy(() => import("./src/pages/Resume"));
+const Admin        = lazy(() => import("./src/pages/Admin"));
 
 const NAV_LINKS = [
   { label: "Home",         to: "/" },
@@ -78,6 +81,7 @@ const pageVariants = {
 function AppContent() {
   const location = useLocation();
   useEffect(() => { window.scrollTo(0, 0); document.getElementById("main-content")?.focus({ preventScroll: true }); }, [location.pathname]);
+  useEffect(() => { if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") navigator.serviceWorker.register(new URL("sw.js", import.meta.url)).catch(() => {}); }, []);
 
   return (
     <div className="bg-gray-100 dark:bg-gray-900 min-h-screen w-full text-gray-900 dark:text-gray-100 flex flex-col">
@@ -90,6 +94,7 @@ function AppContent() {
       </a>
 
       <Header />
+      <CommandPalette />
 
       <main tabIndex={-1} id="main-content" className="flex-1 flex flex-col">
         <ErrorBoundary>
@@ -116,6 +121,7 @@ function AppContent() {
                   <Route path="/skills"       element={<Skills />} />
                   <Route path="/contact"      element={<ContactUs />} />
                   <Route path="/resume"       element={<Resume />} />
+                  <Route path="/admin"        element={<Admin />} />
                   <Route path="*"             element={<NotFound />} />
                 </Routes>
               </motion.div>
@@ -140,11 +146,13 @@ const iconProps = { attr: { "aria-hidden": "true", focusable: "false" } };
 
 const App = () => (
   <Router>
-    <LazyMotion features={loadMotionFeatures} strict>
-      <MotionConfig reducedMotion="user">
-        <IconContext.Provider value={iconProps}><AppContent /></IconContext.Provider>
-      </MotionConfig>
-    </LazyMotion>
+    <LanguageProvider>
+      <LazyMotion features={loadMotionFeatures} strict>
+        <MotionConfig reducedMotion="user">
+          <IconContext.Provider value={iconProps}><AppContent /></IconContext.Provider>
+        </MotionConfig>
+      </LazyMotion>
+    </LanguageProvider>
   </Router>
 );
 

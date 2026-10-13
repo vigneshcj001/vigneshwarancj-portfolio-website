@@ -20,6 +20,22 @@ const TOP_BORDER = {
   yellow: "from-yellow-400 to-yellow-500",
   pink:   "from-pink-400 to-pink-600",
   slate:  "from-slate-400 to-slate-600",
+  indigo: "from-indigo-400 to-indigo-600",
+};
+
+const matchesFilter = (project, filter) => {
+  if (filter === "All") return true;
+  const haystack = `${project.category} ${project.tags.join(" ")}`.toLowerCase();
+  const terms = {
+    AI: ["ai", "ml", "pytorch", "agentic", "gpt"],
+    "Full-Stack": ["full-stack", "react", "node.js", "fastapi", "next.js"],
+    Research: ["research", "rdkit", "bioinformatics", "glycan", "qspr"],
+    Desktop: ["desktop", "tauri", "rust", "win32"],
+    Cloud: ["aws", "railway", "docker", "cloud"],
+    Frontend: ["frontend"],
+    Hardware: ["hardware", "arduino"],
+  };
+  return terms[filter]?.some((term) => haystack.includes(term));
 };
 
 const Projects = () => {
@@ -31,7 +47,7 @@ const Projects = () => {
 
   const q = search.trim().toLowerCase();
   const filtered = projects
-    .filter((p) => activeFilter === "All" || p.category === activeFilter)
+    .filter((p) => matchesFilter(p, activeFilter))
     .filter((p) => !q ||
       p.title.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q) ||
@@ -93,7 +109,7 @@ const Projects = () => {
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filtered.map(({ title, subtitle, description, link, github, githubBackend, githubWebsite, pypi, tags, accent, category }, idx) => (
+          {filtered.map(({ title, subtitle, description, link, github, githubBackend, githubWebsite, pypi, doi, tags, accent, category, date, status, sourceAvailability, contribution }, idx) => (
             <motion.div
               key={title}
               initial={{ opacity: 0, y: 24 }}
@@ -110,6 +126,9 @@ const Projects = () => {
                 <span className="inline-flex self-start mb-3 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                   {category}
                 </span>
+                <div className="flex flex-wrap gap-1.5 mb-3 text-[10px] font-semibold text-gray-500 dark:text-gray-400">
+                  <span>{date}</span><span aria-hidden="true">·</span><span>{status}</span><span aria-hidden="true">·</span><span>{sourceAvailability}</span>
+                </div>
 
                 <div className="mb-3 pr-16">
                   <h2 className="text-base font-bold text-gray-900 dark:text-white leading-snug">
@@ -123,6 +142,13 @@ const Projects = () => {
                 <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed flex-1 mb-4">
                   {description.length > 190 ? description.slice(0, 187) + "…" : description}
                 </p>
+
+                <div className="grid gap-2 mb-4 text-xs text-gray-600 dark:text-gray-300">
+                  {Object.values(caseStudies).find((study) => projects[study.index]?.title === title)?.problem && <p><strong className="text-gray-900 dark:text-white">Problem:</strong> {Object.values(caseStudies).find((study) => projects[study.index]?.title === title).problem.slice(0, 105)}…</p>}
+                  <p><strong className="text-gray-900 dark:text-white">My role:</strong> {contribution}</p>
+                  <p><strong className="text-gray-900 dark:text-white">Architecture:</strong> {(Object.values(caseStudies).find((study) => projects[study.index]?.title === title)?.architecture || tags).slice(0, 3).join(" → ")}</p>
+                  {Object.values(caseStudies).find((study) => projects[study.index]?.title === title)?.result && <p><strong className="text-gray-900 dark:text-white">Result:</strong> {Object.values(caseStudies).find((study) => projects[study.index]?.title === title).result.slice(0, 105)}…</p>}
+                </div>
 
                 <div className="flex flex-wrap gap-1.5 mb-4">
                   {tags.map((tag) => (
@@ -188,6 +214,17 @@ const Projects = () => {
                       aria-label="PyPI package"
                     >
                       PyPI <ArrowUpRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                  {doi && (
+                    <a
+                      href={doi}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 transition-colors border border-gray-200 dark:border-gray-600 hover:border-violet-400 dark:hover:border-violet-500 px-3 py-1.5 rounded-lg"
+                      aria-label="DOI record"
+                    >
+                      DOI <ArrowUpRight className="w-3.5 h-3.5" />
                     </a>
                   )}
                 </div>

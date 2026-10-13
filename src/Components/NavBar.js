@@ -1,11 +1,12 @@
 import { Link, useLocation } from "react-router";
-import { IoIosSunny, IoIosMoon } from "react-icons/io";
-import { useState, useEffect } from "react";
+import { IoIosSunny, IoIosMoon, IoIosLaptop } from "react-icons/io";
+import { useLanguage } from "../Contexts/LanguageContext";
 
 const NAV_LINKS = ["Projects", "Experience", "About", "Contact"];
 
-const NavBar = ({ mobile = false, dark, setDark }) => {
+const NavBar = ({ mobile = false, dark, theme, setTheme }) => {
   const location = useLocation();
+  const { language, setLanguage } = useLanguage();
 
   const isActive = (path) => {
     if (path === "/") return location.pathname === "/";
@@ -50,14 +51,20 @@ const NavBar = ({ mobile = false, dark, setDark }) => {
       })}
 
       <Link to="/resume" className="primary-action">Résumé</Link>
+      <button onClick={() => setLanguage(language === "en" ? "ta" : "en")} className="text-xs font-bold px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600" aria-label={`Switch language to ${language === "en" ? "Tamil" : "English"}`}>
+        {language === "en" ? "தமிழ்" : "EN"}
+      </button>
       <button
-        onClick={() => setDark((prev) => !prev)}
+        onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}
         className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all shadow-sm ${
           mobile ? "mt-2 self-start" : ""
         }`}
-        aria-label="Toggle Theme"
+        aria-label={`Theme: ${theme}. Switch theme`}
+        title={`Theme: ${theme}`}
       >
-        {dark ? (
+        {theme === "system" ? (
+          <IoIosLaptop className="w-5 h-5" />
+        ) : dark ? (
           <IoIosSunny className="text-yellow-400 w-5 h-5" />
         ) : (
           <IoIosMoon className="w-5 h-5" />

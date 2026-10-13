@@ -11,6 +11,12 @@ const useContactForm = () => {
     if (sending) return;
     setSending(true);
     try {
+      const values = Object.fromEntries(new FormData(form));
+      if (values.website) { setNotification("success"); return; }
+      await fetch("https://vigneshwarancj-portfolio-backend.onrender.com/api/contact", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: values.from_name, email: values.from_email, message: values.message, website: values.website || "" }),
+      }).catch(() => null);
       await emailjs.sendForm(service_id, Template_ID, form, public_key);
       setNotification("success");
       trackConversion("contact_success");

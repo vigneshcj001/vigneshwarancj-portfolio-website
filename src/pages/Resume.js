@@ -1,17 +1,37 @@
 import { trackConversion } from "../Utils/analytics";
 import { useState } from "react";
 import { m as motion } from "framer-motion";
-import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin } from "react-icons/fi";
+import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
-import { roles } from "../data/experience.js";
-import { education, certifications, researchInterests } from "../data/education.js";
-import { publications } from "../data/publications.js";
-import { projects } from "../data/projects.js";
-import { skillCategories } from "../data/skills.js";
-import { LINKEDIN_LINK, GITHUB_LINK } from "../Utils/const.js";
+import portfolioData from "../data/portfolio.generated.json";
+import { LINKEDIN_LINK, GITHUB_LINK, LEETCODE_LINK } from "../Utils/const.js";
 import useMeta from "../Hooks/useMeta.js";
 
 const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
+
+const roles = portfolioData.work_experience.map((role, index) => ({
+  id: `${role.company}-${index}`,
+  title: role.role,
+  company: role.company,
+  type: role.type,
+  period: role.period,
+  overview: role.overview,
+  projects: role.projects || (role.project ? [role.project] : []),
+  additionalSkills: role.additional_responsibilities || role.highlights || [],
+}));
+const education = portfolioData.education.map((item) => ({ ...item, percentage: item.grade }));
+const publications = portfolioData.publications;
+const projects = Object.entries(portfolioData.projects).map(([title, project]) => ({
+  title,
+  subtitle: project.subtitle,
+  description: project.description,
+  tags: project.tech_stack || [],
+  link: project.live_link,
+  github: project.github,
+}));
+const skillCategories = Object.entries(portfolioData.skills).map(([name, skills]) => ({ name, skills: skills.map((skill) => ({ name: skill })) }));
+const certifications = portfolioData.certifications.map((item) => ({ ...item, issuer: `${item.issuer} · ${item.instructor}` }));
+const researchInterests = portfolioData.research_interests;
 
 const FEATURED_PROJECT_TITLES = [
   "PocketPet",
@@ -40,17 +60,23 @@ function ResumeHeader() {
         Vigneshwaran C. J.
       </h1>
       <p className="text-sm text-gray-500 dark:text-gray-400 mt-1.5 font-medium">
-        AI/ML Engineer &amp; Full-Stack Developer — Building the AIORA WhatsApp Business Platform
+        AI Engineer &amp; Full-Stack Software Developer
       </p>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-3 text-xs text-gray-500 dark:text-gray-400">
         <a href="mailto:vigneshwarancj@gmail.com" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
           <FiMail className="w-3 h-3" /> vigneshwarancj@gmail.com
+        </a>
+        <a href="tel:+919361569230" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+          <FiPhone className="w-3 h-3" /> +91 93615 69230
         </a>
         <a href={LINKEDIN_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
           <FiLinkedin className="w-3 h-3" /> linkedin.com/in/vigneshwarancj1
         </a>
         <a href={GITHUB_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
           <FiGithub className="w-3 h-3" /> github.com/vigneshcj001
+        </a>
+        <a href={LEETCODE_LINK} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
+          <FiExternalLink className="w-3 h-3" /> leetcode.com/vigneshcj001
         </a>
         <a href="https://vigneshwarancj-portfolio-website.vercel.app" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
           <FiGlobe className="w-3 h-3" /> vigneshwarancj-portfolio-website.vercel.app
@@ -68,14 +94,12 @@ function SummarySection() {
     <div className="mb-5">
       <SectionLabel>Professional Summary</SectionLabel>
       <p className="text-[13px] text-gray-700 dark:text-gray-300 leading-relaxed">
-        AI/ML Engineer and Full-Stack Developer specialising in agentic AI systems, WhatsApp automation, and
-        explainable machine learning. M.Tech in Big Data Biology from SASTRA Deemed University (2025, 79.67%).
-        Currently a Junior Software Developer at Ceiyone Tech Works (Zoho Partner), building <strong className="font-semibold text-gray-900 dark:text-white">AIORA</strong> — a
-        multi-tenant WhatsApp business platform spanning a WhatsApp gateway (Oblion), booking and commerce
-        backends, n8n-orchestrated AI conversation agents, and operator/customer dashboards — and mentoring
-        2 engineering interns on it. Also built production-grade products independently: PocketPet (Tauri/Rust desktop companion + browser agent),
-        Syncly (MERN + Socket.IO + AWS), and GlycanBench (glycoinformatics + MPNN). M.Tech thesis achieved 98.47% accuracy in EGFR inhibitor
-        classification for ovarian cancer using Gradient Boosting and SHAP.
+        AI Engineer and full-stack developer experienced in production-oriented AI applications, conversational
+        commerce platforms, automation workflows, and cloud-deployed web products. Hands-on work spans Python,
+        Node.js, TypeScript, React, FastAPI, PostgreSQL, Redis, Docker, Kubernetes, and REST APIs. Experienced in
+        LLM integration, multi-agent workflows, OCR, payment and logistics integrations, SaaS architecture, usage
+        tracking, and computational biology applications. Current work at Ceiyone Tech Works includes <strong className="font-semibold text-gray-900 dark:text-white">AIORA</strong>,
+        a 13-microservice WhatsApp commerce platform. Selected products include PocketPet, Syncly, and GlycanBench.
       </p>
     </div>
   );
@@ -227,7 +251,7 @@ function SidebarContact() {
 
 function SidebarSkills() {
   return (
-    <div className="mb-6">
+    <div className="mb-6 resume-skills">
       <SectionLabel>Technical Skills</SectionLabel>
       <div className="space-y-2.5">
         {skillCategories.map((cat) => (
@@ -297,7 +321,7 @@ const Resume = () => {
     } catch (err) {
       const a = document.createElement("a"); a.href = "/resume.pdf"; a.download = "Vigneshwaran_CJ_Resume.pdf"; a.click();
       trackConversion("resume_download", { source: "resume", version: "static" });
-      setError("The live service is unavailable. Your saved PDF download has started.");
+      setError("Live generator unavailable. Saved PDF download started.");
     } finally {
       setLoading(false);
     }
@@ -315,10 +339,10 @@ const Resume = () => {
             Resume
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-5">
-            Download a text-based PDF or use the print preview. A saved copy is available if the live service is unavailable.
+            PDF and website résumé use same portfolio data. Last updated October 13, 2026.
           </p>
 
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={handleDownload}
               disabled={loading}
@@ -335,6 +359,9 @@ const Resume = () => {
                 </>
               )}
             </button>
+            <a href="/Vigneshwaran_CJ.docx" download="Vigneshwaran_CJ.docx" onClick={() => trackConversion("resume_download", { source: "resume", version: "docx" })} className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all">
+              <HiOutlineDocumentText className="w-4 h-4" /> Download DOCX
+            </a>
             <button
               onClick={() => window.print()}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all"
