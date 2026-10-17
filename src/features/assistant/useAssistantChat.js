@@ -81,8 +81,20 @@ export default function useAssistantChat() {
     setActiveChip(null);
   }, []);
 
+  const stopResponse = useCallback(() => {
+    abortRef.current?.abort();
+    abortRef.current = null;
+    setMessages((current) => current.map((item) =>
+      item.from === "bot" && !item.done
+        ? { ...item, text: item.text || "Response stopped.", done: true, stopped: true }
+        : item
+    ));
+    setConnection("idle");
+    setLoading(false);
+  }, []);
+
   return {
     connection, lastQuestion, messages, input, setInput, activeChip, setActiveChip,
-    loading, sendMessage, clearChat,
+    loading, sendMessage, clearChat, stopResponse,
   };
 }

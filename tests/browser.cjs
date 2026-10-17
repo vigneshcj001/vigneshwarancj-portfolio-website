@@ -38,6 +38,8 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.getByRole('textbox',{name:'Message',exact:true}).fill('What is Syncly?');await page.getByRole('button',{name:'Send',exact:true}).click();await page.getByRole('button',{name:'Retry question'}).waitFor();
  await page.route('**/api/assistant/stream',route=>route.fulfill({status:200,contentType:'text/event-stream',body:'data: {"text":"Syncly connects professionals."}\n\ndata: {"done":true,"full":"Syncly connects professionals."}'}));
  await page.getByRole('button',{name:'Retry question'}).click();await page.getByText('Syncly connects professionals.',{exact:true}).waitFor();await page.getByRole('button',{name:'Copy',exact:true}).last().waitFor();
+ await page.route('**/api/assistant/stream',async route=>{await new Promise(resolve=>setTimeout(resolve,1500));await route.fulfill({status:200,contentType:'text/event-stream',body:'data: {"text":"Delayed response"}\n\ndata: {"done":true,"full":"Delayed response"}'});});
+ await page.getByRole('textbox',{name:'Message',exact:true}).fill('Explain AIORA');await page.getByRole('button',{name:'Send',exact:true}).click();await page.getByRole('button',{name:'Stop response'}).click();await page.getByText('Response stopped.',{exact:true}).waitFor();
  await page.getByRole('button',{name:'Clear chat'}).click();assert.equal(await page.getByText('Syncly connects professionals.',{exact:true}).count(),0);
  await page.getByRole('button',{name:'Close',exact:true}).click(); await page.getByRole('region',{name:'Portfolio assistant'}).waitFor({state:'detached'});
  await page.goto(base);const languageSelect=page.locator('#language-select-desktop');
@@ -55,8 +57,9 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.getByRole('button',{name:/Theme:/}).last().click();const dark=await page.evaluate(()=>document.documentElement.classList.contains('dark'));await page.keyboard.press('Escape');
  assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'false');
  await page.reload();await page.getByRole('heading',{name:/Useful software/}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('dark')),dark);
+ await page.getByRole('button',{name:"Ask CJ's AI"}).click();await page.waitForTimeout(350);const mobilePanel=await page.getByRole('region',{name:'Portfolio assistant'}).boundingBox();assert.equal(Math.round(mobilePanel.x),0);assert.ok(mobilePanel.width>=389);await page.getByRole('button',{name:'Close',exact:true}).click();
  await page.screenshot({path:path.resolve('homepage-mobile.png'),fullPage:true});
- assert.deepEqual(errors,[]);console.log('PASS: navigation, search, skill evidence, metadata, PDF downloads, contact success, chat retry/stream, seven-language UI with Arabic RTL, mobile widths, theme persistence.');
+ assert.deepEqual(errors,[]);console.log('PASS: navigation, search, metadata, downloads, contact, chat retry/stream/stop, full-width mobile chat, seven-language UI, Arabic RTL, mobile widths, theme persistence.');
  } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1;});
 

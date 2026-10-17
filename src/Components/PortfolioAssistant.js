@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import React, { useEffect, useRef, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { FiX, FiSend, FiTrash2, FiCopy, FiCheck, FiChevronDown } from "react-icons/fi";
+import { FiCheck, FiChevronDown, FiCopy, FiSend, FiSquare, FiTrash2, FiX } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import botAvatar from "url:../assets/portrait-640.webp";
 import useAssistantChat from "../features/assistant/useAssistantChat";
@@ -13,124 +13,128 @@ function fmtTime(ts) {
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
+  const copy = () => navigator.clipboard.writeText(text)
+    .then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); })
+    .catch(() => {});
   return (
-    <button
-      onClick={() => navigator.clipboard.writeText(text)
-        .then(() => { setCopied(true); setTimeout(() => setCopied(false), 1600); })
-        .catch(() => {})}
-      className="opacity-100 transition-opacity p-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 text-gray-400 hover:text-gray-600 dark:hover:text-white"
-      aria-label="Copy"
-    >
-      {copied ? <FiCheck className="w-3 h-3 text-emerald-400" /> : <FiCopy className="w-3 h-3" />}
+    <button type="button" onClick={copy} className="assistant-copy" aria-label={copied ? "Copied" : "Copy"}>
+      {copied ? <FiCheck /> : <FiCopy />}
     </button>
   );
 }
 
 function TypingDots() {
   return (
-    <div className="flex items-center gap-1 px-1 py-0.5">
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="w-2 h-2 bg-blue-400 dark:bg-blue-500 rounded-full block"
-          animate={{ y: [0, -5, 0] }}
-          transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
-        />
-      ))}
-    </div>
+    <span className="assistant-typing" aria-label="Generating response">
+      {[0, 1, 2].map((index) => <motion.i key={index} animate={{ y: [0, -4, 0] }} transition={{ duration: 0.65, repeat: Infinity, delay: index * 0.14 }} />)}
+    </span>
   );
 }
 
 function MessageBubble({ msg }) {
   const isUser = msg.from === "user";
   return (
-    <motion.div
+    <motion.article
       data-no-translate={isUser ? "true" : undefined}
-      initial={{ opacity: 0, y: 10, scale: 0.97 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className={`flex gap-2.5 items-end ${isUser ? "justify-end" : "justify-start"} group`}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.18 }}
+      className={`assistant-message ${isUser ? "is-user" : "is-assistant"}`}
     >
-      {!isUser && (
-        <img
-          src={botAvatar}
-          className="w-7 h-7 rounded-full object-cover object-top shrink-0 mb-1 ring-2 ring-blue-500/20"
-          alt="CJ"
-          loading="lazy"
-        />
-      )}
-
-      <div className={`flex flex-col gap-1 max-w-[80%] ${isUser ? "items-end" : "items-start"}`}>
-        <div className={`
-          px-4 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap
-          ${isUser
-            ? "bg-linear-to-br from-blue-600 to-purple-600 text-white rounded-br-sm shadow-lg shadow-blue-500/25"
-            : "bg-white dark:bg-white/5 text-gray-800 dark:text-gray-100 rounded-bl-sm border border-gray-100 dark:border-white/10 shadow-sm backdrop-blur-sm"
-          }
-        `}>
+      {!isUser && <img src={botAvatar} alt="" className="assistant-message-avatar" loading="lazy" />}
+      <div className="assistant-message-content">
+        <div className={`assistant-bubble ${msg.error ? "is-error" : ""}`}>
           {!msg.text && !isUser ? <TypingDots /> : msg.text}
         </div>
-
-        <div className={`flex items-center gap-1.5 px-1 ${isUser ? "flex-row-reverse" : "flex-row"}`}>
-          <span className="text-[10px] text-gray-400 dark:text-gray-600 select-none tabular-nums">
-            {fmtTime(msg.ts)}
-          </span>
-          {!isUser && msg.done && msg.text && <CopyButton text={msg.text} />}
+        <div className="assistant-message-meta">
+          <time dateTime={new Date(msg.ts).toISOString()}>{fmtTime(msg.ts)}</time>
+          {!isUser && msg.done && msg.text && !msg.error && <CopyButton text={msg.text} />}
         </div>
       </div>
-    </motion.div>
+    </motion.article>
   );
+}
+
+function StarterPanel({ loading, activeChip, onSelect, onNavigate }) {
+  return (
+    <section className="assistant-starters" aria-label="Suggested questions">
+      <p>Try a question</p>
+      <div className="assistant-starter-grid">
+        {STARTER_QUESTIONS.map((question, index) => (
+          <button
+            key={question.text}
+            type="button"
+            disabled={loading}
+            onClick={() => onSelect(question.text, index)}
+            className={activeChip === index ? "is-active" : ""}
+          >
+            <span aria-hidden="true">{question.icon}</span>
+            {question.text}
+          </button>
+        ))}
+      </div>
+      <div className="assistant-resources" aria-label="Popular portfolio links">
+        <Link to="/projects/aiora" onClick={onNavigate}>AIORA</Link>
+        <Link to="/projects/pocketpet" onClick={onNavigate}>PocketPet</Link>
+        <Link to="/projects/glycanbench" onClick={onNavigate}>GlycanBench</Link>
+      </div>
+    </section>
+  );
+}
+
+function ConnectionLabel({ connection, loading }) {
+  if (loading) return "Writing response";
+  if (connection === "error") return "Connection unavailable";
+  return "Ready to answer";
 }
 
 export default function PortfolioAssistant() {
   const launcherRef = useRef(null);
+  const scrollRef = useRef(null);
+  const inputRef = useRef(null);
+  const nearBottomRef = useRef(true);
   const [open, setOpen] = useState(false);
-  const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const {
     connection, lastQuestion, messages, input, setInput, activeChip, setActiveChip,
-    loading, sendMessage, clearChat,
+    loading, sendMessage, clearChat, stopResponse,
   } = useAssistantChat();
 
-  const scrollRef     = useRef(null);
-  const inputRef      = useRef(null);
-  const nearBottomRef = useRef(true);
-
-
-
-  const scrollToBottom = (smooth = false) => {
-    if (!scrollRef.current) return;
-    scrollRef.current.scrollTo({ top: scrollRef.current.scrollHeight, behavior: smooth ? "smooth" : "instant" });
+  const closePanel = () => {
+    setOpen(false);
+    setTimeout(() => launcherRef.current?.focus(), 100);
   };
 
-  // Auto-scroll only when user is already near the bottom (don't hijack manual scroll-up)
+  const scrollToBottom = (smooth = false) => {
+    const element = scrollRef.current;
+    if (!element) return;
+    element.scrollTo({ top: element.scrollHeight, behavior: smooth ? "smooth" : "instant" });
+  };
+
   useEffect(() => { if (nearBottomRef.current) scrollToBottom(false); }, [messages]);
-
   useEffect(() => {
-    if (open) { const timer = setTimeout(() => inputRef.current?.focus(), 80); return () => clearTimeout(timer); }
+    if (!open) return undefined;
+    const timer = setTimeout(() => inputRef.current?.focus(), 120);
+    return () => clearTimeout(timer);
   }, [open]);
-
   useEffect(() => {
-    const handler = (e) => { if (e.key === "Escape" && open) { setOpen(false); setTimeout(() => launcherRef.current?.focus(), 100); } };
+    const handler = (event) => {
+      if (event.key === "Escape" && open) {
+        setOpen(false);
+        setTimeout(() => launcherRef.current?.focus(), 100);
+      }
+    };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [open]);
-
-  useEffect(() => {
-    if (!input && inputRef.current) inputRef.current.style.height = "auto";
-  }, [input]);
+  useEffect(() => { if (!input && inputRef.current) inputRef.current.style.height = "auto"; }, [input]);
 
   const handleScroll = () => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const dist = el.scrollHeight - el.scrollTop - el.clientHeight;
-    nearBottomRef.current = dist < 100;
-    setShowScrollBtn(dist > 90);
-  };
-
-  const autoResize = (el) => {
-    if (!el) return;
-    el.style.height = "auto";
-    el.style.height = Math.min(el.scrollHeight, 90) + "px";
+    const element = scrollRef.current;
+    if (!element) return;
+    const distance = element.scrollHeight - element.scrollTop - element.clientHeight;
+    nearBottomRef.current = distance < 100;
+    setShowScrollButton(distance > 100);
   };
 
   const submitMessage = (text) => {
@@ -139,178 +143,118 @@ export default function PortfolioAssistant() {
     sendMessage(text);
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitMessage(input); }
+  const selectStarter = (text, index) => {
+    setActiveChip(index);
+    submitMessage(text);
   };
 
-  const charCount = input.length;
+  const autoResize = (element) => {
+    element.style.height = "auto";
+    element.style.height = `${Math.min(element.scrollHeight, 112)}px`;
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      submitMessage(input);
+    }
+  };
+
+  const showStarters = messages.length === 1;
 
   return (
     <>
-      {/* ─── FAB ─── */}
       <AnimatePresence>
         {!open && (
           <motion.button
             ref={launcherRef}
-            key="fab"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            key="assistant-launcher"
             type="button"
             aria-label="Ask CJ's AI"
+            aria-expanded="false"
             onClick={() => setOpen(true)}
-            className="fixed bottom-6 right-6 z-50 group flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-2xl shadow-blue-600/40 hover:shadow-blue-600/60 hover:scale-105 transition-all duration-200"
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.85, opacity: 0 }}
+            whileHover={{ y: -2 }}
+            className="assistant-launcher"
           >
-            {/* Avatar */}
-            <div className="relative shrink-0">
-              <img src={botAvatar} className="w-9 h-9 rounded-full object-cover object-top ring-2 ring-white/30" alt="CJ" />
-              <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-blue-600 animate-pulse" />
-            </div>
-            <div className="text-left">
-              <p className="text-xs font-bold leading-tight">Ask CJ</p>
-            </div>
-            <HiSparkles className="w-4 h-4 text-blue-200 group-hover:text-white transition-colors shrink-0" />
+            <span className="assistant-launcher-icon"><HiSparkles /></span>
+            <span><strong>Ask portfolio AI</strong><small><i /> Online</small></span>
           </motion.button>
         )}
       </AnimatePresence>
 
-      {/* ─── PANEL ─── */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            role="region" aria-label="Portfolio assistant"
-            key="panel"
-            initial={{ opacity: 0, y: 24, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0,  scale: 1 }}
-            exit={{ opacity: 0, y: 24, scale: 0.94 }}
-            transition={{ type: "spring", stiffness: 360, damping: 32 }}
-            className="fixed bottom-6 right-6 w-[22rem] sm:w-[26rem] max-w-[92vw] flex flex-col max-h-[80vh] z-50 rounded-2xl overflow-hidden shadow-2xl shadow-black/40 border border-white/10"
-            style={{ background: "var(--chat-bg, white)" }}
+          <motion.section
+            key="assistant-panel"
+            role="region"
+            aria-label="Portfolio assistant"
+            aria-labelledby="assistant-title"
+            initial={{ opacity: 0, y: 20, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 380, damping: 34 }}
+            className="assistant-panel"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white shrink-0">
-              <div className="flex items-center gap-2.5">
-                <div className="relative shrink-0">
-                  <img src={botAvatar} className="w-9 h-9 rounded-full object-cover object-top ring-2 ring-white/25" alt="CJ" />
-                  <span className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-blue-600 ${loading ? "bg-amber-400 animate-pulse" : "bg-emerald-400"}`} />
-                </div>
+            <header className="assistant-header">
+              <div className="assistant-identity">
+                <span className="assistant-brand-icon"><HiSparkles /></span>
                 <div>
-                  <p className="font-bold text-sm leading-tight">Vigneshwaran's AI</p>
-                  <p className="text-[10px] text-blue-200 leading-tight">
-                    {loading ? "Thinking..." : connection === "error" ? "Connection unavailable" : connection === "connected" ? "Last response received" : "Ready for your question"}
-                  </p>
-                  <p className="text-[9px] text-blue-100/90 leading-tight">OKF knowledge · Laya routing · Groq generation</p>
+                  <h2 id="assistant-title">Portfolio assistant</h2>
+                  <p className={connection === "error" ? "is-error" : ""}><i /> <ConnectionLabel connection={connection} loading={loading} /></p>
                 </div>
               </div>
-              <div className="flex items-center gap-0.5">
-                <button type="button" onClick={clearChat} className="hover:bg-white/20 p-1.5 rounded-lg transition-colors" title="Clear chat" aria-label="Clear chat">
-                  <FiTrash2 className="w-3.5 h-3.5" />
-                </button>
-                <button type="button" onClick={() => { setOpen(false); setTimeout(() => launcherRef.current?.focus(), 100); }} className="hover:bg-white/20 p-1.5 rounded-lg transition-colors" aria-label="Close">
-                  <FiX className="w-4 h-4" />
-                </button>
+              <div className="assistant-header-actions">
+                <button type="button" onClick={clearChat} disabled={messages.length === 1 && !loading} title="Clear chat" aria-label="Clear chat"><FiTrash2 /></button>
+                <button type="button" onClick={closePanel} aria-label="Close"><FiX /></button>
               </div>
-            </div>
+            </header>
 
-            {/* Messages */}
-            <div
-              role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading}
-              ref={scrollRef}
-              onScroll={handleScroll}
-              className="flex-1 px-4 py-4 space-y-4 overflow-y-auto bg-gray-50 dark:bg-gray-950 scroll-smooth relative"
-            >
-              {messages.map((m) => <MessageBubble key={m.id} msg={m} />)}
-
-              {/* Scroll-to-bottom button */}
+            <div ref={scrollRef} onScroll={handleScroll} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading} className="assistant-conversation">
+              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>Groq</span><p>Answers grounded in portfolio content</p></div>
+              {messages.map((message) => <MessageBubble key={message.id} msg={message} />)}
+              {showStarters && <StarterPanel loading={loading} activeChip={activeChip} onSelect={selectStarter} onNavigate={closePanel} />}
               <AnimatePresence>
-                {showScrollBtn && (
-                  <motion.button
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    onClick={() => scrollToBottom()}
-                    className="sticky bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10"
-                  >
-                    <FiChevronDown className="w-3.5 h-3.5" />
-                    Scroll to latest
+                {showScrollButton && (
+                  <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} type="button" onClick={() => scrollToBottom(true)} className="assistant-scroll-button">
+                    <FiChevronDown /> Latest
                   </motion.button>
                 )}
               </AnimatePresence>
             </div>
 
-            <div className="px-4 py-2 flex flex-wrap gap-3 text-xs bg-white dark:bg-gray-900">
-              <Link to="/projects/syncly" onClick={() => setOpen(false)}>Syncly case study ↗</Link>
-              <Link to="/projects/glycanbench" onClick={() => setOpen(false)}>GlycanBench case study ↗</Link>
-              <Link to="/resume" onClick={() => setOpen(false)}>Résumé ↗</Link>
-              {connection === "error" && lastQuestion && <button className="text-link" disabled={loading} onClick={() => submitMessage(lastQuestion)}>Retry question</button>}
-            </div>
-            {/* Suggestion chips — with fade edges */}
-            <div className="relative shrink-0 border-t border-gray-100 dark:border-white/5 bg-white dark:bg-gray-900">
-              <div className="flex gap-1.5 px-3 py-2 overflow-x-auto scrollbar-hide">
-                {STARTER_QUESTIONS.map((q, i) => (
-                  <button
-                    key={q.text}
-                    type="button"
-                    disabled={loading}
-                    onClick={() => { setActiveChip(i); submitMessage(q.text); }}
-                    className={`whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border transition-all duration-150 shrink-0 disabled:opacity-40 ${
-                      activeChip === i
-                        ? "bg-linear-to-r from-blue-600 to-purple-600 text-white border-transparent"
-                        : "bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-white/10 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400"
-                    }`}
-                  >
-                    <span className="text-sm leading-none">{q.icon}</span>
-                    {q.text}
-                  </button>
-                ))}
-              </div>
-              {/* Right fade */}
-              <div className="absolute right-0 top-0 bottom-0 w-8 bg-linear-to-l from-white dark:from-gray-900 to-transparent pointer-events-none" />
-            </div>
-
-            {/* Input bar */}
-            <div className="shrink-0 border-t border-gray-100 dark:border-white/5 bg-white dark:bg-gray-900 px-3 py-3">
-              <div className="flex items-end gap-2">
-                <div className="flex-1 relative">
-                  <textarea
-                    ref={inputRef}
-                    rows={1}
-                    value={input}
-                    onChange={(e) => { setInput(e.target.value); setActiveChip(null); autoResize(e.target); }}
-                    onKeyDown={handleKeyDown}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-white/5 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-400 dark:focus:border-blue-500 transition-all resize-none overflow-hidden leading-relaxed"
-                    placeholder="Ask about his work… (Enter to send)"
-                    aria-label="Message"
-                    disabled={loading}
-                    maxLength={500}
-                    style={{ minHeight: "42px" }}
-                  />
-                  {charCount > 420 && (
-                    <span className={`absolute right-2.5 bottom-2 text-[10px] font-semibold ${charCount >= 500 ? "text-red-500" : "text-amber-500"}`}>
-                      {500 - charCount}
-                    </span>
-                  )}
-                </div>
-                <motion.button
+            <footer className="assistant-composer">
+              {connection === "error" && lastQuestion && (
+                <div className="assistant-retry" role="status"><span>Response failed.</span><button type="button" disabled={loading} onClick={() => submitMessage(lastQuestion)}>Retry question</button></div>
+              )}
+              <div className="assistant-input-wrap">
+                <textarea
+                  ref={inputRef}
+                  rows={1}
+                  value={input}
+                  onChange={(event) => { setInput(event.target.value); setActiveChip(null); autoResize(event.target); }}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Ask about projects, skills, or experience…"
+                  aria-label="Message"
+                  disabled={loading}
+                  maxLength={500}
+                />
+                {input.length > 420 && <span className={`assistant-character-count ${input.length >= 500 ? "is-full" : ""}`}>{500 - input.length}</span>}
+                <button
                   type="button"
-                  onClick={() => submitMessage(input)}
-                  disabled={loading || !input.trim()}
-                  whileTap={{ scale: 0.9 }}
-                  className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-md shadow-blue-500/25 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-blue-500/40 transition-all"
-                  aria-label="Send"
+                  onClick={loading ? stopResponse : () => submitMessage(input)}
+                  disabled={!loading && !input.trim()}
+                  className={`assistant-send ${loading ? "is-stop" : ""}`}
+                  aria-label={loading ? "Stop response" : "Send"}
                 >
-                  {loading
-                    ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" />
-                    : <FiSend className="w-4 h-4" />
-                  }
-                </motion.button>
+                  {loading ? <FiSquare /> : <FiSend />}
+                </button>
               </div>
-              <p className="text-[10px] text-gray-400 dark:text-gray-600 mt-1.5 px-1">
-                Shift+Enter for new line
-              </p>
-            </div>
-          </motion.div>
+              <p>Enter to send · Shift + Enter for new line</p>
+            </footer>
+          </motion.section>
         )}
       </AnimatePresence>
     </>
