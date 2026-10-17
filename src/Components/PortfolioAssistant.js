@@ -167,8 +167,7 @@ export default function PortfolioAssistant() {
               <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-blue-600 animate-pulse" />
             </div>
             <div className="text-left">
-              <p className="text-xs font-bold leading-tight">Ask CJ's AI</p>
-              <p className="text-[10px] text-blue-200 leading-tight">OKF · Laya · Groq</p>
+              <p className="text-xs font-bold leading-tight">Ask CJ</p>
             </div>
             <HiSparkles className="w-4 h-4 text-blue-200 group-hover:text-white transition-colors shrink-0" />
           </motion.button>

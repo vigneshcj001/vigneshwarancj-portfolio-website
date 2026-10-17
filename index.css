@@ -335,7 +335,7 @@
   .site-header { padding-inline: 18px; }
   .home-page { background: linear-gradient(#f8fafc, #f8fafc); }
   .dark .home-page { background: #080f1d; }
-  .hero-section { padding-top: 118px; padding-bottom: 48px; }
+  .hero-section { grid-template-columns: 1fr; gap: 30px; padding-top: 118px; padding-bottom: 48px; }
   .hero-copy::before { top: -24px; width: 52px; }
   .hero-section h1 { font-size: clamp(39px, 12vw, 54px); }
   .hero-section .lead { line-height: 1.65; }
