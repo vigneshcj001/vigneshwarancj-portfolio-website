@@ -7,6 +7,7 @@ export async function consumeAssistantStream(payload, signal, onChunk) {
   let buffer = "";
   let completed = false;
   let full = "";
+  let metadata = { sources: [], followups: [], project: null };
 
   while (true) {
     const { done, value } = await reader.read();
@@ -23,6 +24,11 @@ export async function consumeAssistantStream(payload, signal, onChunk) {
       if (data.done) {
         completed = true;
         full = data.full || "";
+        metadata = {
+          sources: Array.isArray(data.sources) ? data.sources : [],
+          followups: Array.isArray(data.followups) ? data.followups : [],
+          project: typeof data.project === "string" ? data.project : null,
+        };
         await reader.cancel();
         break;
       }
@@ -30,5 +36,5 @@ export async function consumeAssistantStream(payload, signal, onChunk) {
     if (done || completed) break;
   }
   if (!completed) throw new PortfolioApiError("The response was interrupted. Please retry your question.");
-  return full;
+  return { full, ...metadata };
 }

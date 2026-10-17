@@ -7,6 +7,7 @@ import { FiMail, FiLinkedin } from "react-icons/fi";
 import { Send, Loader2 } from "lucide-react";
 import useContactForm from "../Hooks/useContactForm.js";
 import { BUY_ME_A_COFFEE_LINK, LINKEDIN_LINK } from "../Utils/const.js";
+import { useSearchParams } from "react-router";
 
 const CONTACT_INFO = [
   { Icon: FiMail,     label: "Email",    value: "vigneshwarancj@gmail.com", href: "mailto:vigneshwarancj@gmail.com" },
@@ -14,13 +15,14 @@ const CONTACT_INFO = [
 ];
 
 const ContactUs = () => {
+  const [searchParams] = useSearchParams();
   useMeta("Contact", "Get in touch with Vigneshwaran C.J. for research collaborations, technical projects, or professional opportunities.");
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: { message: searchParams.get("message")?.slice(0, 2000) || "" } });
   const formRef = useRef();
   const { notification, sending, sendEmail } = useContactForm();
 
