@@ -1,29 +1,11 @@
 import { Link } from "react-router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { FiX, FiSend, FiTrash2, FiCopy, FiCheck, FiChevronDown } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import botAvatar from "url:../assets/portrait-640.webp";
-
-const BACKEND     = "https://vigneshwarancj-portfolio-backend.onrender.com";
-const MAX_HISTORY = 20;
-
-const STARTER_QUESTIONS = [
-  { text: "Main skills?",         icon: "⚡" },
-  { text: "Tell me about Syncly", icon: "🚀" },
-  { text: "GlycanBench?",         icon: "🧬" },
-  { text: "Research focus",       icon: "🔬" },
-  { text: "His tech stack",       icon: "💻" },
-  { text: "Current job?",         icon: "🏢" },
-];
-
-const mkId = () => Date.now() + Math.random();
-
-const mkInitial = () => ({
-  id: 1, from: "bot",
-  text: "Hey! I'm CJ's AI — ask me anything about Vigneshwaran's work, projects, or background.",
-  ts: Date.now(), done: true,
-});
+import useAssistantChat from "../features/assistant/useAssistantChat";
+import { STARTER_QUESTIONS } from "../features/assistant/constants";
 
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -100,22 +82,17 @@ function MessageBubble({ msg }) {
 }
 
 export default function PortfolioAssistant() {
-  const [connection, setConnection] = useState("idle");
-  const [lastQuestion, setLastQuestion] = useState("");
   const launcherRef = useRef(null);
-  const [open, setOpen]             = useState(false);
-  const [messages, setMessages]     = useState(() => [mkInitial()]);
-  const [input, setInput]           = useState("");
-  const [activeChip, setActiveChip] = useState(null);
-  const [loading, setLoading]       = useState(false);
+  const [open, setOpen] = useState(false);
   const [showScrollBtn, setShowScrollBtn] = useState(false);
+  const {
+    connection, lastQuestion, messages, input, setInput, activeChip, setActiveChip,
+    loading, sendMessage, clearChat,
+  } = useAssistantChat();
 
   const scrollRef     = useRef(null);
   const inputRef      = useRef(null);
-  const abortRef      = useRef(null);
-  const msgsRef       = useRef(messages);
   const nearBottomRef = useRef(true);
-  useEffect(() => { msgsRef.current = messages; }, [messages]);
 
 
 
@@ -137,7 +114,9 @@ export default function PortfolioAssistant() {
     return () => document.removeEventListener("keydown", handler);
   }, [open]);
 
-  useEffect(() => () => { abortRef.current?.abort(); }, []);
+  useEffect(() => {
+    if (!input && inputRef.current) inputRef.current.style.height = "auto";
+  }, [input]);
 
   const handleScroll = () => {
     const el = scrollRef.current;
@@ -153,114 +132,16 @@ export default function PortfolioAssistant() {
     el.style.height = Math.min(el.scrollHeight, 90) + "px";
   };
 
-  const patchMsg = useCallback((id, patch) => {
-    setMessages((prev) => prev.map((m) => m.id === id ? { ...m, ...patch } : m));
-  }, []);
-
-  const sendMessage = useCallback(async (text) => {
-    const trimmed = text.trim();
-    if (!trimmed || loading) return;
-
-    abortRef.current?.abort();
-    abortRef.current = new AbortController();
-
-    const controller = abortRef.current;
-    let timedOut = false;
-    const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, 45000);
-    setConnection("connecting");
-    setLastQuestion(trimmed);
-
-    const history = msgsRef.current
-      .filter((m) => m.done && m.text && !m.error)
-      .slice(-MAX_HISTORY)
-      .map((m) => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
-
-    const uId = mkId(), bId = mkId(), now = Date.now();
+  const submitMessage = (text) => {
+    if (!text.trim() || loading) return;
     nearBottomRef.current = true;
-    setMessages((prev) => [
-      ...prev,
-      { id: uId, from: "user", text: trimmed, ts: now,     done: true  },
-      { id: bId, from: "bot",  text: "",       ts: now + 1, done: false },
-    ]);
-    setInput("");
-    if (inputRef.current) inputRef.current.style.height = "auto";
-    setActiveChip(null);
-    setLoading(true);
-
-    try {
-      const res = await fetch(`${BACKEND}/api/assistant/stream`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed, history }),
-        signal: controller.signal,
-      });
-
-      if (!res.ok || !res.body) {
-        const e = await res.json().catch(() => ({}));
-        const msg = typeof e.detail === "string" ? e.detail : "Sorry, something went wrong.";
-        setConnection("error");
-        patchMsg(bId, { text: msg, done: true, error: true });
-        return;
-      }
-
-      setConnection("connected");
-      let completed = false;
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done && !buffer.trim()) break;
-        buffer += done ? "\n" : decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop();
-
-        if (abortRef.current !== controller) break;
-        for (const line of lines) {
-          if (!line.startsWith("data: ")) continue;
-          try {
-            const data = JSON.parse(line.slice(6));
-            if (data.error) {
-              completed = true;
-              setConnection("error");
-              patchMsg(bId, { text: data.error, done: true, error: true });
-            } else if (data.done) {
-              completed = true;
-              patchMsg(bId, { text: data.full, done: true });
-            } else if (data.text) {
-              setMessages((prev) => prev.map((m) =>
-                m.id === bId ? { ...m, text: (m.text || "") + data.text } : m
-              ));
-              if (nearBottomRef.current) scrollToBottom(false);
-            }
-          } catch { /* malformed chunk — skip */ }
-        }
-        if (done || completed) { await reader.cancel(); break; }
-      }
-      if (!completed && abortRef.current === controller) { setConnection("error"); patchMsg(bId, { text: "The response was interrupted. Please retry your question.", done: true, error: true }); }
-    } catch (e) {
-      if (abortRef.current === controller && (timedOut || e.name !== "AbortError")) { setConnection("error"); patchMsg(bId, { text: timedOut ? "The service took too long to respond. Please retry or explore the links below." : "Connection failed. Please retry or explore the links below.", done: true, error: true }); }
-    } finally {
-      clearTimeout(timeout);
-      if (abortRef.current === controller) setLoading(false);
-    }
-  }, [loading, patchMsg]);
-
-  const clearChat = () => {
-    abortRef.current?.abort();
-    abortRef.current = null;
-    setConnection("idle"); setLastQuestion("");
-    setMessages([mkInitial()]);
-    setLoading(false); setInput(""); setActiveChip(null);
-    if (inputRef.current) inputRef.current.style.height = "auto";
+    sendMessage(text);
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(input); }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitMessage(input); }
   };
 
-  const msgCount = messages.length - 1;
   const charCount = input.length;
 
   return (
@@ -287,7 +168,7 @@ export default function PortfolioAssistant() {
             </div>
             <div className="text-left">
               <p className="text-xs font-bold leading-tight">Ask CJ's AI</p>
-              <p className="text-[10px] text-blue-200 leading-tight">Explore my work</p>
+              <p className="text-[10px] text-blue-200 leading-tight">OKF · Laya · Groq</p>
             </div>
             <HiSparkles className="w-4 h-4 text-blue-200 group-hover:text-white transition-colors shrink-0" />
           </motion.button>
@@ -319,6 +200,7 @@ export default function PortfolioAssistant() {
                   <p className="text-[10px] text-blue-200 leading-tight">
                     {loading ? "Thinking..." : connection === "error" ? "Connection unavailable" : connection === "connected" ? "Last response received" : "Ready for your question"}
                   </p>
+                  <p className="text-[9px] text-blue-100/90 leading-tight">OKF knowledge · Laya routing · Groq generation</p>
                 </div>
               </div>
               <div className="flex items-center gap-0.5">
@@ -361,7 +243,7 @@ export default function PortfolioAssistant() {
               <Link to="/projects/syncly" onClick={() => setOpen(false)}>Syncly case study ↗</Link>
               <Link to="/projects/glycanbench" onClick={() => setOpen(false)}>GlycanBench case study ↗</Link>
               <Link to="/resume" onClick={() => setOpen(false)}>Résumé ↗</Link>
-              {connection === "error" && lastQuestion && <button className="text-link" disabled={loading} onClick={() => sendMessage(lastQuestion)}>Retry question</button>}
+              {connection === "error" && lastQuestion && <button className="text-link" disabled={loading} onClick={() => submitMessage(lastQuestion)}>Retry question</button>}
             </div>
             {/* Suggestion chips — with fade edges */}
             <div className="relative shrink-0 border-t border-gray-100 dark:border-white/5 bg-white dark:bg-gray-900">
@@ -371,7 +253,7 @@ export default function PortfolioAssistant() {
                     key={q.text}
                     type="button"
                     disabled={loading}
-                    onClick={() => { setActiveChip(i); sendMessage(q.text); }}
+                    onClick={() => { setActiveChip(i); submitMessage(q.text); }}
                     className={`whitespace-nowrap flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold border transition-all duration-150 shrink-0 disabled:opacity-40 ${
                       activeChip === i
                         ? "bg-linear-to-r from-blue-600 to-purple-600 text-white border-transparent"
@@ -412,7 +294,7 @@ export default function PortfolioAssistant() {
                 </div>
                 <motion.button
                   type="button"
-                  onClick={() => sendMessage(input)}
+                  onClick={() => submitMessage(input)}
                   disabled={loading || !input.trim()}
                   whileTap={{ scale: 0.9 }}
                   className="shrink-0 w-10 h-10 flex items-center justify-center rounded-xl bg-linear-to-br from-blue-600 to-purple-600 text-white shadow-md shadow-blue-500/25 disabled:opacity-40 disabled:cursor-not-allowed hover:shadow-blue-500/40 transition-all"

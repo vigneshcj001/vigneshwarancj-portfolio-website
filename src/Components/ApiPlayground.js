@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
+import { portfolioApi } from "../services/portfolioApi";
 const examples = { aiora: "I want to book an appointment", pocketpet: "Buy a product from this page", glycanbench: "Man(a1-3)Man" };
 
 export default function ApiPlayground({ slug }) {
@@ -10,9 +9,7 @@ export default function ApiPlayground({ slug }) {
   const run = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${BACKEND}/api/demo/${slug}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ input }) });
-      if (!response.ok) throw new Error();
-      setResult(await response.json());
+      setResult(await portfolioApi.demo(slug, input));
     } catch { setResult({ unavailable: "Demo API unavailable. Architecture and live-project links remain available." }); }
     finally { setLoading(false); }
   };

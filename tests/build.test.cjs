@@ -32,3 +32,7 @@ test('the saved download is a PDF and the new routes appear in the sitemap',()=>
  const sitemap=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8');
  for(const route of ['projects/aiora','projects/syncly','projects/glycanbench','projects/pocketpet','writing/aiora-routing','writing/pocketpet-safety','writing/glycanbench-mpnn']) assert.ok(sitemap.includes(route));
 });
+test('portfolio UI identifies the assistant architecture',()=>{
+ const source=fs.readFileSync(path.resolve(__dirname,'../src/pages/Home.js'),'utf8');
+ for(const technology of ['OKF','Laya','Groq']) assert.ok(source.includes(technology));
+});

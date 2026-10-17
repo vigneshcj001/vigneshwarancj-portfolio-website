@@ -2,6 +2,7 @@ import { useState } from "react";
 import { trackConversion } from "../Utils/analytics";
 import emailjs from "@emailjs/browser";
 import { service_id, public_key, Template_ID } from "../Utils/const";
+import { portfolioApi } from "../services/portfolioApi";
 
 const useContactForm = () => {
   const [notification, setNotification] = useState("");
@@ -13,9 +14,8 @@ const useContactForm = () => {
     try {
       const values = Object.fromEntries(new FormData(form));
       if (values.website) { setNotification("success"); return; }
-      await fetch("https://vigneshwarancj-portfolio-backend.onrender.com/api/contact", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: values.from_name, email: values.from_email, message: values.message, website: values.website || "" }),
+      await portfolioApi.contact({
+        name: values.from_name, email: values.from_email, message: values.message, website: values.website || "",
       }).catch(() => null);
       await emailjs.sendForm(service_id, Template_ID, form, public_key);
       setNotification("success");

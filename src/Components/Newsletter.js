@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
+import { portfolioApi } from "../services/portfolioApi";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -8,8 +7,7 @@ export default function Newsletter() {
   const submit = async (event) => {
     event.preventDefault(); setStatus("Saving…");
     try {
-      const response = await fetch(`${BACKEND}/api/newsletter`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-      if (!response.ok) throw new Error();
+      await portfolioApi.newsletter(email);
       setEmail(""); setStatus("Subscribed. New project notes will arrive by email.");
     } catch { setStatus("Subscription unavailable. Follow GitHub for project updates."); }
   };

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import useMeta from "../Hooks/useMeta";
-
-const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
+import { portfolioApi } from "../services/portfolioApi";
 
 export default function Admin() {
   useMeta("Portfolio Admin", "Protected portfolio content and analytics console.");
@@ -11,11 +10,7 @@ export default function Admin() {
   const [analytics, setAnalytics] = useState([]);
   const [status, setStatus] = useState("");
 
-  const request = async (path, options = {}) => {
-    const response = await fetch(`${BACKEND}${path}`, { ...options, headers: { "Content-Type": "application/json", "X-Admin-Key": key, ...(options.headers || {}) } });
-    if (!response.ok) throw new Error((await response.json().catch(() => ({}))).detail || `Request failed: ${response.status}`);
-    return response.json();
-  };
+  const request = (path, options = {}) => portfolioApi.admin(path, key, options);
   const unlock = async () => { try { const data = await request("/api/admin/content"); sessionStorage.setItem("portfolio-admin-key", key); setContent(JSON.stringify(data, null, 2)); setStatus("Editor unlocked."); } catch (error) { setStatus(error.message); } };
   const save = async () => { try { const parsed = JSON.parse(content); const result = await request("/api/admin/content", { method: "PUT", body: JSON.stringify({ content: parsed, note }) }); setStatus(`Saved revision ${result.revision_id}.`); } catch (error) { setStatus(error.message); } };
   const loadAnalytics = async () => { try { const data = await request("/api/admin/analytics"); setAnalytics(data.events); setStatus("Analytics loaded."); } catch (error) { setStatus(error.message); } };

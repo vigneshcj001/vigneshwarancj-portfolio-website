@@ -6,8 +6,7 @@ import { HiOutlineDocumentText } from "react-icons/hi";
 import portfolioData from "../data/portfolio.generated.js";
 import { LINKEDIN_LINK, GITHUB_LINK, LEETCODE_LINK } from "../Utils/const.js";
 import useMeta from "../Hooks/useMeta.js";
-
-const BACKEND = "https://vigneshwarancj-portfolio-backend.onrender.com";
+import { portfolioApi } from "../services/portfolioApi.js";
 
 const roles = portfolioData.work_experience.map((role, index) => ({
   id: `${role.company}-${index}`,
@@ -308,9 +307,7 @@ const Resume = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`${BACKEND}/api/resume`, { signal: AbortSignal.timeout(15000) });
-      if (!res.ok) throw new Error(`Server error: ${res.status}`);
-      const blob = await res.blob();
+      const blob = await portfolioApi.resume(AbortSignal.timeout(15000));
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

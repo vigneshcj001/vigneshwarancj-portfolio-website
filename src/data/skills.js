@@ -1,12 +1,12 @@
 import {
   SiPython, SiR, SiJavascript, SiTypescript, SiRust, SiTauri,
   SiPandas, SiNumpy, SiScikitlearn, SiPytorch, SiTensorflow,
-  SiReact, SiRedux, SiNextdotjs, SiHtml5, SiCss3, SiTailwindcss, SiBootstrap,
+  SiReact, SiRedux, SiNextdotjs, SiHtml5, SiTailwindcss, SiBootstrap,
   SiNodedotjs, SiExpress, SiFlask, SiFastapi, SiStreamlit, SiSocketdotio, SiMongoose,
-  SiMongodb, SiOracle, SiAmazondynamodb, SiRedis,
+  SiMongodb, SiRedis,
   SiGooglecloud, SiFirebase, SiDocker, SiNginx, SiPm2, SiRender, SiRailway,
-  SiGit, SiGithub, SiPostman, SiJupyter, SiAdobephotoshop, SiLinux, SiVim, SiArduino, SiMacos, SiN8N,
-  SiLangchain, SiOpenai,
+  SiGit, SiGithub, SiPostman, SiJupyter, SiLinux, SiVim, SiArduino, SiMacos, SiN8N,
+  SiLangchain,
 } from "react-icons/si";
 import { BiLogoPostgresql } from "react-icons/bi";
 import { FaDatabase, FaNetworkWired, FaMicroscope, FaGlobe, FaAws, FaFlask, FaAtom, FaMicrochip, FaChartLine } from "react-icons/fa";
@@ -45,7 +45,7 @@ export const skillCategories = [
       { name: "Next.js",     Icon: SiNextdotjs  },
       { name: "Redux",       Icon: SiRedux      },
       { name: "HTML5",       Icon: SiHtml5      },
-      { name: "CSS3",        Icon: SiCss3       },
+      { name: "CSS3",        Icon: FaGlobe      },
       { name: "Tailwind CSS",Icon: SiTailwindcss},
       { name: "Bootstrap",   Icon: SiBootstrap  },
     ],
@@ -71,8 +71,8 @@ export const skillCategories = [
     skills: [
       { name: "MongoDB",    Icon: SiMongodb          },
       { name: "PostgreSQL", Icon: BiLogoPostgresql   },
-      { name: "DynamoDB",   Icon: SiAmazondynamodb   },
-      { name: "Oracle",     Icon: SiOracle           },
+      { name: "DynamoDB",   Icon: FaDatabase         },
+      { name: "Oracle",     Icon: FaDatabase         },
       { name: "Redis",      Icon: SiRedis            },
     ],
   },
@@ -99,7 +99,7 @@ export const skillCategories = [
     name: "AI & LLMs",
     color: "violet",
     skills: [
-      { name: "OpenAI GPT-4o", Icon: SiOpenai    },
+      { name: "OpenAI GPT-4o", Icon: FaMicrochip },
       { name: "LangChain",  Icon: SiLangchain    },
       { name: "LangGraph",  Icon: FaNetworkWired },
       { name: "Groq",       Icon: FaMicrochip    },
@@ -141,7 +141,7 @@ export const skillCategories = [
       { name: "Linux",      Icon: SiLinux          },
       { name: "Vim",        Icon: SiVim            },
       { name: "Arduino",    Icon: SiArduino        },
-      { name: "Photoshop",  Icon: SiAdobephotoshop },
+      { name: "Photoshop",  Icon: FaGlobe          },
       { name: "macOS",      Icon: SiMacos          },
     ],
   },
