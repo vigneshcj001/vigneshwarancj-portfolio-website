@@ -29,12 +29,12 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 w-full flex justify-between items-center px-6 py-4 z-50 transition-all duration-300 ${
+      className={`site-header fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         scrolled
           ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg border-b border-gray-200/50 dark:border-gray-700/50"
           : "bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border-b border-transparent"
       }`}
-    >
+    ><div className="header-inner">
       {/* Logo */}
       <Link
         to="/"
@@ -44,13 +44,13 @@ const Header = () => {
       </Link>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex">
+      <nav className="hidden xl:flex">
         <NavBar dark={dark} theme={theme} setTheme={setTheme} />
       </nav>
 
       {/* Mobile Menu Button */}
       <button
-        className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        className="xl:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
         onClick={() => setIsOpen((prev) => !prev)}
         id="menu-toggle" aria-label="Toggle Menu" aria-expanded={isOpen} aria-controls="mobile-navigation"
       >
@@ -59,12 +59,13 @@ const Header = () => {
 
       {/* Mobile Navigation Dropdown */}
       {isOpen && (
-        <nav id="mobile-navigation" aria-label="Mobile navigation" className="absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-xl lg:hidden">
+        <nav id="mobile-navigation" aria-label="Mobile navigation" className="absolute top-full left-0 right-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl border-b border-gray-200 dark:border-gray-700 shadow-xl xl:hidden">
           <div className="px-6 py-4" onClick={e => { if (e.target.closest("a")) setIsOpen(false); }}>
             <NavBar mobile dark={dark} theme={theme} setTheme={setTheme} />
           </div>
         </nav>
       )}
+      </div>
     </header>
   );
 };
