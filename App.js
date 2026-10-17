@@ -13,6 +13,7 @@ import ErrorBoundary from "./src/Components/ErrorBoundary";
 import BackToTop from "./src/Components/BackToTop";
 import CommandPalette from "./src/Components/CommandPalette";
 import { LanguageProvider } from "./src/Contexts/LanguageContext";
+import usePageTranslation from "./src/Hooks/usePageTranslation";
 
 const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
 const Writing = lazy(() => import("./src/pages/Writing"));
@@ -80,6 +81,7 @@ const pageVariants = {
 
 function AppContent() {
   const location = useLocation();
+  usePageTranslation();
   useEffect(() => { window.scrollTo(0, 0); document.getElementById("main-content")?.focus({ preventScroll: true }); }, [location.pathname]);
   useEffect(() => { if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") navigator.serviceWorker.register(new URL("sw.js", import.meta.url)).catch(() => {}); }, []);
 

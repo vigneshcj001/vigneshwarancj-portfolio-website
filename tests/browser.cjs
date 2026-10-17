@@ -8,6 +8,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
  const errors=[]; page.on('pageerror', error => errors.push(error.message));
  await page.route('**/_vercel/**', route => route.fulfill({contentType:'application/javascript',body:''}));
+ await page.route('**/api/translate',async route=>{const body=route.request().postDataJSON();route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({translations:body.texts.map(text=>`${body.language} ${text}`)})});});
  const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  await page.goto(base); await page.getByRole('heading',{name:/Useful software/}).waitFor();
  await page.screenshot({path:path.resolve('homepage-desktop.png'),fullPage:true});
@@ -39,6 +40,11 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.getByRole('button',{name:'Retry question'}).click();await page.getByText('Syncly connects professionals.',{exact:true}).waitFor();await page.getByRole('button',{name:'Copy',exact:true}).last().waitFor();
  await page.getByRole('button',{name:'Clear chat'}).click();assert.equal(await page.getByText('Syncly connects professionals.',{exact:true}).count(),0);
  await page.getByRole('button',{name:'Close',exact:true}).click(); await page.getByRole('region',{name:'Portfolio assistant'}).waitFor({state:'detached'});
+ await page.goto(base);const languageSelect=page.locator('#language-select-desktop');
+ for(const code of ['ta','fr','zh-CN','hi','es','ar']) {await languageSelect.selectOption(code);assert.equal(await page.locator('html').getAttribute('lang'),code);assert.equal(await languageSelect.inputValue(),code);}
+ assert.equal(await page.locator('html').getAttribute('dir'),'rtl');await page.getByRole('heading',{name:/برمجيات مفيدة/}).waitFor();
+ await languageSelect.selectOption('ta');await page.getByRole('heading',{name:/பயனுள்ள மென்பொருள்/}).waitFor();await page.getByText(/ta I’m Vigneshwaran/).waitFor();
+ await languageSelect.selectOption('en');await page.getByRole('heading',{name:/Useful software/}).waitFor();assert.equal(await page.locator('html').getAttribute('dir'),'ltr');
  for(const width of [320,390,768,1024]) {
   await page.setViewportSize({width,height:844});
   // Let responsive layout and animation transforms settle after resizing.
@@ -50,7 +56,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'false');
  await page.reload();await page.getByRole('heading',{name:/Useful software/}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('dark')),dark);
  await page.screenshot({path:path.resolve('homepage-mobile.png'),fullPage:true});
- assert.deepEqual(errors,[]);console.log('PASS: navigation, search, skill evidence, metadata, PDF downloads, contact success (mocked), chat failure/retry/stream completion, mobile widths, theme persistence.');
+ assert.deepEqual(errors,[]);console.log('PASS: navigation, search, skill evidence, metadata, PDF downloads, contact success, chat retry/stream, seven-language UI with Arabic RTL, mobile widths, theme persistence.');
  } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1;});
 

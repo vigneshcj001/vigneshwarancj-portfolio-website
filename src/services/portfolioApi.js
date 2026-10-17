@@ -44,6 +44,9 @@ export const portfolioApi = {
   contact: (payload) => requestJson("/api/contact", {
     method: "POST", body: JSON.stringify(payload),
   }),
+  translate: (language, texts) => requestJson("/api/translate", {
+    method: "POST", body: JSON.stringify({ language, texts }),
+  }),
   event: (payload) => requestJson("/api/events", {
     method: "POST", body: JSON.stringify(payload), keepalive: true,
   }),

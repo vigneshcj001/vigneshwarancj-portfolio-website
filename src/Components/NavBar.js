@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router";
 import { IoIosSunny, IoIosMoon, IoIosLaptop } from "react-icons/io";
 import { useLanguage } from "../Contexts/LanguageContext";
+import { LANGUAGES } from "../i18n/messages";
 
 const NAV_LINKS = ["Projects", "Experience", "About", "Contact"];
 
@@ -51,9 +52,17 @@ const NavBar = ({ mobile = false, dark, theme, setTheme }) => {
       })}
 
       <Link to="/resume" className="primary-action">Résumé</Link>
-      <button onClick={() => setLanguage(language === "en" ? "ta" : "en")} className="text-xs font-bold px-2 py-2 rounded-lg border border-gray-300 dark:border-gray-600" aria-label={`Switch language to ${language === "en" ? "Tamil" : "English"}`}>
-        {language === "en" ? "தமிழ்" : "EN"}
-      </button>
+      <label className="sr-only" htmlFor={`language-select-${mobile ? "mobile" : "desktop"}`}>Language</label>
+      <select
+        id={`language-select-${mobile ? "mobile" : "desktop"}`}
+        data-no-translate
+        value={language}
+        onChange={(event) => setLanguage(event.target.value)}
+        className={`language-select ${mobile ? "self-start" : ""}`}
+        aria-label="Language"
+      >
+        {LANGUAGES.map((option) => <option key={option.code} value={option.code}>{option.nativeName}</option>)}
+      </select>
       <button
         onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}
         className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-all shadow-sm ${

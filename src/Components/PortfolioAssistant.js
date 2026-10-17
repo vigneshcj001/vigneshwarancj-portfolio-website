@@ -45,6 +45,7 @@ function MessageBubble({ msg }) {
   const isUser = msg.from === "user";
   return (
     <motion.div
+      data-no-translate={isUser ? "true" : undefined}
       initial={{ opacity: 0, y: 10, scale: 0.97 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.2, ease: "easeOut" }}

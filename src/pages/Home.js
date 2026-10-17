@@ -11,7 +11,6 @@ import useMeta from "../Hooks/useMeta";
 import { trackConversion } from "../Utils/analytics";
 import CareerTimeline from "../Components/CareerTimeline";
 import LiveProof from "../Components/LiveProof";
-import { useLanguage } from "../Contexts/LanguageContext";
 
 const FEATURED_PROJECTS = ["aiora", "pocketpet", "glycanbench"];
 const ASSISTANT_STACK = [
@@ -42,13 +41,7 @@ function FeaturedProject({ slug, position }) {
 
 export default function Home() {
   useMeta();
-  const { language } = useLanguage();
-  const copy = language === "ta" ? {
-    eyebrow: "AI / ML பொறியாளர் · Full-stack developer",
-    title: "பயனுள்ள மென்பொருள்.", accent: "பொறுப்பான AI.",
-    lead: "நான் விக்னேஷ்வரன் C. J. Browser agents, developer networking, computational biology போன்ற சிக்கலான பணிகளை எளிதாகப் பயன்படுத்தக்கூடிய web, desktop, AI தயாரிப்புகளாக உருவாக்குகிறேன்.",
-    work: "என் பணிகளைப் பாருங்கள்", resume: "Résumé பதிவிறக்கவும்", note: "கோயம்புத்தூர், இந்தியா · தொழில்முறை வாய்ப்புகளுக்கு தயாராக உள்ளேன்",
-  } : {
+  const copy = {
     eyebrow: "AI / ML engineer · Full-stack developer",
     title: "Useful software.", accent: "Thoughtful AI.",
     lead: "I’m Vigneshwaran C. J. I turn complex workflows into usable web, desktop, and AI products—from production messaging systems and browser agents to computational biology.",
