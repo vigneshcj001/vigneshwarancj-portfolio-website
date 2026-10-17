@@ -19,7 +19,7 @@
     "start": "parcel index.html",
     "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
     "prebuild": "node scripts/sync-portfolio-data.mjs && npm run clean",
-    "build": "parcel build index.html --public-url / --no-cache --no-source-maps && node scripts/postbuild.mjs",
+    "build": "parcel build index.html --public-url / --no-cache --no-source-maps --cache-dir .parcel-build-cache && node scripts/postbuild.mjs",
     "preview": "node scripts/preview.mjs",
     "test": "node --test tests/build.test.cjs",
     "test:browser": "node tests/browser.cjs",
@@ -37,7 +37,8 @@
     "postcss": "^8.5.6",
     "process": "^0.11.10",
     "tailwindcss": "^4.1.12",
-    "wait-on": "^9.1.0"
+    "wait-on": "^9.1.0",
+    "yaml": "^2.9.1"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

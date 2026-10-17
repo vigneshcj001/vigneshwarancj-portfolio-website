@@ -1,4 +1,5 @@
-{
+// Generated from structured Markdown. Do not edit.
+export default {
   "personal": {
     "name": "Vigneshwaran C. J.",
     "nickname": "CJ",
@@ -790,4 +791,4 @@
     "experience_note": "Fresher — joined industry Dec 2025 as Junior Software Developer at Ceiyone Tech Works",
     "research_areas": 2
   }
-}
+};

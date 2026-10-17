@@ -5,11 +5,12 @@ The homepage now highlights work, links to two case studies, provides a recruite
 ## Content maintenance
 
 - `src/data/showcase.js`: case studies, technical notes, approved testimonials, and project media.
+- Canonical résumé and portfolio facts live in the backend repository's structured `knowledge/` Markdown tree. `npm run build` compiles those files into `src/data/portfolio.generated.js`; when building this repository alone, the committed generated module provides the same snapshot.
 - Testimonials remain hidden. Add `{ approved: true, name, role, quote }` only after obtaining a real quote and permission.
 - Optional media entries accept `poster`, `video` (MP4 URL), `captions` (WebVTT URL), and `transcript`. No fabricated screenshots or recordings are published.
 - Both featured live previews are disabled after checks on 2026-09-07: Syncly redirected to an unrelated domain; GlycanBench returned HTTP 502. Once the intended sites work, set `liveAvailable: true` in the relevant media entry.
 - The technical notes are explanatory copy based on the listed project technologies; they do not claim undocumented implementation details or measured results. Review before publication.
-- Run `python scripts/build_resume.py` with ReportLab installed to refresh the saved PDF from the sibling backend's portfolio data. Commit the resulting `resume.pdf`. The saved PDF is a concise alternative to the backend-generated version.
+- Run `npm run resume:pdf` to refresh the saved PDF after structured content changes. Commit the resulting `resume.pdf`.
 
 ## Build and preview
 

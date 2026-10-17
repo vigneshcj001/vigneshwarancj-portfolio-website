@@ -3,7 +3,7 @@ import { useState } from "react";
 import { m as motion } from "framer-motion";
 import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
-import portfolioData from "../data/portfolio.generated.json";
+import portfolioData from "../data/portfolio.generated.js";
 import { LINKEDIN_LINK, GITHUB_LINK, LEETCODE_LINK } from "../Utils/const.js";
 import useMeta from "../Hooks/useMeta.js";
 
