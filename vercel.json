@@ -55,6 +55,26 @@
       "destination": "/writing/interpreting-research-models/index.html"
     },
     {
+      "source": "/projects/aiora",
+      "destination": "/projects/aiora/index.html"
+    },
+    {
+      "source": "/projects/pocketpet",
+      "destination": "/projects/pocketpet/index.html"
+    },
+    {
+      "source": "/writing/aiora-routing",
+      "destination": "/writing/aiora-routing/index.html"
+    },
+    {
+      "source": "/writing/pocketpet-safety",
+      "destination": "/writing/pocketpet-safety/index.html"
+    },
+    {
+      "source": "/writing/glycanbench-mpnn",
+      "destination": "/writing/glycanbench-mpnn/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
