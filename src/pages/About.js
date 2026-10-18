@@ -28,7 +28,7 @@ const QUICK_LINKS = [
 const About = () => {
   useMeta("About", "Learn about Vigneshwaran C.J. — his education, research interests, skills, and certifications in AI/ML and bioinformatics.");
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
+    <div id="portfolio-about" className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <PageHeader
           badge="Profile"

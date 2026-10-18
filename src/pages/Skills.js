@@ -11,7 +11,7 @@ const totalSkills = skillCategories.reduce((acc, c) => acc + c.skills.length, 0)
 const Skills = () => {
   useMeta("Skills", "50+ skills across AI/ML, full-stack web development, bioinformatics, and cloud infrastructure — Vigneshwaran C.J.'s technical expertise.");
   return (
-    <section className="w-full max-w-6xl mx-auto px-4 pt-24 pb-20">
+    <section id="portfolio-skills" className="w-full max-w-6xl mx-auto px-4 pt-24 pb-20">
       <PageHeader
         badge="Technical Competencies"
         title="Skills"

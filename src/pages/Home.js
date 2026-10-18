@@ -16,6 +16,7 @@ const FEATURED_PROJECTS = ["aiora", "pocketpet", "glycanbench"];
 const ASSISTANT_STACK = [
   ["OKF", "Structured portfolio knowledge"],
   ["Laya", "Typed scope and topic routing"],
+  ["LangGraph", "Tool planning and session state"],
   ["Groq", "Fast streamed generation"],
 ];
 
@@ -100,7 +101,7 @@ export default function Home() {
           <Link className="text-link" to="/experience">See role and contribution details ↗</Link>
         </article>
         <article className="assistant-architecture-card">
-          <div><p className="eyebrow">This portfolio’s AI</p><h2>Answers grounded in published work.</h2><p>Assistant uses same structured Markdown that builds portfolio content. Each response passes through scope control, typed routing, and streamed generation.</p></div>
+          <div><p className="eyebrow">This portfolio’s AI</p><h2>Answers grounded in published work.</h2><p>Assistant uses same structured Markdown that builds portfolio content. LangGraph selects typed tools, preserves session context, and streams validated portfolio actions with each grounded answer.</p></div>
           <ol>{ASSISTANT_STACK.map(([name, detail], index) => <li key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{detail}</p></div></li>)}</ol>
           <button type="button" className="assistant-hint" onClick={() => document.querySelector('[aria-label="Ask CJ\'s AI"]')?.click()}>Ask about a project <span aria-hidden="true">→</span></button>
         </article>

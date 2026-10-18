@@ -12,6 +12,61 @@
   --color-cyan-600: #0e7490;
   --color-green-600: #15803d;
 }
+
+/* Agentic assistant: tool trace, validated actions, and guided walkthrough. */
+.assistant-agent-trace {
+  display: grid;
+  gap: 3px;
+  margin: 6px 0 2px;
+  color: #64748b;
+  font-size: 11px;
+}
+.assistant-agent-trace span { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; }
+.assistant-agent-trace small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.assistant-agent-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.assistant-agent-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.assistant-agent-actions button:hover { background: #dbeafe; transform: translateY(-1px); }
+.assistant-walkthrough {
+  position: fixed;
+  z-index: 90;
+  left: 50%;
+  bottom: 22px;
+  width: min(420px, calc(100vw - 28px));
+  transform: translateX(-50%);
+  border: 1px solid rgba(59, 130, 246, .35);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 20px 55px rgba(15, 23, 42, .22);
+  padding: 15px;
+  backdrop-filter: blur(18px);
+}
+.assistant-walkthrough > div, .assistant-walkthrough nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.assistant-walkthrough > div span { color: #2563eb; font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+.assistant-walkthrough > div button { padding: 5px; }
+.assistant-walkthrough strong { display: block; margin-top: 8px; color: #0f172a; font-size: 17px; }
+.assistant-walkthrough p { margin: 3px 0 11px; color: #64748b; font-size: 12px; }
+.assistant-walkthrough nav button { border-radius: 9px; background: #2563eb; color: white; padding: 7px 12px; font-size: 12px; font-weight: 800; }
+.assistant-walkthrough nav button:disabled { opacity: .35; }
+.agent-highlight { animation: agent-highlight-pulse 2.6s ease-out; scroll-margin-top: 90px; }
+@keyframes agent-highlight-pulse {
+  0%, 30% { outline: 4px solid rgba(59, 130, 246, .75); outline-offset: 7px; box-shadow: 0 0 0 12px rgba(59, 130, 246, .13); }
+  100% { outline: 0 solid transparent; outline-offset: 14px; box-shadow: none; }
+}
+.dark .assistant-agent-actions button { border-color: #1e40af; background: rgba(30, 64, 175, .2); color: #93c5fd; }
+.dark .assistant-walkthrough { border-color: rgba(96, 165, 250, .35); background: rgba(15, 23, 42, .96); }
+.dark .assistant-walkthrough strong { color: #f8fafc; }
+@media (max-width: 640px) { .assistant-walkthrough { bottom: 12px; } }
 .dark {
   --color-gray-400: #9aa3b2;
   --color-gray-500: #8b95a5;

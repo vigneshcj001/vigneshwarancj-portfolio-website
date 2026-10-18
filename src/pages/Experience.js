@@ -234,7 +234,7 @@ function RoleCard({ role, index, image, certPdf, isLast }) {
 const Experience = () => {
   useMeta("Experience", "Vigneshwaran C.J.'s professional experience — Junior Software Developer at Ceiyone, AI Engineer Intern, MIT Research Intern, and Tutor.");
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
+    <div id="portfolio-experience" className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <PageHeader
           badge="Career"

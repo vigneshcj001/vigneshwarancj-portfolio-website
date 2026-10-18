@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import React, { useEffect, useRef, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import {
@@ -13,6 +13,7 @@ import { STARTER_QUESTIONS } from "../features/assistant/constants";
 import { useLanguage } from "../Contexts/LanguageContext";
 import { projects } from "../data/projects";
 import { portfolioApi } from "../services/portfolioApi";
+import { executeAgentAction, highlightAgentTarget, validateAgentAction } from "../features/assistant/actions";
 
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -55,11 +56,22 @@ function ProjectAnswerCard({ slug, onNavigate }) {
   );
 }
 
-function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, onShare, onNavigate }) {
+function AgentActionButtons({ actions = [], onAction }) {
+  const visible = actions.filter((action) => !action.auto_execute || action.type === "walkthrough" || action.type === "contact");
+  if (!visible.length) return null;
+  return <div className="assistant-agent-actions" aria-label="Portfolio actions">
+    {visible.map((action) => <button key={`${action.type}-${action.target}`} type="button" onClick={() => onAction(action)}>
+      <HiSparkles /> {action.label}
+    </button>)}
+  </div>;
+}
+
+function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, onShare, onNavigate, onAgentAction }) {
   if (!msg.done || msg.error || msg.stopped || (!msg.question && !msg.sources?.length)) return null;
   return (
     <div className="assistant-answer-extras">
       {msg.project && <ProjectAnswerCard slug={msg.project} onNavigate={onNavigate} />}
+      <AgentActionButtons actions={msg.actions} onAction={onAgentAction} />
       {!!msg.sources?.length && (
         <div className="assistant-citations"><span>Sources</span>{msg.sources.map((source) => <Link key={`${source.url}-${source.title}`} to={source.url} onClick={onNavigate}>{source.title}</Link>)}</div>
       )}
@@ -76,7 +88,7 @@ function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, on
   );
 }
 
-function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegenerate, onShare, onNavigate }) {
+function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegenerate, onShare, onNavigate, onAgentAction }) {
   const isUser = msg.from === "user";
   return (
     <motion.article
@@ -91,12 +103,16 @@ function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegene
         <div className={`assistant-bubble ${msg.error ? "is-error" : ""}`}>
           {!msg.text && !isUser ? <TypingDots /> : msg.text}
         </div>
+        {!isUser && (msg.agentStatus || msg.tools?.length) && <div className="assistant-agent-trace">
+          <span><HiSparkles /> {msg.agentStatus || "Portfolio tools complete"}</span>
+          {!!msg.tools?.length && <small>{msg.tools.map((tool) => tool.name.replaceAll("_", " ")).join(" · ")}</small>}
+        </div>}
         <div className="assistant-message-meta">
           <time dateTime={new Date(msg.ts).toISOString()}>{fmtTime(msg.ts)}</time>
           {!isUser && msg.done && msg.text && !msg.error && <CopyButton text={msg.text} />}
           {isUser && <button type="button" className="assistant-copy" onClick={() => onEdit(msg.text)} aria-label="Edit question"><FiEdit3 /></button>}
         </div>
-        {!isUser && <MessageExtras msg={msg} feedback={feedback} onFeedback={onFeedback} onFollowup={onFollowup} onRegenerate={onRegenerate} onShare={onShare} onNavigate={onNavigate} />}
+        {!isUser && <MessageExtras msg={msg} feedback={feedback} onFeedback={onFeedback} onFollowup={onFollowup} onRegenerate={onRegenerate} onShare={onShare} onNavigate={onNavigate} onAgentAction={onAgentAction} />}
       </div>
     </motion.article>
   );
@@ -173,6 +189,7 @@ function HistoryPanel({ sessions, activeId, onClose, onNew, onSwitch, onRename, 
 
 export default function PortfolioAssistant() {
   const { language } = useLanguage();
+  const navigate = useNavigate();
   const launcherRef = useRef(null);
   const panelRef = useRef(null);
   const scrollRef = useRef(null);
@@ -186,6 +203,9 @@ export default function PortfolioAssistant() {
   const [listening, setListening] = useState(false);
   const [voiceError, setVoiceError] = useState("");
   const [feedback, setFeedback] = useState({});
+  const [walkthrough, setWalkthrough] = useState(null);
+  const [walkthroughIndex, setWalkthroughIndex] = useState(0);
+  const executedActionsRef = useRef(new Set());
   const [largeText, setLargeText] = useState(() => localStorage.getItem("assistant-large-text") === "true");
   const [highContrast, setHighContrast] = useState(() => localStorage.getItem("assistant-high-contrast") === "true");
   const {
@@ -234,6 +254,16 @@ export default function PortfolioAssistant() {
     return () => document.removeEventListener("keydown", handler);
   }, [open, showHistory]);
   useEffect(() => { if (!input && inputRef.current) inputRef.current.style.height = "auto"; }, [input]);
+  useEffect(() => {
+    const latest = [...messages].reverse().find((message) => message.from === "bot" && message.done && message.actions?.length);
+    if (!latest) return;
+    latest.actions.forEach((action) => {
+      const key = `${latest.id}:${action.type}:${action.target}`;
+      if (executedActionsRef.current.has(key)) return;
+      executedActionsRef.current.add(key);
+      executeAgentAction(action, navigate);
+    });
+  }, [messages, navigate]);
 
   const handleScroll = () => {
     const element = scrollRef.current;
@@ -317,6 +347,33 @@ export default function PortfolioAssistant() {
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
+  const runAgentAction = (action) => {
+    const safe = validateAgentAction(action);
+    if (!safe) return;
+    if (safe.type === "contact") {
+      const topic = String(safe.data?.topic || "your portfolio").slice(0, 240);
+      navigate(`/contact?message=${encodeURIComponent(`Hi Vigneshwaran, I reviewed your portfolio and would like to discuss ${topic}.`)}`);
+      closePanel();
+      return;
+    }
+    if (safe.type === "walkthrough") {
+      setWalkthrough(safe);
+      setWalkthroughIndex(0);
+      navigate(safe.resolved.path);
+      setTimeout(() => highlightAgentTarget("[data-walkthrough-step='0']"), 180);
+      return;
+    }
+    navigate(safe.resolved.path);
+    setTimeout(() => highlightAgentTarget(safe.resolved.selector), 150);
+  };
+
+  const moveWalkthrough = (next) => {
+    const steps = walkthrough?.data?.steps || [];
+    const index = Math.max(0, Math.min(steps.length - 1, next));
+    setWalkthroughIndex(index);
+    highlightAgentTarget(`[data-walkthrough-step='${index}']`);
+  };
+
   const handleTouchStart = (event) => { touchStartRef.current = event.touches[0]?.clientY ?? null; };
   const handleTouchEnd = (event) => {
     const end = event.changedTouches[0]?.clientY;
@@ -384,7 +441,7 @@ export default function PortfolioAssistant() {
             </header>
 
             <div ref={scrollRef} onScroll={handleScroll} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading} className="assistant-conversation">
-              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>Groq</span><p>Answers grounded in portfolio content</p></div>
+              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>LangGraph</span><span>Groq</span><p>Grounded answers with safe portfolio tools</p></div>
               {messages.map((message) => (
                 <MessageBubble
                   key={message.id}
@@ -396,6 +453,7 @@ export default function PortfolioAssistant() {
                   onRegenerate={(question) => question && sendMessage(question, { appendUser: false })}
                   onShare={shareAnswer}
                   onNavigate={closePanel}
+                  onAgentAction={runAgentAction}
                 />
               ))}
               {showStarters && <StarterPanel loading={loading} activeChip={activeChip} onSelect={selectStarter} onNavigate={closePanel} />}
@@ -459,6 +517,17 @@ export default function PortfolioAssistant() {
             </AnimatePresence>
           </motion.section>
         )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {walkthrough && <motion.aside className="assistant-walkthrough" role="dialog" aria-label="Project walkthrough" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }}>
+          <div><span>Interactive walkthrough</span><button type="button" onClick={() => setWalkthrough(null)} aria-label="Close walkthrough"><FiX /></button></div>
+          <strong>{walkthrough.data.steps[walkthroughIndex]}</strong>
+          <p>Step {walkthroughIndex + 1} of {walkthrough.data.steps.length}</p>
+          <nav>
+            <button type="button" disabled={walkthroughIndex === 0} onClick={() => moveWalkthrough(walkthroughIndex - 1)}>Previous</button>
+            <button type="button" disabled={walkthroughIndex === walkthrough.data.steps.length - 1} onClick={() => moveWalkthrough(walkthroughIndex + 1)}>Next</button>
+          </nav>
+        </motion.aside>}
       </AnimatePresence>
     </>
   );

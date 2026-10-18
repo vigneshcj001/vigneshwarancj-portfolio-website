@@ -325,7 +325,7 @@ const Resume = () => {
   };
 
   return (
-    <div className="min-h-screen px-4 pt-24 pb-20 print:p-0 print:pt-0 print:min-h-0">
+    <div id="portfolio-resume" className="min-h-screen px-4 pt-24 pb-20 print:p-0 print:pt-0 print:min-h-0">
       <div className="max-w-4xl mx-auto">
         {/* Page header */}
         <div className="text-center mb-8 no-print">

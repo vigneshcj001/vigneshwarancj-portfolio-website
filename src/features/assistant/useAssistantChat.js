@@ -87,6 +87,7 @@ export default function useAssistantChat(language = "en") {
     setActiveChip(null);
     setLoading(true);
     incrementUsage();
+    let liveTools = [];
 
     try {
       let result;
@@ -95,11 +96,18 @@ export default function useAssistantChat(language = "en") {
           setConnection(attempt ? "reconnecting" : "connected");
           if (attempt) patchMessage(botId, { text: "" });
           result = await consumeAssistantStream(
-            { message, history, language },
+            { message, history, language, session_id: activeSessionId },
             controller.signal,
             (chunk) => updateMessages((current) => current.map((item) =>
               item.id === botId ? { ...item, text: `${item.text || ""}${chunk}` } : item
             )),
+            (event) => {
+              if (event.type === "status") patchMessage(botId, { agentStatus: event.message });
+              if (event.type === "tool") {
+                liveTools = [...liveTools, event.tool];
+                patchMessage(botId, { tools: liveTools });
+              }
+            },
           );
           break;
         } catch (error) {
@@ -107,7 +115,10 @@ export default function useAssistantChat(language = "en") {
           await new Promise((resolve) => setTimeout(resolve, 450));
         }
       }
-      patchMessage(botId, { text: result.full, done: true, sources: result.sources, followups: result.followups, project: result.project });
+      patchMessage(botId, {
+        text: result.full, done: true, sources: result.sources, followups: result.followups,
+        project: result.project, actions: result.actions, tools: result.tools, agentStatus: "Answer ready",
+      });
       setConnection("connected");
     } catch (error) {
       if (controller.signal.aborted && !timedOut) return;
@@ -121,7 +132,7 @@ export default function useAssistantChat(language = "en") {
       clearTimeout(timeout);
       if (abortRef.current === controller) setLoading(false);
     }
-  }, [language, loading, patchMessage, updateMessages, usage.count]);
+  }, [activeSessionId, language, loading, patchMessage, updateMessages, usage.count]);
 
   const clearChat = useCallback(() => {
     abortRef.current?.abort();

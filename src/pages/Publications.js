@@ -19,7 +19,7 @@ const Publications = () => {
       : publications.filter((p) => p.type === activeFilter);
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
+    <div id="portfolio-publications" className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <PageHeader
           badge="Research Output"

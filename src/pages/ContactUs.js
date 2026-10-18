@@ -29,7 +29,7 @@ const ContactUs = () => {
   const onSubmit = () => sendEmail(formRef.current, reset);
 
   return (
-    <div className="min-h-screen pt-24 pb-20 px-4 md:px-8">
+    <div id="portfolio-contact" className="min-h-screen pt-24 pb-20 px-4 md:px-8">
       <div className="max-w-xl mx-auto">
         {/* Header */}
         <motion.div
