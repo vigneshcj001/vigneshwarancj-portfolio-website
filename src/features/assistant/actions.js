@@ -16,26 +16,32 @@ export const AGENT_TARGETS = Object.freeze({
 
 export function validateAgentAction(action) {
   if (!action || !["navigate", "highlight", "walkthrough", "contact"].includes(action.type)) return null;
-  const target = AGENT_TARGETS[action.target];
+  const target = Object.hasOwn(AGENT_TARGETS, action.target) ? AGENT_TARGETS[action.target] : null;
+  if (action.type === "walkthrough" && (!Array.isArray(action.data?.steps) || !action.data.steps.length || action.data.steps.some((step) => typeof step !== "string"))) return null;
   return target ? { ...action, resolved: target } : null;
 }
 
-export function highlightAgentTarget(selector, attempt = 0) {
+export async function highlightAgentTarget(selector, attempt = 0) {
   const element = document.querySelector(selector);
   if (!element && attempt < 8) {
-    setTimeout(() => highlightAgentTarget(selector, attempt + 1), 90);
-    return;
+    await new Promise((resolve) => setTimeout(resolve, 90));
+    return highlightAgentTarget(selector, attempt + 1);
   }
-  if (!element) return;
+  if (!element) return false;
   element.scrollIntoView({ behavior: "smooth", block: "center" });
   element.classList.add("agent-highlight");
   setTimeout(() => element.classList.remove("agent-highlight"), 2600);
+  return true;
 }
 
-export function executeAgentAction(action, navigate) {
+export async function executeAgentAction(action, navigate) {
   const safe = validateAgentAction(action);
-  if (!safe || !safe.auto_execute || safe.requires_confirmation) return false;
+  if (!safe || !["navigate", "highlight"].includes(safe.type) || !safe.auto_execute || safe.requires_confirmation) return null;
   navigate(safe.resolved.path);
-  setTimeout(() => highlightAgentTarget(safe.resolved.selector), 120);
-  return true;
+  const found = await highlightAgentTarget(safe.resolved.selector);
+  const name = safe.label.replace(/^(Open|Highlight) /, "");
+  return {
+    status: found ? "completed" : "failed",
+    text: found ? `${safe.type === "navigate" ? "Opened" : "Highlighted"} ${name}` : `Could not locate ${name}. Use the project link to try again.`,
+  };
 }

@@ -71,7 +71,7 @@ function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, on
   return (
     <div className="assistant-answer-extras">
       {msg.project && <ProjectAnswerCard slug={msg.project} onNavigate={onNavigate} />}
-      <AgentActionButtons actions={msg.actions} onAction={onAgentAction} />
+      <AgentActionButtons actions={msg.actions} onAction={(action) => onAgentAction(action, msg.id)} />
       {!!msg.sources?.length && (
         <div className="assistant-citations"><span>Sources</span>{msg.sources.map((source) => <Link key={`${source.url}-${source.title}`} to={source.url} onClick={onNavigate}>{source.title}</Link>)}</div>
       )}
@@ -88,7 +88,7 @@ function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, on
   );
 }
 
-function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegenerate, onShare, onNavigate, onAgentAction }) {
+function MessageBubble({ msg, feedback, actionResults = {}, onEdit, onFeedback, onFollowup, onRegenerate, onShare, onNavigate, onAgentAction }) {
   const isUser = msg.from === "user";
   return (
     <motion.article
@@ -101,12 +101,13 @@ function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegene
       {!isUser && <img src={botAvatar} alt="" className="assistant-message-avatar" loading="lazy" />}
       <div className="assistant-message-content">
         <div className={`assistant-bubble ${msg.error ? "is-error" : ""}`}>
-          {!msg.text && !isUser ? <TypingDots /> : msg.text}
+          {!msg.text && !isUser ? <><TypingDots /><span className="assistant-progress-copy">{msg.agentStatus || "Connecting to the portfolio"}</span></> : msg.text}
         </div>
         {!isUser && (msg.agentStatus || msg.tools?.length) && <div className="assistant-agent-trace">
-          <span><HiSparkles /> {msg.agentStatus || "Portfolio tools complete"}</span>
-          {!!msg.tools?.length && <small>{msg.tools.map((tool) => tool.name.replaceAll("_", " ")).join(" · ")}</small>}
+          <span><HiSparkles /> {msg.done ? "What was checked" : msg.agentStatus}</span>
+          {!!msg.tools?.length && <ul>{msg.tools.filter((tool) => tool.summary).map((tool, index) => <li key={`${tool.name}-${index}`} data-status={tool.status}><span aria-hidden="true">{tool.status === "failed" ? "!" : "✓"}</span>{tool.summary}</li>)}</ul>}
         </div>}
+        {!!Object.keys(actionResults).length && <ul className="assistant-action-results" aria-label="Action results">{Object.entries(actionResults).map(([key, result]) => <li key={key} data-status={result.status}>{result.text}</li>)}</ul>}
         <div className="assistant-message-meta">
           <time dateTime={new Date(msg.ts).toISOString()}>{fmtTime(msg.ts)}</time>
           {!isUser && msg.done && msg.text && !msg.error && <CopyButton text={msg.text} />}
@@ -123,7 +124,7 @@ function StarterPanel({ loading, activeChip, onSelect, onNavigate }) {
     <section className="assistant-starters" aria-label="Suggested questions">
       <div className="assistant-starter-heading">
         <div><HiSparkles /><strong>Experience Agentic AI</strong></div>
-        <p>Choose a demo. Agent selects tools and shows each action.</p>
+        <p>Choose a question to inspect the work, open a case study, or prepare a draft.</p>
       </div>
       <div className="assistant-starter-grid">
         {STARTER_QUESTIONS.map((question, index) => (
@@ -155,9 +156,9 @@ function StarterPanel({ loading, activeChip, onSelect, onNavigate }) {
   );
 }
 
-function ConnectionLabel({ connection, loading }) {
-  if (loading) return "Writing response";
+function ConnectionLabel({ connection, loading, activity }) {
   if (connection === "reconnecting") return "Reconnecting";
+  if (loading) return activity || "Connecting to the portfolio";
   if (connection === "error") return "Connection unavailable";
   return "Ready to answer";
 }
@@ -206,6 +207,7 @@ export default function PortfolioAssistant() {
   const [listening, setListening] = useState(false);
   const [voiceError, setVoiceError] = useState("");
   const [feedback, setFeedback] = useState({});
+  const [actionResults, setActionResults] = useState({});
   const [walkthrough, setWalkthrough] = useState(null);
   const [walkthroughIndex, setWalkthroughIndex] = useState(0);
   const executedActionsRef = useRef(new Set());
@@ -271,12 +273,14 @@ export default function PortfolioAssistant() {
   useEffect(() => { if (!input && inputRef.current) inputRef.current.style.height = "auto"; }, [input]);
   useEffect(() => {
     const latest = [...messages].reverse().find((message) => message.from === "bot" && message.done && message.actions?.length);
-    if (!latest) return;
+    if (!latest || !latest.runActions || latest.error || latest.stopped) return;
     latest.actions.forEach((action) => {
       const key = `${latest.id}:${action.type}:${action.target}`;
       if (executedActionsRef.current.has(key)) return;
       executedActionsRef.current.add(key);
-      executeAgentAction(action, navigate);
+      executeAgentAction(action, navigate).then((result) => {
+        if (result) setActionResults((current) => ({ ...current, [latest.id]: { ...current[latest.id], [`${action.type}:${action.target}`]: result } }));
+      });
     });
   }, [messages, navigate]);
 
@@ -362,24 +366,30 @@ export default function PortfolioAssistant() {
     setTimeout(() => inputRef.current?.focus(), 0);
   };
 
-  const runAgentAction = (action) => {
+  const runAgentAction = async (action, messageId) => {
     const safe = validateAgentAction(action);
     if (!safe) return;
+    const recordResult = (result) => setActionResults((current) => ({ ...current, [messageId]: { ...current[messageId], [`${safe.type}:${safe.target}`]: result } }));
     if (safe.type === "contact") {
       const topic = String(safe.data?.topic || "your portfolio").slice(0, 240);
       navigate(`/contact?message=${encodeURIComponent(`Hi Vigneshwaran, I reviewed your portfolio and would like to discuss ${topic}.`)}`);
       closePanel();
+      const found = await highlightAgentTarget(safe.resolved.selector);
+      const prepared = found && document.getElementById("message")?.value.includes(topic);
+      recordResult({ status: prepared ? "completed" : "failed", text: prepared ? "Contact draft placed in the form. Review it and select Send Message yourself; nothing has been sent." : "Contact page opened, but the draft could not be confirmed. Nothing has been sent." });
       return;
     }
     if (safe.type === "walkthrough") {
       setWalkthrough(safe);
       setWalkthroughIndex(0);
       navigate(safe.resolved.path);
-      setTimeout(() => highlightAgentTarget("[data-walkthrough-step='0']"), 180);
+      const found = await highlightAgentTarget("[data-walkthrough-step='0']");
+      const title = projectForSlug(safe.data?.project)?.title.split(":")[0] || "Project";
+      recordResult({ status: found ? "completed" : "failed", text: found ? `Started ${title} walkthrough at the overview` : "Walkthrough opened, but its overview could not be located." });
       return;
     }
-    navigate(safe.resolved.path);
-    setTimeout(() => highlightAgentTarget(safe.resolved.selector), 150);
+    const result = await executeAgentAction({ ...safe, auto_execute: true }, navigate);
+    if (result) recordResult(result);
   };
 
   const moveWalkthrough = (next) => {
@@ -443,7 +453,7 @@ export default function PortfolioAssistant() {
                 <span className="assistant-brand-icon"><HiSparkles /></span>
                 <div>
                   <h2 id="assistant-title">Portfolio assistant</h2>
-                  <p className={connection === "error" ? "is-error" : ""}><i /> <ConnectionLabel connection={connection} loading={loading} /></p>
+                  <p className={connection === "error" ? "is-error" : ""}><i /> <ConnectionLabel connection={connection} loading={loading} activity={messages.at(-1)?.agentStatus} /></p>
                 </div>
               </div>
               <div className="assistant-header-actions">
@@ -456,12 +466,13 @@ export default function PortfolioAssistant() {
             </header>
 
             <div ref={scrollRef} onScroll={handleScroll} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading} className="assistant-conversation">
-              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>LangGraph</span><span>Groq</span><p>Plans · uses tools · acts safely</p></div>
+              <div className="assistant-context-note"><span>Portfolio sources</span><p>Project facts, contribution details, and actions you can review</p></div>
               {messages.map((message) => (
                 <MessageBubble
                   key={message.id}
                   msg={message}
                   feedback={feedback[message.id]}
+                  actionResults={actionResults[message.id]}
                   onEdit={editQuestion}
                   onFeedback={recordFeedback}
                   onFollowup={submitMessage}

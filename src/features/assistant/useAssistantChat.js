@@ -81,7 +81,7 @@ export default function useAssistantChat(language = "en") {
     updateMessages((current) => [
       ...current,
       ...(options.appendUser === false ? [] : [{ id: userId, from: "user", text: message, ts: now, done: true }]),
-      { id: botId, from: "bot", text: "", question: message, ts: now + 1, done: false },
+      { id: botId, from: "bot", text: "", question: message, ts: now + 1, done: false, agentStatus: `Looking up “${message.slice(0, 90)}${message.length > 90 ? "…" : ""}”` },
     ]);
     setInput("");
     setActiveChip(null);
@@ -94,7 +94,10 @@ export default function useAssistantChat(language = "en") {
       for (let attempt = 0; attempt < 2; attempt += 1) {
         try {
           setConnection(attempt ? "reconnecting" : "connected");
-          if (attempt) patchMessage(botId, { text: "" });
+          if (attempt) {
+            liveTools = [];
+            patchMessage(botId, { text: "", tools: [], agentStatus: "Reconnecting to retrieve the requested portfolio details" });
+          }
           result = await consumeAssistantStream(
             { message, history, language, session_id: activeSessionId },
             controller.signal,
@@ -117,7 +120,7 @@ export default function useAssistantChat(language = "en") {
       }
       patchMessage(botId, {
         text: result.full, done: true, sources: result.sources, followups: result.followups,
-        project: result.project, actions: result.actions, tools: result.tools, agentStatus: "Answer ready",
+        project: result.project, actions: result.actions, tools: result.tools, agentStatus: "", runActions: true,
       });
       setConnection("connected");
     } catch (error) {

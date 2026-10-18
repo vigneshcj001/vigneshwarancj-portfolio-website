@@ -12,7 +12,7 @@ export function loadSessionState() {
   try {
     const sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY) || "[]")
       .filter((session) => session?.id && Array.isArray(session.messages))
-      .map((session) => ({ ...session, messages: session.messages.map((message) => ({ ...message, done: true })) }))
+      .map((session) => ({ ...session, messages: session.messages.map((message) => ({ ...message, done: true, runActions: false })) }))
       .slice(0, 12);
     if (sessions.length) {
       const savedActive = localStorage.getItem(ACTIVE_KEY);
