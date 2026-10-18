@@ -121,7 +121,10 @@ function MessageBubble({ msg, feedback, onEdit, onFeedback, onFollowup, onRegene
 function StarterPanel({ loading, activeChip, onSelect, onNavigate }) {
   return (
     <section className="assistant-starters" aria-label="Suggested questions">
-      <p>Try a question</p>
+      <div className="assistant-starter-heading">
+        <div><HiSparkles /><strong>Experience Agentic AI</strong></div>
+        <p>Choose a demo. Agent selects tools and shows each action.</p>
+      </div>
       <div className="assistant-starter-grid">
         {STARTER_QUESTIONS.map((question, index) => (
           <button
@@ -132,7 +135,7 @@ function StarterPanel({ loading, activeChip, onSelect, onNavigate }) {
             className={activeChip === index ? "is-active" : ""}
           >
             <span aria-hidden="true">{question.icon}</span>
-            {question.text}
+            <span><strong>{question.title}</strong><small>{question.capability}</small></span>
           </button>
         ))}
       </div>
@@ -213,6 +216,18 @@ export default function PortfolioAssistant() {
     loading, sendMessage, clearChat, stopResponse, sessions, activeSessionId,
     newChat, switchSession, renameSession, deleteSession, usageRemaining,
   } = useAssistantChat(language);
+
+  useEffect(() => {
+    const openFromPage = (event) => {
+      const question = typeof event.detail?.question === "string" ? event.detail.question : "";
+      setOpen(true);
+      if (!question) return;
+      setInput(question);
+      if (event.detail?.autoSubmit && !loading) sendMessage(question);
+    };
+    window.addEventListener("portfolio-assistant:open", openFromPage);
+    return () => window.removeEventListener("portfolio-assistant:open", openFromPage);
+  }, [loading, sendMessage, setInput]);
 
   const closePanel = () => {
     recognitionRef.current?.stop();
@@ -441,7 +456,7 @@ export default function PortfolioAssistant() {
             </header>
 
             <div ref={scrollRef} onScroll={handleScroll} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading} className="assistant-conversation">
-              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>LangGraph</span><span>Groq</span><p>Grounded answers with safe portfolio tools</p></div>
+              <div className="assistant-context-note"><span>OKF</span><span>Laya</span><span>LangGraph</span><span>Groq</span><p>Plans · uses tools · acts safely</p></div>
               {messages.map((message) => (
                 <MessageBubble
                   key={message.id}

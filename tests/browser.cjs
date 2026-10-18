@@ -12,7 +12,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  await page.goto(base); await page.getByRole('heading',{name:/Useful software/}).waitFor();
  await page.screenshot({path:path.resolve('homepage-desktop.png'),fullPage:true});
- await page.getByRole('button',{name:/Ask about a project/}).click();await page.getByRole('region',{name:'Portfolio assistant'}).waitFor();await page.getByRole('button',{name:'Close',exact:true}).click();
+ await page.getByRole('button',{name:/Try Agentic AI/}).click();const introAssistant=page.getByRole('region',{name:'Portfolio assistant'});await introAssistant.waitFor();await introAssistant.getByText('Experience Agentic AI').waitFor();assert.equal(await introAssistant.locator('.assistant-starter-grid button').count(),6);await page.getByRole('button',{name:'Close',exact:true}).click();
  await page.getByRole('link',{name:/View résumé/}).click(); await page.getByRole('heading',{name:'Resume',exact:true}).waitFor();
  await page.route('**/api/resume',route=>route.fulfill({status:503,body:'Unavailable'}));
  const downloadPromise=page.waitForEvent('download'); await page.getByRole('button',{name:'Download PDF'}).click(); const download=await downloadPromise;

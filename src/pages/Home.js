@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { HiSparkles } from "react-icons/hi2";
 import portrait640 from "url:../assets/portrait-640.webp";
 import portrait960 from "url:../assets/portrait-960.webp";
 import portrait1536 from "url:../assets/portrait-1536.webp";
@@ -19,6 +20,15 @@ const ASSISTANT_STACK = [
   ["LangGraph", "Tool planning and session state"],
   ["Groq", "Fast streamed generation"],
 ];
+const AGENT_DEMOS = [
+  ["Search + navigate", "Find Vigneshwaran's strongest Agentic AI project, explain why, and show it."],
+  ["Interactive walkthrough", "Give me a step-by-step walkthrough of AIORA architecture."],
+  ["Safe contact action", "I want to hire Vigneshwaran for an AI engineering role. Prepare a contact action."],
+];
+
+function openAgent(question = "", autoSubmit = false) {
+  window.dispatchEvent(new CustomEvent("portfolio-assistant:open", { detail: { question, autoSubmit } }));
+}
 
 function FeaturedProject({ slug, position }) {
   const study = caseStudies[slug];
@@ -59,6 +69,7 @@ export default function Home() {
           <div className="action-row">
             <Link className="primary-action" to="/projects">{copy.work} <span aria-hidden="true">→</span></Link>
             <Link className="secondary-action" to="/resume" onClick={() => trackConversion("resume_view", { source: "home" })}>{copy.resume} <span aria-hidden="true">↗</span></Link>
+            <button type="button" className="agentic-action" onClick={() => openAgent()}><span>✦</span> Try Agentic AI</button>
           </div>
           <div className="hero-status"><span className="availability-dot" /><span>{copy.note}</span></div>
         </div>
@@ -101,9 +112,10 @@ export default function Home() {
           <Link className="text-link" to="/experience">See role and contribution details ↗</Link>
         </article>
         <article className="assistant-architecture-card">
-          <div><p className="eyebrow">This portfolio’s AI</p><h2>Answers grounded in published work.</h2><p>Assistant uses same structured Markdown that builds portfolio content. LangGraph selects typed tools, preserves session context, and streams validated portfolio actions with each grounded answer.</p></div>
+          <div className="agentic-card-heading"><p className="eyebrow"><i /> Live Agentic AI</p><h2>Ask. Plan. Use tools. Act.</h2><p>More than chat. Assistant searches verified Markdown, selects typed tools, remembers context, navigates portfolio, and asks before contact actions.</p></div>
+          <div className="agentic-flow" aria-label="Agent flow"><span>Question</span><b>→</b><span>Laya route</span><b>→</b><span>LangGraph plan</span><b>→</b><span>Safe action</span></div>
           <ol>{ASSISTANT_STACK.map(([name, detail], index) => <li key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{detail}</p></div></li>)}</ol>
-          <button type="button" className="assistant-hint" onClick={() => document.querySelector('[aria-label="Ask CJ\'s AI"]')?.click()}>Ask about a project <span aria-hidden="true">→</span></button>
+          <div className="agentic-demo-list"><span>Try live demos</span>{AGENT_DEMOS.map(([label, question]) => <button type="button" key={label} onClick={() => openAgent(question, true)}><HiSparkles aria-hidden="true" /> <strong>{label}</strong><em>Run demo →</em></button>)}</div>
         </article>
       </section>
 
