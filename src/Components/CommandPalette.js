@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router";
+import { createPortal } from "react-dom";
 import { Search, X } from "lucide-react";
 import { projects } from "../data/projects";
 import { publications } from "../data/publications";
@@ -41,13 +42,16 @@ export default function CommandPalette() {
   useEffect(() => { if (open) setTimeout(() => inputRef.current?.focus(), 0); else setQuery(""); }, [open]);
 
   const select = (to) => { navigate(to); setOpen(false); };
-  if (!open) return <button className="command-trigger" onClick={() => setOpen(true)} aria-label="Search portfolio"><Search size={16} /><span>Search</span><kbd>Ctrl K</kbd></button>;
   return (
+    <>
+    <button type="button" className="command-trigger" onClick={() => setOpen(true)} aria-label="Search portfolio" aria-expanded={open} aria-haspopup="dialog"><Search size={16} /><span>Search</span><kbd>Ctrl K</kbd></button>
+    {open && createPortal(
     <div className="command-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setOpen(false); }}>
       <section className="command-dialog" role="dialog" aria-modal="true" aria-label="Search portfolio">
         <div className="command-input"><Search size={18} /><input ref={inputRef} value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search projects, skills, publications…" aria-label="Search" /><button onClick={() => setOpen(false)} aria-label="Close search"><X size={18} /></button></div>
         <div className="command-results" role="listbox">{matches.length ? matches.map((entry, index) => <button key={`${entry.to}-${entry.title}-${index}`} onClick={() => select(entry.to)} role="option"><strong>{entry.title}</strong><span>{entry.subtitle}</span></button>) : <p>No matching work found.</p>}</div>
       </section>
-    </div>
+    </div>, document.body)}
+    </>
   );
 }

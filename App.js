@@ -11,7 +11,6 @@ import Footer from "./src/Components/Footer";
 import PortfolioAssistant from "./src/Components/PortfolioAssistant";
 import ErrorBoundary from "./src/Components/ErrorBoundary";
 import BackToTop from "./src/Components/BackToTop";
-import CommandPalette from "./src/Components/CommandPalette";
 import { LanguageProvider } from "./src/Contexts/LanguageContext";
 import usePageTranslation from "./src/Hooks/usePageTranslation";
 
@@ -97,7 +96,6 @@ function AppContent() {
       </a>
 
       <Header />
-      <CommandPalette />
 
       <main tabIndex={-1} id="main-content" className="flex-1 flex flex-col">
         <ErrorBoundary>

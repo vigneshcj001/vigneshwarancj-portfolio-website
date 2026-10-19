@@ -33,7 +33,7 @@ const NavBar = ({ mobile = false, dark, theme, setTheme }) => {
       className={`${
         mobile
           ? "flex flex-col space-y-1"
-          : "flex items-center space-x-6"
+          : "flex items-center gap-5"
       }`}
     >
       <Link to="/" className={linkClass("/")}>

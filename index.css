@@ -211,12 +211,11 @@
 .approval-box { margin-top: 14px; border: 1px solid #f59e0b; background: #fffbeb; border-radius: 12px; padding: 16px; }
 .dark .approval-box { background: #3b2509; }
 .approval-box p { margin: 5px 0 12px; font-size: 13px; }
-.command-trigger { position: fixed; right: 88px; top: 14px; z-index: 60; display: flex; align-items: center; gap: 7px; border: 1px solid #cbd5e1; background: #ffffffd9; backdrop-filter: blur(12px); border-radius: 9px; padding: 8px 10px; font-size: 12px; }
+.command-trigger { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; gap: 7px; min-height: 40px; border: 1px solid #cbd5e1; background: #ffffffd9; border-radius: 9px; padding: 8px 10px; font-size: 12px; }
 .dark .command-trigger { background: #111827d9; border-color: #475569; }
 .language-select { max-width: 132px; border: 1px solid #cbd5e1; border-radius: 9px; padding: 8px 28px 8px 10px; background: #fff; color: #334155; font-size: 12px; font-weight: 700; cursor: pointer; }
 .dark .language-select { background: #1f2937; border-color: #475569; color: #f8fafc; }
 html[dir="rtl"] body { direction: rtl; }
-html[dir="rtl"] .command-trigger { right: auto; left: 88px; }
 html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
 .command-trigger kbd { color: #64748b; font-size: 10px; }
 .command-backdrop { position: fixed; inset: 0; z-index: 100; background: #0f172a99; display: grid; place-items: start center; padding: 12vh 20px 20px; }
@@ -456,8 +455,6 @@ html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
   .pet-stage, .live-proof { grid-template-columns: 1fr; }
   .career-timeline { grid-template-columns: 1fr; }
   .availability-banner { align-items: flex-start; flex-direction: column; }
-  .command-trigger { right: 64px; }
-  html[dir="rtl"] .command-trigger { right: auto; left: 64px; }
   .command-trigger span, .command-trigger kbd { display: none; }
 }
 @media (max-width: 640px) {
@@ -493,7 +490,8 @@ html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
 
 /* Portfolio landing page: tighter proof-led narrative */
 .site-header { padding: 14px 24px; }
-.header-inner { width: min(1120px, 100%); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; }
+.header-inner { width: min(1120px, 100%); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.header-controls { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .home-page { background:
   radial-gradient(circle at 88% 5%, #dbeafe 0, transparent 24rem),
   radial-gradient(circle at 8% 35%, #eef2ff 0, transparent 28rem),

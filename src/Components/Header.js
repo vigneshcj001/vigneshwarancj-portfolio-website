@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import NavBar from "./NavBar";
+import CommandPalette from "./CommandPalette";
 
 const Header = () => {
   const location = useLocation();
@@ -38,15 +39,17 @@ const Header = () => {
       {/* Logo */}
       <Link
         to="/"
-        className="text-xl font-black tracking-tight bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+        className="shrink-0 text-xl font-black tracking-tight bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
       >
         vigneshwaran<span className="text-blue-500">.</span>
       </Link>
 
       {/* Desktop Navigation */}
+      <div className="header-controls">
       <nav className="hidden xl:flex">
         <NavBar dark={dark} theme={theme} setTheme={setTheme} />
       </nav>
+      <CommandPalette />
 
       {/* Mobile Menu Button */}
       <button
@@ -56,6 +59,7 @@ const Header = () => {
       >
         {isOpen ? <X size={22} /> : <Menu size={22} />}
       </button>
+      </div>
 
       {/* Mobile Navigation Dropdown */}
       {isOpen && (
