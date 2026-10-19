@@ -22,7 +22,7 @@
     "build": "parcel build index.html --public-url / --no-cache --no-source-maps --cache-dir .parcel-build-cache && node scripts/postbuild.mjs",
     "preview": "node scripts/preview.mjs",
     "test": "node --test tests/build.test.cjs tests/assistant.test.cjs",
-    "test:browser": "node tests/browser.cjs && node tests/assistant.browser.cjs",
+    "test:browser": "node tests/browser.cjs && node tests/assistant.browser.cjs && node tests/architecture.browser.cjs",
     "test:all": "npm test && npm run test:browser",
     "resume:pdf": "node scripts/generate-resume.cjs"
   },

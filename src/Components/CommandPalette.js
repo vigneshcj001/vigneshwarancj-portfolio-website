@@ -10,6 +10,7 @@ const pages = [
   ["Home", "/"], ["Projects", "/projects"], ["Experience", "/experience"],
   ["Publications", "/publications"], ["Skills", "/skills"], ["Writing", "/writing"],
   ["Résumé", "/resume"], ["Contact", "/contact"],
+  ["AI assistant architecture and request flow", "/assistant-architecture"],
 ];
 
 export default function CommandPalette() {

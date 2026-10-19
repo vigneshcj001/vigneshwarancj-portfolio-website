@@ -16,6 +16,7 @@ import { LanguageProvider } from "./src/Contexts/LanguageContext";
 import usePageTranslation from "./src/Hooks/usePageTranslation";
 
 const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
+const AssistantArchitecture = lazy(() => import("./src/pages/AssistantArchitecture"));
 const Writing = lazy(() => import("./src/pages/Writing"));
 const Home         = lazy(() => import("./src/pages/Home"));
 const About        = lazy(() => import("./src/pages/About"));
@@ -112,6 +113,7 @@ function AppContent() {
               >
                 <Routes location={location}>
                   <Route path="/"             element={<Home />} />
+                  <Route path="/assistant-architecture" element={<AssistantArchitecture />} />
                   <Route path="/about"        element={<About />} />
                   <Route path="/experience"   element={<Experience />} />
                   <Route path="/projects/:slug" element={<CaseStudy />} />

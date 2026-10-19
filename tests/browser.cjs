@@ -5,13 +5,14 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 (async () => {
  const browser = await chromium.launch({ headless: true, ...(process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : {}) });
  try {
+ fs.mkdirSync(path.resolve('tmp'),{recursive:true});
  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 }, reducedMotion: 'reduce' });
  const errors=[]; page.on('pageerror', error => errors.push(error.message));
  await page.route('**/_vercel/**', route => route.fulfill({contentType:'application/javascript',body:''}));
  await page.route('**/api/translate',async route=>{const body=route.request().postDataJSON();route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({translations:body.texts.map(text=>`${body.language} ${text}`)})});});
  const base=process.env.PREVIEW_URL || 'http://127.0.0.1:4173';
  await page.goto(base); await page.getByRole('heading',{name:/Useful software/}).waitFor();
- await page.screenshot({path:path.resolve('homepage-desktop.png'),fullPage:true});
+ await page.screenshot({path:path.resolve('tmp/homepage-desktop.png'),fullPage:true});
  await page.getByRole('button',{name:/Try Agentic AI/}).click();const introAssistant=page.getByRole('region',{name:'Portfolio assistant'});await introAssistant.waitFor();await introAssistant.getByText('Experience Agentic AI').waitFor();assert.equal(await introAssistant.locator('.assistant-starter-grid button').count(),6);await page.getByRole('button',{name:'Close',exact:true}).click();
  await page.getByRole('link',{name:/View résumé/}).click(); await page.getByRole('heading',{name:'Resume',exact:true}).waitFor();
  await page.route('**/api/resume',route=>route.fulfill({status:503,body:'Unavailable'}));
@@ -63,7 +64,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  assert.equal(await page.getByRole('button',{name:'Toggle Menu'}).getAttribute('aria-expanded'),'false');
  await page.reload();await page.getByRole('heading',{name:/Useful software/}).waitFor();assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('dark')),dark);
  await page.getByRole('button',{name:"Ask CJ's AI"}).click();await page.waitForTimeout(350);const mobilePanel=await page.getByRole('region',{name:'Portfolio assistant'}).boundingBox();assert.equal(Math.round(mobilePanel.x),0);assert.ok(mobilePanel.width>=389);await page.getByRole('button',{name:'Close',exact:true}).click();
- await page.screenshot({path:path.resolve('homepage-mobile.png'),fullPage:true});
+ await page.screenshot({path:path.resolve('tmp/homepage-mobile.png'),fullPage:true});
  assert.deepEqual(errors,[]);console.log('PASS: LangGraph tool trace, allowlisted navigation/highlight, chat citations, project cards, feedback, transcript export, stop/retry, saved history, accessibility preferences, contact handoff, full-width mobile UI, seven languages, and portfolio regressions.');
  } finally { await browser.close(); }
 })().catch(error=>{console.error(error);process.exitCode=1;});

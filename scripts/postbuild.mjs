@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { caseStudies, articles } from '../src/data/showcase.js';
+import { architectureMeta } from '../src/data/assistantArchitecture.js';
 const base = 'https://vigneshwarancj-portfolio-website.vercel.app';
 const root = path.resolve(import.meta.dirname, '..');
 const dist = path.join(root, 'dist');
@@ -13,6 +14,7 @@ fs.copyFileSync(path.join(root,'sw.js'),path.join(dist,'sw.js'));
 fs.cpSync(path.join(root,'images/sharing'),path.join(dist,'images/sharing'),{recursive:true});
 const template = fs.readFileSync(path.join(dist,'index.html'),'utf8');
 const routes = Object.fromEntries(['about','experience','projects','publications','skills','social','contact','resume','writing'].map(route => [route,{title: route[0].toUpperCase()+route.slice(1),description:'Explore Vigneshwaran C. J.’s '+route+'.'}]));
+routes['assistant-architecture'] = architectureMeta;
 for (const [slug, study] of Object.entries(caseStudies)) routes[`projects/${slug}`]={title:`${study.title} — Case study`,description:study.summary,image:`/images/sharing/${slug}.png`};
 for (const article of articles) routes[`writing/${article.slug}`]={title:article.title,description:article.intro};
 for (const [route,meta] of Object.entries(routes)) {

@@ -3,6 +3,10 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
+      "source": "/assistant-architecture",
+      "destination": "/assistant-architecture/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

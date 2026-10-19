@@ -17,7 +17,7 @@ const FEATURED_PROJECTS = ["aiora", "pocketpet", "glycanbench"];
 const ASSISTANT_STACK = [
   ["OKF", "Structured portfolio knowledge"],
   ["Laya", "Typed scope and topic routing"],
-  ["LangGraph", "Tool planning and session state"],
+  ["LangGraph", "Bounded rule-based tool plan"],
   ["Groq", "Fast streamed generation"],
 ];
 const AGENT_DEMOS = [
@@ -113,7 +113,8 @@ export default function Home() {
         </article>
         <article className="assistant-architecture-card">
           <div className="agentic-card-heading"><p className="eyebrow"><i /> Live Agentic AI</p><h2>Ask. Plan. Use tools. Act.</h2><p>More than chat. Assistant searches verified Markdown, selects typed tools, remembers context, navigates portfolio, and asks before contact actions.</p></div>
-          <div className="agentic-flow" aria-label="Agent flow"><span>Question</span><b>→</b><span>Laya route</span><b>→</b><span>LangGraph plan</span><b>→</b><span>Safe action</span></div>
+          <div className="agentic-flow" aria-label="Agent flow"><span>Question</span><b>→</b><span>Laya route</span><b>→</b><span>Read evidence</span><b>→</b><span>Groq answer</span><b>→</b><span>UI action</span></div>
+          <Link className="agentic-architecture-link" to="/assistant-architecture">Explore the AI architecture and request flow <span aria-hidden="true">↗</span></Link>
           <ol>{ASSISTANT_STACK.map(([name, detail], index) => <li key={name}><span>0{index + 1}</span><div><strong>{name}</strong><p>{detail}</p></div></li>)}</ol>
           <div className="agentic-demo-list"><span>Try live demos</span>{AGENT_DEMOS.map(([label, question]) => <button type="button" key={label} onClick={() => openAgent(question, true)}><HiSparkles aria-hidden="true" /> <strong>{label}</strong><em>Run demo →</em></button>)}</div>
         </article>

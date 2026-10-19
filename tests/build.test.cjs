@@ -6,7 +6,7 @@ const dist=path.resolve(__dirname,'../dist');
 test('deployed direct links serve the generated sharing metadata',async()=>{
  const {caseStudies,articles}=await import('../src/data/showcase.js');
  const config=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../vercel.json'),'utf8'));
- const routes=[...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
+ const routes=['assistant-architecture',...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
  for(const route of routes){
   const rewrite=config.rewrites.find(rule=>rule.source===`/${route}` || rule.source==='/(.*)');
   assert.equal(rewrite?.destination,`/${route}/index.html`,`Direct link loses metadata: ${route}`);
@@ -40,7 +40,15 @@ test('production pages contain their own share metadata and resolvable assets',(
 test('the saved download is a PDF and the new routes appear in the sitemap',()=>{
  assert.equal(fs.readFileSync(path.join(dist,'resume.pdf')).subarray(0,5).toString(),'%PDF-');
  const sitemap=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8');
- for(const route of ['projects/aiora','projects/syncly','projects/glycanbench','projects/pocketpet','writing/aiora-routing','writing/pocketpet-safety','writing/glycanbench-mpnn']) assert.ok(sitemap.includes(route));
+ for(const route of ['assistant-architecture','projects/aiora','projects/syncly','projects/glycanbench','projects/pocketpet','writing/aiora-routing','writing/pocketpet-safety','writing/glycanbench-mpnn']) assert.ok(sitemap.includes(route));
+});
+
+test('architecture direct link contains the dedicated title and description',async()=>{
+ const {architectureMeta}=await import('../src/data/assistantArchitecture.js');
+ const html=fs.readFileSync(path.join(dist,'assistant-architecture/index.html'),'utf8');
+ assert.ok(html.includes(architectureMeta.title));
+ assert.ok(html.includes(architectureMeta.description));
+ assert.ok(html.includes('https://vigneshwarancj-portfolio-website.vercel.app/assistant-architecture'));
 });
 test('portfolio UI identifies the assistant architecture',()=>{
  const source=fs.readFileSync(path.resolve(__dirname,'../src/pages/Home.js'),'utf8');

@@ -467,6 +467,7 @@ export default function PortfolioAssistant() {
 
             <div ref={scrollRef} onScroll={handleScroll} role="log" aria-live="polite" aria-relevant="additions text" aria-busy={loading} className="assistant-conversation">
               <div className="assistant-context-note"><span>Portfolio sources</span><p>Project facts, contribution details, and actions you can review</p></div>
+              <Link className="assistant-architecture-link" to="/assistant-architecture" onClick={closePanel}>How this assistant works ↗</Link>
               {messages.map((message) => (
                 <MessageBubble
                   key={message.id}

@@ -1,6 +1,12 @@
 # Portfolio updates
 
-The homepage now highlights work, links to two case studies, provides a recruiter overview, and includes technical notes. The existing publications, skills, and social pages remain accessible through the footer.
+The homepage highlights three featured systems, links to four case studies, provides a recruiter overview, and includes technical notes. The assistant now has a public `/assistant-architecture` explorer linked from the homepage, chat, footer, and command search. Full source map and current limitations: [CODEBASE.md](CODEBASE.md).
+
+## AI architecture UI
+
+`src/pages/AssistantArchitecture.js` and `src/data/assistantArchitecture.js` present the actual request path: validated question, restored context, Laya/local classification, bounded LangGraph tools, Groq generation, completed-turn persistence, and validated browser actions. Selectable contact, refusal, and fallback scenarios explain branching behavior. The explorer is an explanation, not live execution or service telemetry. Trying an example only fills the chat composer.
+
+The route receives static title/description/canonical metadata in `postbuild.mjs`, a direct Vercel rewrite, and a generated sitemap entry. Keep its architecture data synchronized with the backend graph, tool registry, limits, and memory code.
 
 ## Content maintenance
 
@@ -8,7 +14,7 @@ The homepage now highlights work, links to two case studies, provides a recruite
 - Canonical résumé and portfolio facts live in the backend repository's structured `knowledge/` Markdown tree. `npm run build` compiles those files into `src/data/portfolio.generated.js`; when building this repository alone, the committed generated module provides the same snapshot.
 - Testimonials remain hidden. Add `{ approved: true, name, role, quote }` only after obtaining a real quote and permission.
 - Optional media entries accept `poster`, `video` (MP4 URL), `captions` (WebVTT URL), and `transcript`. No fabricated screenshots or recordings are published.
-- Both featured live previews are disabled after checks on 2026-09-07: Syncly redirected to an unrelated domain; GlycanBench returned HTTP 502. Once the intended sites work, set `liveAvailable: true` in the relevant media entry.
+- `projectMedia.syncly.liveAvailable` is false, hiding the inactive live link. Other project links follow current content configuration; documentation review does not establish live service availability.
 - The technical notes are explanatory copy based on the listed project technologies; they do not claim undocumented implementation details or measured results. Review before publication.
 - Run `npm run resume:pdf` to refresh the saved PDF after structured content changes. Commit the resulting `resume.pdf`.
 
@@ -22,11 +28,11 @@ The build bypasses Parcel's cache because an existing cached build produced inco
 
 `tests/browser.cjs` runs integration checks against an already running production preview at `http://127.0.0.1:4173`. Install Playwright in your development tooling, or set `PLAYWRIGHT_MODULE` to its module path. Set `CHROME_PATH` if using a system Chrome executable and `PREVIEW_URL` for a different preview address. Run `node tests/browser.cjs`.
 
-Contact and assistant requests are intercepted during tests, so no messages are sent and no AI credits are used. Checks cover direct routes, metadata, skills/search, real static PDF bytes, backend download fallback, contact success, assistant failure/retry and a stream without a trailing newline, mobile overflow, and theme persistence.
+`npm run test:browser` also runs `tests/assistant.browser.cjs` and `tests/architecture.browser.cjs`. Contact and assistant requests are intercepted, so no messages are sent and no AI credits are used. Checks cover direct routes, metadata, search, saved PDF bytes, download fallback, assistant stop/retry, operation summaries, action receipts, walkthroughs, unsent contact drafts, architecture scenarios, mobile overflow, and theme persistence. Generated screenshots belong under ignored `tmp/`.
 
 ## Analytics
 
-The existing Vercel Analytics integration receives `project_demo_click`, `resume_download`, and `contact_success`. Event properties contain only project names and download source/version, never contact details or chat text. Confirm custom-event availability in the deployed project's analytics dashboard. Demo events fire only for enabled live links.
+Vercel and first-party analytics receive conversion events such as `project_demo_click`, `resume_download`, `resume_view`, and `contact_success`; assistant feedback uses the first-party event API. Call sites use project/source/version/rating metadata rather than form contents or chat text. Confirm custom-event availability in the deployed project's analytics dashboard. Demo events fire only for enabled live links.
 
 ## Still needs owner content
 
