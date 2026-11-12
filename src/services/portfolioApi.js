@@ -8,14 +8,46 @@ export class PortfolioApiError extends Error {
   }
 }
 
+// The API is hosted on a free tier that can take ~30s to wake from sleep, so
+// requests get a generous ceiling instead of hanging forever.
+const DEFAULT_TIMEOUT_MS = 45000;
+
+const STATUS_MESSAGES = {
+  429: "Too many requests — please wait a moment and try again.",
+  502: "The portfolio API is waking up. Please try again in a few seconds.",
+  503: "This feature is temporarily unavailable. Please try again later.",
+  504: "The portfolio API took too long to respond. Please try again.",
+};
+
 async function errorMessage(response) {
   const payload = await response.json().catch(() => ({}));
-  return typeof payload.detail === "string" ? payload.detail : `Request failed: ${response.status}`;
+  if (typeof payload.detail === "string") return payload.detail;
+  return STATUS_MESSAGES[response.status] || `Request failed (${response.status}). Please try again.`;
+}
+
+function withTimeout(signal, timeoutMs) {
+  if (!timeoutMs || typeof AbortSignal === "undefined" || !AbortSignal.timeout) return signal;
+  const timeout = AbortSignal.timeout(timeoutMs);
+  if (!signal) return timeout;
+  return AbortSignal.any ? AbortSignal.any([signal, timeout]) : signal;
+}
+
+async function send(path, { timeoutMs = DEFAULT_TIMEOUT_MS, signal, ...options } = {}) {
+  try {
+    return await fetch(apiUrl(path), { ...options, signal: withTimeout(signal, timeoutMs) });
+  } catch (error) {
+    // A caller-initiated abort should propagate unchanged so callers can ignore it.
+    if (signal?.aborted) throw error;
+    if (error?.name === "TimeoutError") {
+      throw new PortfolioApiError(STATUS_MESSAGES[504], 0);
+    }
+    throw new PortfolioApiError("Couldn’t reach the portfolio API. Check your connection and try again.", 0);
+  }
 }
 
 export async function requestJson(path, options = {}) {
   const headers = { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers };
-  const response = await fetch(apiUrl(path), { ...options, headers });
+  const response = await send(path, { ...options, headers });
   if (!response.ok) throw new PortfolioApiError(await errorMessage(response), response.status);
   return response.json();
 }

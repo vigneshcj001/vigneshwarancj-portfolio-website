@@ -186,7 +186,10 @@
 .install-command { background: #0f172a; color: #dbeafe; border-radius: 10px; padding: 16px; overflow-x: auto; }
 .api-playground { border: 1px solid #cbd5e1; border-radius: 18px; padding: 26px; background: #f8fafc; }
 .dark .api-playground { background: #0f172a; border-color: #334155; }
-.api-playground > div { display: flex; gap: 8px; }
+.api-playground form { display: flex; gap: 8px; }
+.api-playground-error { margin-top: 14px; border-left: 3px solid #f59e0b; border-radius: 6px; background: #fffbeb; padding: 10px 14px; color: #92400e; font-size: 13px; }
+.dark .api-playground-error { background: #3b2509; color: #fde68a; }
+.api-playground button:disabled { cursor: not-allowed; opacity: .6; }
 .api-playground input { flex: 1; min-width: 0; border: 1px solid #94a3b8; border-radius: 9px; padding: 11px 13px; background: white; }
 .dark .api-playground input { background: #111827; }
 .api-playground pre { margin-top: 14px; background: #020617; color: #bfdbfe; border-radius: 10px; padding: 16px; overflow-x: auto; font-size: 12px; }
@@ -246,13 +249,27 @@ html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
 .proof-grid { display: grid; gap: 8px; }
 .proof-grid a { display: grid; gap: 3px; padding: 12px; background: #f8fafc; border-radius: 9px; }
 .dark .proof-grid a { background: #0f172a; }
-.proof-grid span { color: #64748b; font-size: 11px; }
+.proof-grid span { color: #64748b; font-size: 12px; }
+.proof-grid a { border: 1px solid transparent; transition: border-color .15s ease, background .15s ease; }
+.proof-grid a:hover { border-color: #93c5fd; background: #eff6ff; }
+.dark .proof-grid a:hover { border-color: #3b82f6; background: #172554; }
+.proof-grid .proof-profile-link strong { color: #1d4ed8; }
+.dark .proof-grid .proof-profile-link strong { color: #93baff; }
+.proof-skeleton { display: block; height: 58px; border-radius: 9px; background: linear-gradient(90deg, #eef2f7 25%, #e2e8f0 37%, #eef2f7 63%); background-size: 400% 100%; animation: proof-shimmer 1.4s ease infinite; }
+.dark .proof-skeleton { background: linear-gradient(90deg, #142136 25%, #1e2d45 37%, #142136 63%); background-size: 400% 100%; }
+@keyframes proof-shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 .newsletter { display: grid; gap: 6px; min-width: 260px; }
 .newsletter label { font-size: 11px; font-weight: 700; }
 .newsletter > div { display: flex; }
 .newsletter input { min-width: 0; flex: 1; border: 1px solid #cbd5e1; border-radius: 8px 0 0 8px; padding: 8px 10px; background: transparent; font-size: 12px; }
 .newsletter button { background: #2563eb; color: white; border-radius: 0 8px 8px 0; padding: 8px 12px; font-size: 12px; font-weight: 700; }
-.newsletter span { font-size: 10px; color: #64748b; }
+.newsletter span { font-size: 11px; color: #64748b; }
+.newsletter span[data-status="success"] { color: #047857; }
+.newsletter span[data-status="error"] { color: #b91c1c; }
+.dark .newsletter span[data-status="success"] { color: #6ee7b7; }
+.dark .newsletter span[data-status="error"] { color: #fca5a5; }
+.newsletter button:hover:not(:disabled) { background: #1d4ed8; }
+.newsletter button:disabled, .newsletter input:disabled { cursor: progress; opacity: .7; }
 .admin-page { padding-block: 120px 70px; }
 .admin-page h1 { font-size: 42px; font-weight: 800; }
 .admin-auth, .admin-toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-block: 24px; }
@@ -642,4 +659,45 @@ html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
   .current-role-card dl { grid-template-columns: 1fr; }
   .timeline-section .career-timeline { grid-template-columns: 1fr; }
   .writing-grid a { min-height: 220px; }
+  .api-playground form { flex-direction: column; }
+}
+
+/* Readability: lift micro-labels that had drifted to 8–10px up to a legible
+   floor. Uppercase tracking labels stay small but readable; body copy ≥ 12px. */
+.career-timeline span, .more-work-row span, .project-metrics dd, .current-role-card dt,
+.writing-grid span, .agentic-demo-list > span, .featured-project-meta .eyebrow { font-size: 10.5px; }
+.career-timeline p, .agentic-flow span, .assistant-architecture-card li p,
+.agentic-demo-list button strong, .agentic-demo-list button em { font-size: 11.5px; }
+.career-timeline strong { font-size: 13px; }
+.proof-strip span { font-size: 12px; }
+.current-role-card dd { font-size: 13px; }
+.assistant-launcher small, .assistant-identity p, .assistant-context-note,
+.assistant-message-meta, .assistant-starter-heading p, .assistant-resources::before,
+.assistant-resources a, .assistant-recruiter-shortcuts > span, .assistant-recruiter-shortcuts a,
+.assistant-recruiter-shortcuts button, .assistant-project-card p, .assistant-project-card a,
+.assistant-citations a, .assistant-followups button, .assistant-handoff,
+.assistant-composer > p, .assistant-character-count, .assistant-session-list small,
+.assistant-accessibility-settings > span, .assistant-accessibility-settings button,
+.assistant-starter-grid button small { font-size: 10.5px; }
+.assistant-starter-grid button, .assistant-retry, .assistant-history-search input,
+.assistant-session-list span, .assistant-new-chat { font-size: 11.5px; }
+.assistant-project-tags span, .assistant-project-card > div:first-child span,
+.assistant-citations > span, .assistant-followups > span { font-size: 9.5px; }
+.assistant-panel { overscroll-behavior: contain; }
+.assistant-conversation { overscroll-behavior: contain; }
+
+/* Keyboard parity: cards that lift on hover also respond to focus. */
+.featured-project:focus-visible, .writing-grid a:focus-visible, .more-work-row a:focus-visible, .proof-grid a:focus-visible {
+  outline: 3px solid #3b82f6; outline-offset: 3px; border-color: #93c5fd; border-radius: 20px;
+}
+.featured-project:focus-visible { transform: translateY(-6px); }
+.writing-grid a:focus-visible { transform: translateY(-4px); }
+.more-work-row a { transition: border-color .2s ease, transform .2s ease; }
+.more-work-row a:hover { border-color: #93c5fd; transform: translateY(-2px); }
+.dark .more-work-row a:hover { border-color: #3b82f6; }
+
+/* Touch devices: no sticky hover lift after a tap. */
+@media (hover: none) {
+  .featured-project:hover, .writing-grid a:hover, .more-work-row a:hover,
+  .agentic-demo-list button:hover, .agentic-action:hover { transform: none; }
 }
