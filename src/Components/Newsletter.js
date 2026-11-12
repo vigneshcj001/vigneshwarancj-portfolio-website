@@ -13,7 +13,7 @@ export default function Newsletter() {
     try {
       await portfolioApi.newsletter(email.trim());
       setEmail("");
-      setState({ status: "success", message: "Subscribed — new project notes will arrive by email." });
+      setState({ status: "success", message: "You're on the list. For every new note right away, follow the RSS feed." });
     } catch (error) {
       const message = error?.status === 429
         ? error.message
@@ -40,7 +40,7 @@ export default function Newsletter() {
         />
         <button type="submit" disabled={saving}>{saving ? "Saving…" : "Subscribe"}</button>
       </div>
-      {state.message && <span id="newsletter-status" role="status" data-status={state.status}>{state.message}</span>}
+      {state.message && <span id="newsletter-status" role="status" data-status={state.status}>{state.message}{state.status === "success" && <> <a href="/feed.xml">Open feed</a></>}</span>}
     </form>
   );
 }

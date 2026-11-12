@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { consumeAssistantStream } from "./stream";
 import { createId, createInitialMessage, MAX_HISTORY } from "./constants";
 import { createSession, loadSessionState, readDailyUsage, saveSessionState, writeDailyUsage } from "./storage";
+import { portfolioApi } from "../../services/portfolioApi";
 
 const DAILY_LIMIT = 40;
 
@@ -27,6 +28,8 @@ export default function useAssistantChat(language = "en") {
     return () => clearTimeout(timer);
   }, [sessions, activeSessionId]);
   useEffect(() => () => abortRef.current?.abort(), []);
+  // Erase server history stored under retired (guessable) conversation IDs.
+  useEffect(() => { (initial.retiredIds || []).forEach((id) => portfolioApi.deleteSession(id)); }, [initial]);
 
   const updateMessages = useCallback((updater) => {
     setSessions((current) => current.map((session) => {
@@ -140,13 +143,15 @@ export default function useAssistantChat(language = "en") {
   const clearChat = useCallback(() => {
     abortRef.current?.abort();
     abortRef.current = null;
+    // Erase the server-side copy too, so the next question starts with no context.
+    portfolioApi.deleteSession(activeSessionId);
     updateMessages([createInitialMessage()]);
     setConnection("idle");
     setLastQuestion("");
     setLoading(false);
     setInput("");
     setActiveChip(null);
-  }, [updateMessages]);
+  }, [activeSessionId, updateMessages]);
 
   const stopResponse = useCallback(() => {
     abortRef.current?.abort();
@@ -178,6 +183,7 @@ export default function useAssistantChat(language = "en") {
   }, []);
 
   const deleteSession = useCallback((id) => {
+    portfolioApi.deleteSession(id);
     const remaining = sessions.filter((session) => session.id !== id);
     if (remaining.length) {
       setSessions(remaining);

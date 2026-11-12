@@ -132,7 +132,7 @@ export default function Home() {
         <div className="writing-grid">{articles.slice(0, 3).map((article, index) => <Link key={article.slug} to={`/writing/${article.slug}`}><span>0{index + 1} · {article.project}</span><h3>{article.title}</h3><p>{article.intro}</p><em>Read note ↗</em></Link>)}</div>
       </section>
 
-      <section className="portfolio-section section-spacing"><div className="contact-banner"><p className="eyebrow">Available for the right role</p><h2>Need an engineer who can cross product, AI, and research boundaries?</h2><p>Share the problem, team, and outcome you are hiring for.</p><Link className="primary-action" to="/contact">Start a conversation <span aria-hidden="true">↗</span></Link></div></section>
+      <section className="portfolio-section section-spacing"><div className="contact-banner"><p className="eyebrow">Available for the right role</p><h2>Need an engineer who can cross product, AI, and research boundaries?</h2><p>Share the problem, team, and outcome you are hiring for.</p><div className="action-row" style={{ justifyContent: "center", marginBlock: 0 }}><Link className="primary-action" to="/contact">Start a conversation <span aria-hidden="true">↗</span></Link><Link className="secondary-action contact-banner-secondary" to="/match">Check fit against your job description</Link></div></div></section>
     </div>
   );
 }

@@ -38,16 +38,46 @@ const matchesFilter = (project, filter) => {
   return terms[filter]?.some((term) => haystack.includes(term));
 };
 
+// The most common technologies become one-click stack filters.
+const TECH_OPTIONS = Object.entries(
+  projects.flatMap((project) => project.tags).reduce((counts, tag) => ({ ...counts, [tag]: (counts[tag] || 0) + 1 }), {})
+).filter(([, count]) => count > 1).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 14).map(([tag]) => tag);
+
 const Projects = () => {
   useMeta("Projects", `${projects.length} projects spanning AI/ML research, full-stack engineering, computational biology, and embedded systems — Vigneshwaran C.J.'s portfolio.`);
-  const [activeFilter, setActiveFilter] = useState("All");
   const [params, setParams] = useSearchParams();
+  const [copied, setCopied] = useState(false);
   const search = params.get("q") || "";
-  const setSearch = value => setParams(value ? { q: value } : {}, { replace: true });
+  const activeFilter = categoryFilters.includes(params.get("cat")) ? params.get("cat") : "All";
+  const activeTech = (params.get("tech") || "").split(",").map((tag) => tag.trim()).filter((tag) => TECH_OPTIONS.includes(tag));
+
+  // All filters live in the URL so a filtered view can be shared or bookmarked.
+  const updateParams = (changes) => {
+    const next = new URLSearchParams(params);
+    for (const [key, value] of Object.entries(changes)) {
+      if (value) next.set(key, value); else next.delete(key);
+    }
+    setParams(next, { replace: true });
+  };
+  const setSearch = (value) => updateParams({ q: value });
+  const setActiveFilter = (value) => updateParams({ cat: value === "All" ? "" : value });
+  const toggleTech = (tag) => {
+    const next = activeTech.includes(tag) ? activeTech.filter((item) => item !== tag) : [...activeTech, tag];
+    updateParams({ tech: next.join(",") });
+  };
+  const hasFilters = Boolean(search || activeFilter !== "All" || activeTech.length);
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* clipboard unavailable; the URL bar still holds the link */ }
+  };
 
   const q = search.trim().toLowerCase();
   const filtered = projects
     .filter((p) => matchesFilter(p, activeFilter))
+    .filter((p) => activeTech.every((tag) => p.tags.includes(tag)))
     .filter((p) => !q ||
       p.title.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q) ||
@@ -85,7 +115,7 @@ const Projects = () => {
         </div>
 
         {/* Category filters */}
-        <div className="flex flex-wrap gap-2 justify-center mb-10">
+        <div className="flex flex-wrap gap-2 justify-center mb-4" role="group" aria-label="Filter by category">
           {categoryFilters.map((f) => (
             <button
               key={f}
@@ -102,9 +132,24 @@ const Projects = () => {
           ))}
         </div>
 
+        <div className="tech-filter" role="group" aria-label="Filter by technology">
+          <span>Stack</span>
+          {TECH_OPTIONS.map((tag) => (
+            <button key={tag} type="button" aria-pressed={activeTech.includes(tag)} onClick={() => toggleTech(tag)}>{tag}</button>
+          ))}
+        </div>
+
+        <div className="filter-summary" aria-live="polite">
+          <span>{filtered.length} of {projects.length} projects</span>
+          {hasFilters && <>
+            <button type="button" onClick={copyLink}>{copied ? "Link copied ✓" : "Copy link to this view"}</button>
+            <button type="button" onClick={() => setParams({}, { replace: true })}>Reset filters</button>
+          </>}
+        </div>
+
         {filtered.length === 0 && (
           <p className="text-center text-sm text-gray-400 dark:text-gray-500 py-16">
-            No projects match "{search}". Try a different keyword.
+            No projects match these filters. Try removing a technology or keyword.
           </p>
         )}
 

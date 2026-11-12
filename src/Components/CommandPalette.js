@@ -11,6 +11,7 @@ const pages = [
   ["Home", "/"], ["Projects", "/projects"], ["Experience", "/experience"],
   ["Publications", "/publications"], ["Skills", "/skills"], ["Writing", "/writing"],
   ["Résumé", "/resume"], ["Contact", "/contact"],
+  ["Job match — check a job description against this portfolio", "/match"],
   ["AI assistant architecture and request flow", "/assistant-architecture"],
 ];
 

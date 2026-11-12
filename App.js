@@ -13,6 +13,7 @@ import ErrorBoundary from "./src/Components/ErrorBoundary";
 import BackToTop from "./src/Components/BackToTop";
 import { LanguageProvider } from "./src/Contexts/LanguageContext";
 import usePageTranslation from "./src/Hooks/usePageTranslation";
+import { recordEvent } from "./src/Utils/analytics";
 
 const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
 const AssistantArchitecture = lazy(() => import("./src/pages/AssistantArchitecture"));
@@ -27,6 +28,7 @@ const ContactUs    = lazy(() => import("./src/pages/ContactUs"));
 const Experience   = lazy(() => import("./src/pages/Experience"));
 const Resume       = lazy(() => import("./src/pages/Resume"));
 const Admin        = lazy(() => import("./src/pages/Admin"));
+const JobMatch     = lazy(() => import("./src/pages/JobMatch"));
 
 const NAV_LINKS = [
   { label: "Home",         to: "/" },
@@ -83,6 +85,8 @@ function AppContent() {
   const location = useLocation();
   usePageTranslation();
   useEffect(() => { window.scrollTo(0, 0); document.getElementById("main-content")?.focus({ preventScroll: true }); }, [location.pathname]);
+  // First-party funnel analytics: path only, no query string or visitor identifiers.
+  useEffect(() => { if (!location.pathname.startsWith("/admin")) recordEvent("page_view"); }, [location.pathname]);
   useEffect(() => { if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") navigator.serviceWorker.register(new URL("sw.js", import.meta.url)).catch(() => {}); }, []);
 
   return (
@@ -123,6 +127,7 @@ function AppContent() {
                   <Route path="/skills"       element={<Skills />} />
                   <Route path="/contact"      element={<ContactUs />} />
                   <Route path="/resume"       element={<Resume />} />
+                  <Route path="/match"        element={<JobMatch />} />
                   <Route path="/admin"        element={<Admin />} />
                   <Route path="*"             element={<NotFound />} />
                 </Routes>

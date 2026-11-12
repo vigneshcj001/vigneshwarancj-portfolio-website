@@ -86,9 +86,20 @@ export const portfolioApi = {
     ...options,
     headers: { "X-Admin-Key": key, ...options.headers },
   }),
-  resume: async (signal) => {
-    const response = await fetch(apiUrl("/api/resume"), { signal });
-    if (!response.ok) throw new PortfolioApiError(`Server error: ${response.status}`, response.status);
+  resume: async (signal, format = "pdf") => {
+    const path = format === "pdf" ? "/api/resume" : `/api/resume.${format}`;
+    const response = await send(path, { signal, timeoutMs: 60000 });
+    if (!response.ok) throw new PortfolioApiError(await errorMessage(response), response.status);
     return response.blob();
+  },
+  match: (jobDescription, signal) => requestJson("/api/match", {
+    method: "POST", body: JSON.stringify({ job_description: jobDescription }), signal, timeoutMs: 75000,
+  }),
+  health: (signal) => requestJson("/api/health", { signal, timeoutMs: 60000 }),
+  // Best effort: a failed server-side erase must never block clearing the chat locally.
+  deleteSession: (sessionId) => {
+    if (!sessionId) return Promise.resolve();
+    return send(`/api/assistant/session/${encodeURIComponent(sessionId)}`, { method: "DELETE", keepalive: true, timeoutMs: 15000 })
+      .catch(() => {});
   },
 };

@@ -6,7 +6,7 @@ const dist=path.resolve(__dirname,'../dist');
 test('deployed direct links serve the generated sharing metadata',async()=>{
  const {caseStudies,articles}=await import('../src/data/showcase.js');
  const config=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../vercel.json'),'utf8'));
- const routes=['assistant-architecture',...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
+ const routes=['assistant-architecture','match',...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
  for(const route of routes){
   const rewrite=config.rewrites.find(rule=>rule.source===`/${route}` || rule.source==='/(.*)');
   assert.equal(rewrite?.destination,`/${route}/index.html`,`Direct link loses metadata: ${route}`);
@@ -41,6 +41,14 @@ test('the saved download is a PDF and the new routes appear in the sitemap',()=>
  assert.equal(fs.readFileSync(path.join(dist,'resume.pdf')).subarray(0,5).toString(),'%PDF-');
  const sitemap=fs.readFileSync(path.join(dist,'sitemap.xml'),'utf8');
  for(const route of ['assistant-architecture','projects/aiora','projects/syncly','projects/glycanbench','projects/pocketpet','writing/aiora-routing','writing/pocketpet-safety','writing/glycanbench-mpnn']) assert.ok(sitemap.includes(route));
+});
+test('technical notes are published as an RSS feed linked from every page',async()=>{
+ const {articles}=await import('../src/data/showcase.js');
+ const feed=fs.readFileSync(path.join(dist,'feed.xml'),'utf8');
+ assert.ok(feed.startsWith('<?xml'));
+ assert.ok(feed.includes('<rss version="2.0"'));
+ for(const article of articles) assert.ok(feed.includes(`/writing/${article.slug}</link>`),`Missing ${article.slug}`);
+ assert.ok(fs.readFileSync(path.join(dist,'index.html'),'utf8').includes('application/rss+xml'));
 });
 
 test('architecture direct link contains the dedicated title and description',async()=>{

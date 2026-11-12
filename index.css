@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./src/styles/assistantArchitecture.css";
+@import "./src/styles/features.css";
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Accessible text tokens. Tailwind's gray-400/500 and the *-600 badge
