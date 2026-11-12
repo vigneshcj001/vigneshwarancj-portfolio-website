@@ -7,6 +7,10 @@
       "destination": "/assistant-architecture/index.html"
     },
     {
+      "source": "/match",
+      "destination": "/match/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

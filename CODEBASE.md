@@ -86,7 +86,10 @@ The interactive UI presents this flow at `/assistant-architecture`. Backend deta
 
 - Content: indexed Markdown → Python canonical objects → retrieval/PDF; frontend prebuild → generated JavaScript → HTML résumé. Standalone frontend builds use the committed snapshot if the sibling knowledge directory is missing.
 - Contact: form validation → optional API database save → EmailJS send. These are separate operations; database success does not prove email delivery.
-- Newsletter: API stores an email with deduplication. No mailing/scheduled dispatch implementation is present.
+- Newsletter: API stores an email with deduplication. No mailing/scheduled dispatch implementation is present; `postbuild.mjs` publishes technical notes as `/feed.xml` (RSS 2.0), linked from `<head>`, the footer, and the subscribe confirmation.
+- Job match (`/match`): pasted description → `POST /api/match` → keyword evidence with links, gaps, and an optional AI requirement assessment. Only a coverage bucket and engine name are sent to analytics.
+- Résumé downloads: PDF/DOCX/TXT come from the backend's ATS generator; the committed `resume.pdf`, `Vigneshwaran_CJ.docx`, and `resume.txt` fallbacks are exported from the same generator (`npm run resume:pdf` or the backend's `scripts/export_resume.py`). The two-column page is for on-screen reading; printing it is single-column.
+- Funnel: `page_view` (path only) and `case_study_view` (slug) are first-party events; the admin page charts them with résumé, job match, and contact events.
 - Demos: user input → rate-limited API → deterministic simulation result, explicitly labeled as a simulation.
 - Public proof: cached GitHub/PyPI metadata → cards, with a link fallback when unavailable.
 - Admin: key header → protected endpoints → PostgreSQL revisions/aggregates. Saving a revision does not rebuild knowledge or publish website content.
@@ -127,8 +130,8 @@ Node tests cover production metadata/assets and client action outcomes. Browser 
 - Local prompt checks are heuristic. Without Laya, unrelated requests are not independently classified as unrelated; generation still has portfolio-only instructions.
 - Session IDs partition history but do not authenticate users. Browser and process storage are bounded, and process fallback is not durable across restarts or shared across workers.
 - Follow-up suggestions are curated English templates, selected by topic/project/aspect, with exact previously asked strings filtered. Page translation can localize displayed strings.
-- Browser Clear chat replaces local messages but does not delete the existing server session. Deleting local conversations is not a server-side erasure operation.
-- Rate limiting and default caches use process-local state. Browser usage display is a separate convenience counter from server IP limits.
+- Clear chat and Delete conversation also call `DELETE /api/assistant/session/{id}` (best effort). New conversation IDs come from `crypto.randomUUID()`; IDs created before that change were timestamp-based and guessable, and remain until those conversations are deleted.
+- Rate limiting uses process-local state. The opening-question answer cache is shared through PostgreSQL when configured. Browser usage display is a separate convenience counter from server IP limits.
 - Static presentation data can differ from canonical Markdown; frontend project count includes the employer AIORA case study in addition to the ten canonical independent projects.
 - Optional media and testimonial sections remain empty until real content is provided. Syncly's live link is disabled by presentation configuration; no live-site availability claim is made by this review.
 - `RTK.md`, referenced by the supplied workspace instruction, was not present in the workspace or checked parent locations.

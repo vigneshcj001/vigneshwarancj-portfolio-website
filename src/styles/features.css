@@ -1,0 +1,154 @@
+/* Styles for job match, project Q&A, stack filters, résumé timeline,
+   API status, and the admin funnel. Light values first, then .dark. */
+
+/* ── API status on the assistant launcher ─────────────────────────────── */
+.assistant-launcher small[data-status="checking"] i,
+.assistant-launcher small[data-status="waking"] i { background: #f59e0b; box-shadow: 0 0 0 3px #f59e0b26; animation: assistant-pulse 1.2s ease-in-out infinite; }
+.assistant-launcher small[data-status="offline"] i { background: #94a3b8; box-shadow: none; }
+
+/* ── Job match ────────────────────────────────────────────────────────── */
+.match-form { display: grid; gap: 12px; }
+.match-form-head, .match-form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.match-form label { font-size: 14px; font-weight: 750; }
+.match-form textarea { width: 100%; min-height: 220px; resize: vertical; border: 1px solid #b8c4d4; border-radius: 12px; background: #f8fafc; padding: 14px; font-size: 14px; line-height: 1.6; color: inherit; }
+.match-form textarea:focus { outline: 2px solid #3b82f6; outline-offset: 1px; border-color: transparent; }
+.dark .match-form textarea { background: #0b1423; border-color: #40516a; }
+.match-form-foot > span { color: #59626f; font-size: 12px; }
+.dark .match-form-foot > span { color: #9fb0c7; }
+.match-form-foot > div { display: flex; gap: 8px; }
+.match-form button:disabled { cursor: not-allowed; opacity: .55; }
+.match-loading { color: #1d4ed8; font-size: 13px; }
+.dark .match-loading { color: #93baff; }
+.match-results { display: grid; gap: 18px; margin-top: 28px; outline: none; }
+.match-overview { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; align-items: start; border: 1px solid #dbe2ec; border-radius: 18px; background: #fff; padding: 26px; }
+.dark .match-overview, .dark .match-section { background: #111e30; border-color: #304158; }
+.match-overview h2 { font-size: 19px; font-weight: 700; line-height: 1.5; }
+.match-note { margin-top: 10px; color: #92400e; font-size: 13px; }
+.dark .match-note { color: #fde68a; }
+.match-coverage-head { display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: #475569; }
+.match-coverage-head strong { color: #1d4ed8; font-size: 24px; line-height: 1; }
+.dark .match-coverage-head { color: #cbd5e1; }
+.dark .match-coverage-head strong { color: #93baff; }
+.match-coverage-track { height: 10px; margin-block: 10px 8px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+.dark .match-coverage-track { background: #1e293b; }
+.match-coverage-track span { display: block; height: 100%; border-radius: 999px; background: #2563eb; }
+.dark .match-coverage-track span { background: #60a5fa; }
+.match-coverage p { color: #64748b; font-size: 12px; line-height: 1.5; }
+.match-section { border: 1px solid #dbe2ec; border-radius: 18px; background: #fff; padding: 22px; }
+.match-section h3 { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; font-size: 15px; font-weight: 750; }
+.match-section h3 span { border-radius: 999px; background: #e8eef8; padding: 2px 8px; font-size: 11px; }
+.dark .match-section h3 span { background: #1e293b; }
+.match-requirements { display: grid; gap: 10px; }
+.match-requirements li { display: grid; grid-template-columns: 132px 1fr; gap: 14px; align-items: start; border-top: 1px solid #e2e8f0; padding-top: 10px; }
+.dark .match-requirements li { border-color: #26364c; }
+.match-requirements li:first-child { border-top: 0; padding-top: 0; }
+.match-requirements strong { font-size: 14px; }
+.match-requirements p { margin-top: 3px; color: #526177; font-size: 13px; line-height: 1.55; }
+.dark .match-requirements p { color: #b6c3d4; }
+/* Status always ships with a text label, never colour alone. */
+.match-badge { justify-self: start; border-radius: 999px; padding: 4px 9px; font-size: 11px; font-weight: 800; }
+[data-status="strong"] > .match-badge { background: #dcfce7; color: #166534; }
+[data-status="partial"] > .match-badge { background: #fef3c7; color: #92400e; }
+[data-status="gap"] > .match-badge { background: #f1f5f9; color: #475569; }
+.dark [data-status="strong"] > .match-badge { background: #052e16; color: #86efac; }
+.dark [data-status="partial"] > .match-badge { background: #3b2509; color: #fde68a; }
+.dark [data-status="gap"] > .match-badge { background: #1e293b; color: #cbd5e1; }
+.match-columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+.match-evidence { display: grid; gap: 10px; }
+.match-evidence li { display: grid; gap: 4px; }
+.match-evidence strong { font-size: 13px; }
+.match-evidence span { display: flex; flex-wrap: wrap; gap: 6px; }
+.match-evidence a, .match-sources a { border-radius: 7px; background: #eff6ff; padding: 4px 8px; color: #1d4ed8; font-size: 12px; font-weight: 600; }
+.match-evidence a:hover, .match-sources a:hover { background: #dbeafe; }
+.dark .match-evidence a, .dark .match-sources a { background: #172554; color: #bfdbfe; }
+.match-gaps { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.match-gaps li { border: 1px dashed #94a3b8; border-radius: 8px; padding: 4px 9px; font-size: 12px; font-weight: 650; }
+.match-empty { color: #64748b; font-size: 12px; line-height: 1.6; }
+.match-sources { display: flex; flex-wrap: wrap; gap: 6px; }
+.match-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; color: #64748b; font-size: 12px; }
+
+/* ── Ask about this project ───────────────────────────────────────────── */
+.ask-project { display: grid; grid-template-columns: 1fr 1.3fr; gap: 22px; margin-block: 36px; border: 1px solid #c7d2fe; border-radius: 18px; background: linear-gradient(145deg, #fff, #eef2ff); padding: 24px; }
+.dark .ask-project { border-color: #3730a3; background: linear-gradient(145deg, #101c2e, #172554); }
+.ask-project .eyebrow { display: flex; align-items: center; gap: 6px; }
+.ask-project > div > p:not(.eyebrow) { color: #526177; font-size: 14px; line-height: 1.6; }
+.dark .ask-project > div > p:not(.eyebrow) { color: #bdc9d9; }
+.ask-project-questions { display: grid; gap: 8px; }
+.ask-project-questions button { border: 1px solid #c7d2fe; border-radius: 10px; background: #ffffffcc; padding: 10px 12px; color: #312e81; font-size: 13px; font-weight: 650; text-align: start; transition: border-color .15s ease, transform .15s ease; }
+.ask-project-questions button:hover { border-color: #818cf8; transform: translateX(3px); }
+.dark .ask-project-questions button { border-color: #4338ca; background: #0f172acc; color: #e0e7ff; }
+.ask-project-questions .ask-project-own { border-style: dashed; background: transparent; color: #4338ca; }
+.dark .ask-project-questions .ask-project-own { color: #a5b4fc; }
+
+/* ── Project stack filters ────────────────────────────────────────────── */
+.tech-filter { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; max-width: 860px; margin: 0 auto 14px; }
+.tech-filter > span { margin-inline-end: 4px; color: #59626f; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.tech-filter button { border: 1px solid #cbd5e1; border-radius: 8px; padding: 4px 9px; color: #475569; font-size: 12px; font-weight: 600; transition: border-color .15s ease, background .15s ease; }
+.tech-filter button:hover { border-color: #60a5fa; color: #1d4ed8; }
+.tech-filter button[aria-pressed="true"] { border-color: #2563eb; background: #dbeafe; color: #1e40af; }
+.dark .tech-filter > span { color: #9fb0c7; }
+.dark .tech-filter button { border-color: #475569; color: #cbd5e1; }
+.dark .tech-filter button[aria-pressed="true"] { border-color: #3b82f6; background: #172554; color: #bfdbfe; }
+.filter-summary { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; margin-bottom: 28px; color: #59626f; font-size: 12px; }
+.filter-summary button { color: #1d4ed8; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.dark .filter-summary { color: #9fb0c7; }
+.dark .filter-summary button { color: #93baff; }
+
+/* ── Résumé timeline ──────────────────────────────────────────────────── */
+.resume-timeline { margin-bottom: 28px; border: 1px solid #dbe2ec; border-radius: 18px; background: #fff; padding: 22px; }
+.dark .resume-timeline { background: #111e30; border-color: #304158; }
+.resume-timeline-head h2 { font-size: 17px; font-weight: 750; }
+.resume-timeline-track { display: flex; gap: 8px; margin-block: 16px; overflow-x: auto; padding-bottom: 4px; }
+.resume-timeline-track li { flex: 1 0 150px; }
+.resume-timeline-track button { display: grid; align-content: start; gap: 3px; width: 100%; height: 100%; border: 1px solid #dbe2ec; border-top-width: 3px; border-radius: 10px; padding: 10px; text-align: start; transition: border-color .15s ease, background .15s ease; }
+.resume-timeline-track li[data-kind="Work"] button { border-top-color: #93c5fd; }
+.resume-timeline-track li[data-kind="Education"] button { border-top-color: #c4b5fd; }
+.resume-timeline-track button:hover { border-color: #93c5fd; }
+.resume-timeline-track button[aria-pressed="true"] { border-color: #2563eb; background: #eff6ff; }
+.dark .resume-timeline-track button { border-color: #304158; }
+.dark .resume-timeline-track button[aria-pressed="true"] { border-color: #60a5fa; background: #172554; }
+.resume-timeline-track span, .resume-timeline-track em { color: #59626f; font-size: 11px; font-style: normal; }
+.resume-timeline-track strong { font-size: 13px; line-height: 1.3; }
+.dark .resume-timeline-track span, .dark .resume-timeline-track em { color: #9fb0c7; }
+.resume-timeline-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.resume-timeline-kind { margin-bottom: 6px; color: #1d4ed8; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.dark .resume-timeline-kind { color: #93baff; }
+.resume-timeline-detail h3 { font-size: 16px; font-weight: 750; }
+.resume-timeline-detail h3 span { color: #59626f; font-weight: 500; }
+.resume-timeline-detail p { margin-top: 6px; color: #526177; font-size: 13px; line-height: 1.6; }
+.dark .resume-timeline-detail p, .dark .resume-timeline-detail h3 span { color: #b6c3d4; }
+.resume-timeline-tech { display: flex; flex-wrap: wrap; gap: 5px; }
+.resume-timeline-tech li { border: 1px solid #e2e8f0; border-radius: 7px; padding: 3px 7px; color: #646d7d; font-size: 11.5px; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.resume-timeline-tech li[data-active] { border-color: #2563eb; background: #2563eb; color: #fff; font-weight: 650; }
+.dark .resume-timeline-tech li { border-color: #26364c; color: #8b95a5; }
+.dark .resume-timeline-tech li[data-active] { border-color: #60a5fa; background: #1d4ed8; color: #fff; }
+
+/* ── Admin funnel: one series → one hue, direct value labels, table view ─ */
+.admin-funnel { margin-top: 32px; }
+.admin-funnel-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 16px; }
+.admin-funnel-head h2 { margin-inline-end: auto; font-size: 20px; font-weight: 800; }
+.admin-funnel select { border: 1px solid #cbd5e1; border-radius: 8px; background: transparent; padding: 6px 8px; }
+.funnel-bars { display: grid; gap: 10px; }
+.funnel-bars li { display: grid; grid-template-columns: 190px 1fr 120px; align-items: center; gap: 12px; padding: 3px 0; }
+.funnel-label { color: #334155; font-size: 13px; }
+.dark .funnel-label { color: #cbd5e1; }
+.funnel-track { height: 14px; }
+.funnel-track span { display: block; height: 100%; border-radius: 0 4px 4px 0; background: #2563eb; }
+.dark .funnel-track span { background: #60a5fa; }
+.funnel-value { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.funnel-value small { color: #64748b; font-weight: 500; }
+.funnel-note { margin-top: 10px; color: #64748b; font-size: 12px; }
+.funnel-daily { margin-top: 16px; }
+.funnel-daily summary { cursor: pointer; font-weight: 700; }
+.admin-table caption { padding-bottom: 6px; text-align: start; font-weight: 700; }
+
+/* Secondary button on the dark contact banner */
+.contact-banner .contact-banner-secondary { border-color: #ffffff4d; color: #fff; }
+.contact-banner .contact-banner-secondary:hover { background: #ffffff14; }
+
+@media (max-width: 767px) {
+  .match-overview, .match-columns, .ask-project, .resume-timeline-detail { grid-template-columns: 1fr; }
+  .match-requirements li { grid-template-columns: 1fr; gap: 6px; }
+  .funnel-bars li { grid-template-columns: 1fr 96px; }
+  .funnel-track { grid-column: 1 / -1; grid-row: 2; }
+}

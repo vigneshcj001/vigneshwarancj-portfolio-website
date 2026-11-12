@@ -9,6 +9,7 @@ import {
 import { HiSparkles } from "react-icons/hi2";
 import botAvatar from "url:../assets/portrait-640.webp";
 import useAssistantChat from "../features/assistant/useAssistantChat";
+import useApiStatus, { API_STATUS_LABELS } from "../Hooks/useApiStatus";
 import { STARTER_QUESTIONS } from "../features/assistant/constants";
 import { useLanguage } from "../Contexts/LanguageContext";
 import { projects } from "../data/projects";
@@ -213,6 +214,7 @@ export default function PortfolioAssistant() {
   const executedActionsRef = useRef(new Set());
   const [largeText, setLargeText] = useState(() => localStorage.getItem("assistant-large-text") === "true");
   const [highContrast, setHighContrast] = useState(() => localStorage.getItem("assistant-high-contrast") === "true");
+  const apiStatus = useApiStatus();
   const {
     connection, lastQuestion, messages, input, setInput, activeChip, setActiveChip,
     loading, sendMessage, clearChat, stopResponse, sessions, activeSessionId,
@@ -428,7 +430,7 @@ export default function PortfolioAssistant() {
             className="assistant-launcher"
           >
             <span className="assistant-launcher-icon"><HiSparkles /></span>
-            <span><strong>Ask portfolio AI</strong><small><i /> Online</small></span>
+            <span><strong>Ask portfolio AI</strong><small data-status={apiStatus}><i aria-hidden="true" /> {API_STATUS_LABELS[apiStatus]}</small></span>
           </motion.button>
         )}
       </AnimatePresence>

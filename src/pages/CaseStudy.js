@@ -1,17 +1,49 @@
+import { useEffect } from "react";
 import { Link, useParams } from "react-router";
+import { HiSparkles } from "react-icons/hi2";
 import { caseStudies, projectMedia } from "../data/showcase";
 import { projects } from "../data/projects";
 import ProjectPreview from "../Components/ProjectPreview";
 import useMeta from "../Hooks/useMeta";
-import { trackConversion } from "../Utils/analytics";
+import { recordEvent, trackConversion } from "../Utils/analytics";
 import { SiPypi } from "react-icons/si";
 import ArchitectureDiagram from "../Components/ArchitectureDiagram";
 import PocketPetDemo from "../Components/PocketPetDemo";
 import ApiPlayground from "../Components/ApiPlayground";
+
+const PROJECT_QUESTIONS = [
+  "What was the hardest engineering decision in {title}, and why?",
+  "Walk me through how {title} works end to end.",
+  "What exactly did Vigneshwaran build in {title}?",
+];
+
+function askAssistant(question, autoSubmit) {
+  window.dispatchEvent(new CustomEvent("portfolio-assistant:open", { detail: { question, autoSubmit } }));
+}
+
+function AskAboutProject({ title, slug }) {
+  const questions = PROJECT_QUESTIONS.map((template) => template.replace("{title}", title));
+  return (
+    <aside className="ask-project" aria-label={`Ask the AI about ${title}`}>
+      <div>
+        <p className="eyebrow"><HiSparkles aria-hidden="true" /> Ask about this project</p>
+        <p>The portfolio assistant answers from documented facts about {title} and cites its sources.</p>
+      </div>
+      <div className="ask-project-questions">
+        {questions.map((question) => (
+          <button key={question} type="button" onClick={() => { trackConversion("assistant_project_question", { project: slug }); askAssistant(question, true); }}>{question}</button>
+        ))}
+        <button type="button" className="ask-project-own" onClick={() => askAssistant(`About ${title}: `, false)}>Ask your own question →</button>
+      </div>
+    </aside>
+  );
+}
+
 export default function CaseStudy() {
   const { slug } = useParams();
   const study = caseStudies[slug];
   useMeta(study ? `${study.title} — Case study` : "Project not found", study?.summary);
+  useEffect(() => { if (study) recordEvent("case_study_view", { project: slug }); }, [slug, study]);
   if (!study) return <section className="portfolio-section"><h1>Project not found</h1><Link to="/projects">Browse projects</Link></section>;
   const project = projects[study.index];
   const media = projectMedia[slug];
@@ -33,6 +65,7 @@ export default function CaseStudy() {
     {study.limitations && <section><h2>Model limitations</h2><ul className="space-y-3 list-disc pl-5">{study.limitations.map(item => <li key={item}>{item}</li>)}</ul></section>}
     <section data-walkthrough-step="3"><h2>Design decisions</h2><ul className="space-y-4 list-disc pl-5">{study.decisions.map(item => <li key={item}>{item}</li>)}</ul></section>
     <section className="surface-card"><p className="eyebrow">Delivered</p><h2>{study.result}</h2><p>{study.caveat}</p></section>
+    <AskAboutProject title={study.title} slug={slug} />
     <div className="flex flex-wrap gap-2 my-8">{project.tags.map(tag => <Link className="skill-pill" key={tag} to={`/projects?q=${encodeURIComponent(tag)}`}>{tag}</Link>)}</div>
     <Link className="text-link" to="/contact">Discuss a related project →</Link>
   </article>;

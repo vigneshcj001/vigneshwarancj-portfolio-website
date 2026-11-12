@@ -1,0 +1,84 @@
+Vigneshwaran C. J.
+AI Engineer | Full-Stack Developer | Python, TypeScript, React, Node.js, FastAPI
+Coimbatore, Tamil Nadu, India | +91 93615 69230 | vigneshwarancj@gmail.com | www.linkedin.com/in/vigneshwarancj1 | github.com/vigneshcj001 | leetcode.com/vigneshcj001 | vigneshwarancj-portfolio-website.vercel.app
+
+PROFESSIONAL SUMMARY
+--------------------
+AI engineer and full-stack developer building production AI applications, conversational commerce platforms, and cloud-deployed web services. Ships Python, Node.js, and TypeScript APIs with React front ends, PostgreSQL and Redis data layers, and Docker-based deployments. Experienced with LLM integration, multi-agent workflows, OCR and document AI, payment and logistics integrations, and usage metering. M.Tech in Big Data Biology with published machine-learning research in computational biology.
+
+TECHNICAL SKILLS
+----------------
+Programming Languages: Python, R, SQL, JavaScript, TypeScript, Rust
+Data Science & ML: Pandas, NumPy, Scikit-Learn, PyTorch, TensorFlow, SHAP
+Frontend Development: React.js, Next.js, Redux, HTML5, CSS3, Tailwind CSS, Bootstrap
+Backend Development: Node.js, Express.js, FastAPI, Flask, Streamlit, Socket.IO, BullMQ, Mongoose, Tauri
+Databases: MongoDB, PostgreSQL, DynamoDB, Oracle, Redis
+Cloud & DevOps: AWS EC2, AWS SES, Google Cloud, Firebase, Docker, PM2, systemd, nginx, Render, Railway, GitHub Actions, Kubernetes, Minikube
+AI & LLMs: OpenAI GPT-4o, LangChain, LangGraph, Groq, Agentic AI, Gemini, OCR, Prompt Engineering, Context Engineering
+Bioinformatics & Research: RDKit, Mordred, glycowork, PyTorch Geometric, BioPython, Glycomics, Cytoscape, Galaxy
+Tools: Git, GitHub, n8n, Postman, Playwright, Jupyter Notebook, Linux, Vim, Arduino, Photoshop, macOS, Puppeteer, Apify, Razorpay, Shiprocket, Webhooks, Redis Streams
+
+WORK EXPERIENCE
+---------------
+
+Junior Software Developer
+Ceiyone Tech Works Pvt. Ltd. | Dec 2025 – Present
+- Bullion Handler: FastAPI service that reads gold-shipment AWB and invoice PDFs with GPT-4o vision, then runs a two-stage rules engine. (Python, FastAPI, OpenAI GPT-4o, PostgreSQL, Redis)
+- Bullion Listener: Node.js WhatsApp bot bridging group chats and Bullion Handler: saves incoming PDFs to the shared filesystem. (Node.js, whatsapp-web.js, Chokidar, Redis, PM2)
+- Splendor: Express 5 REST API that meters AI token consumption and subscription quotas per client/agent, enforces plan limits. (Node.js, Express.js, PostgreSQL, Joi, Winston)
+- Oblion: Multi-number WhatsApp gateway: one whatsapp-web.js session per business number, BullMQ-queued outbound sends with retries and a dead-letter queue. (TypeScript, Node.js, Express.js, BullMQ, Redis)
+- meridian-api: Shared service layer every AIORA WhatsApp conversation runs through: slot availability, bookings, operator-authored intake questions. (Node.js, Express.js, PostgreSQL, Joi, Winston)
+
+AI Engineer Intern
+Ceiyone Tech Works Pvt. Ltd. | Oct 2025 – Dec 2025
+- AI Weather Agent: Telegram bot answering weather queries via text and voice using OpenAI NLU, real-time weather APIs, and voice-to-text/TTS pipelines. (Python, Telegram Bot API, OpenAI, Weather APIs)
+- LinkedIn Automation Platform: Automated LinkedIn profile analytics, post scraping, engagement tracking, competitor research, and AI content generation via n8n and Apify. (Apify, n8n, Gemini, Python)
+- LinkedIn Content Creation Agent: End-to-end AI pipeline: topic research → content drafting → SEO optimisation → hashtag generation → publishing workflow. (n8n, Gemini, Python)
+
+Research Intern
+Manipal Institute of Technology | Karnataka, India · On-site | Jun 2024 – Jul 2024
+- Built QSPR models for Posaconazole solubility in SEDDS formulations using RDKit descriptors, VIF-based feature reduction, and regression model comparison; reported R²=0.926.
+
+Tutor
+Kamakshi Tuition Centre | Mugalivakkam, Chennai · On-site | Jan 2023 – Jun 2023
+- Taught mathematics to 9th grade students and Python programming to 12th grade students at Kamakshi Tuition Centre, Mugalivakkam Arasa Maram.
+
+PROJECTS
+--------
+
+PocketPet | Desktop Companion, AI Browser Agent + Download Website
+- One cross-platform product comprising a Tauri 2/Rust desktop companion and its React 19/TypeScript download website. The desktop app provides JavaScript/SVG pets, games, customisation, break reminders, and a streamed task agent that searches, reads pages.
+Tech: Rust, Tauri, JavaScript, React.js, TypeScript, Vite, Tailwind CSS, Tokio, Win32, Chrome DevTools Protocol
+Links: pocketpet-web.vercel.app | github.com/vigneshcj001/Pocketpet
+
+Syncly | Developer Networking Platform
+- Developer-to-developer networking platform built solo end to end. Members pick a mentorship role (mentor, learner, both), swipe a paginated feed of developers they have not met (Vibe to connect, Ghost to pass); the recipient replies Link or Noped.
+Tech: React 19, Vite, Redux Toolkit, React Router 7, Tailwind CSS 4, daisyUI, Axios, Node.js, Express 5, MongoDB
+Links: github.com/vigneshcj001/Syncly_fronend
+
+GlycanBench: a unified resource for working with glycans | Glycoinformatics Web Server + Python Package · SASTRA University
+- Full-stack glycoinformatics platform and installable Python package built with Ashok Palaniappan at SASTRA's Systems Computational Biology Lab. React 19 and FastAPI expose 20 tools for glycan creation, SNFG 2D and on-demand 3D conformers, format conversion.
+Tech: Python, FastAPI, Pydantic, React 19, TypeScript, Vite, Tailwind CSS 4, PyTorch, PyTorch Geometric, RDKit
+Links: glycanbench.sastra.edu | github.com/APalaniaLab/GlycanBench | pypi.org/project/glycanbench
+
+EDUCATION
+---------
+
+Master of Technology in Big Data Biology
+SASTRA Deemed University | Thanjavur, Tamil Nadu, India | Aug 2023 – Jun 2025 | Grade: 79.67%
+- Focus: ML for biology, glycomics, bioinformatics, data science
+
+Bachelor of Technology
+Prathyusha Engineering College | Tiruvallur, Tamil Nadu, India | Aug 2019 – Apr 2023 | Grade: 84.4%
+
+PUBLICATIONS
+------------
+- GlycanBench: a unified resource for working with glycans | Submitted — Frontiers in Systems Biology | Systems Computational Biology Lab, SASTRA Deemed University | 2026
+- Explainable Machine Learning-Based Approach to Developing Potent EGFR Inhibitors for Ovarian Cancer | M.Tech Thesis | SASTRA Deemed University | 2025
+- Prediction of lignocellulosic components and fermentable sugars for bioethanol production by machine learning approach | B.Tech Main Project | SASTRA Deemed University | 2024
+- Suitability Studies Of Fruits Of West Indian elm Plant (Guazuma ulmifolia) As Feedstock For Biofuel production | B.Tech Mini Project | Prathyusha Engineering College | 2023
+
+CERTIFICATIONS
+--------------
+- Namaste ReactJS | NamasteDev
+- Namaste Node.js | NamasteDev

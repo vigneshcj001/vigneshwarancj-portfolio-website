@@ -1,5 +1,7 @@
 import { trackConversion } from "../Utils/analytics";
 import { useState } from "react";
+import { Link } from "react-router";
+import ResumeTimeline from "../Components/ResumeTimeline";
 import { m as motion } from "framer-motion";
 import { FiDownload, FiPrinter, FiGithub, FiLinkedin, FiMail, FiGlobe, FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
 import { HiOutlineDocumentText } from "react-icons/hi";
@@ -32,6 +34,12 @@ const skillCategories = Object.entries(portfolioData.skills).map(([name, skills]
 const certifications = portfolioData.certifications.map((item) => ({ ...item, issuer: `${item.issuer} · ${item.instructor}` }));
 const researchInterests = portfolioData.research_interests;
 
+const DOWNLOADS = {
+  pdf: { filename: "Vigneshwaran_CJ_Resume.pdf", fallback: "/resume.pdf", label: "PDF" },
+  docx: { filename: "Vigneshwaran_CJ_Resume.docx", fallback: "/Vigneshwaran_CJ.docx", label: "DOCX" },
+  txt: { filename: "Vigneshwaran_CJ_Resume.txt", fallback: "/resume.txt", label: "text file" },
+};
+
 const FEATURED_PROJECT_TITLES = [
   "PocketPet",
   "Syncly",
@@ -44,7 +52,9 @@ const FEATURED_PROJECT_TITLES = [
 function SectionLabel({ children }) {
   return (
     <div className="mb-3">
-      <h2 className="text-[10px] font-bold tracking-[0.2em] uppercase text-blue-700 dark:text-blue-400">
+      {/* Keep letter-spacing small: wide tracking makes PDF text extract as
+          "S U M M A R Y", which parsers cannot match to a section heading. */}
+      <h2 className="text-[11px] font-bold tracking-[0.06em] uppercase text-blue-700 dark:text-blue-400">
         {children}
       </h2>
       <div className="h-px bg-blue-700/30 dark:bg-blue-400/30 mt-0.5" />
@@ -300,27 +310,28 @@ function SidebarResearchInterests() {
 
 const Resume = () => {
   useMeta("Resume", "Download or preview Vigneshwaran C.J.'s resume — AI/ML Engineer, Full-Stack Developer building the AIORA WhatsApp business platform.");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleDownload = async () => {
-    setLoading(true);
+  // Live files come from the backend's ATS generator; the committed copies are
+  // exported from the same generator, so the fallback has the same layout.
+  const handleDownload = async (format) => {
+    const { filename, fallback, label } = DOWNLOADS[format];
+    setLoading(format);
     setError(null);
+    const save = (href) => { const a = document.createElement("a"); a.href = href; a.download = filename; a.click(); };
     try {
-      const blob = await portfolioApi.resume(AbortSignal.timeout(15000));
+      const blob = await portfolioApi.resume(AbortSignal.timeout(20000), format);
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "Vigneshwaran_CJ_Resume.pdf";
-      a.click();
+      save(url);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      trackConversion("resume_download", { source: "resume", version: "live" });
-    } catch (err) {
-      const a = document.createElement("a"); a.href = "/resume.pdf"; a.download = "Vigneshwaran_CJ_Resume.pdf"; a.click();
-      trackConversion("resume_download", { source: "resume", version: "static" });
-      setError("Live generator unavailable. Saved PDF download started.");
+      trackConversion("resume_download", { source: "resume", version: "live", format });
+    } catch {
+      save(fallback);
+      trackConversion("resume_download", { source: "resume", version: "static", format });
+      setError(`Live generator is asleep, so the saved ${label} started downloading instead (same content).`);
     } finally {
-      setLoading(false);
+      setLoading(null);
     }
   };
 
@@ -336,16 +347,17 @@ const Resume = () => {
             Resume
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto mb-5">
-            PDF and website résumé use same portfolio data. Last updated October 13, 2026.
+            Downloads are ATS-friendly: single column, standard section headings, plain text with no tables or icons.
+            They are generated from the same portfolio data as this page.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
-              onClick={handleDownload}
-              disabled={loading}
+              onClick={() => handleDownload("pdf")}
+              disabled={loading !== null}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-700 hover:bg-blue-600 disabled:bg-blue-400 text-white text-sm font-semibold rounded-xl transition-all shadow-md shadow-blue-500/25 hover:shadow-blue-500/40"
             >
-              {loading ? (
+              {loading === "pdf" ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                   Generating…
@@ -356,9 +368,22 @@ const Resume = () => {
                 </>
               )}
             </button>
-            <a href="/Vigneshwaran_CJ.docx" download="Vigneshwaran_CJ.docx" onClick={() => trackConversion("resume_download", { source: "resume", version: "docx" })} className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all">
-              <HiOutlineDocumentText className="w-4 h-4" /> Download DOCX
-            </a>
+            <button
+              onClick={() => handleDownload("docx")}
+              disabled={loading !== null}
+              title="Word format parses most reliably in many applicant tracking systems"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-60 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all"
+            >
+              <HiOutlineDocumentText className="w-4 h-4" /> {loading === "docx" ? "Generating…" : "Download DOCX"}
+            </button>
+            <button
+              onClick={() => handleDownload("txt")}
+              disabled={loading !== null}
+              title="Plain text: exactly what a parser should extract"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-60 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all"
+            >
+              <HiOutlineDocumentText className="w-4 h-4" /> {loading === "txt" ? "Generating…" : "Plain text"}
+            </button>
             <button
               onClick={() => window.print()}
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-all"
@@ -372,6 +397,8 @@ const Resume = () => {
           )}
         </div>
 
+        <ResumeTimeline />
+
         {/* Resume page */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -384,7 +411,8 @@ const Resume = () => {
 
           <div className="p-8 md:p-10 print:p-8">
             <ResumeHeader />
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-x-10">
+            {/* Printed copies are single-column, like the ATS downloads. */}
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] print:grid-cols-1 gap-x-10">
               {/* Main column */}
               <div>
                 <SummarySection />
@@ -394,7 +422,7 @@ const Resume = () => {
                 <ProjectsSection />
               </div>
               {/* Sidebar column */}
-              <div className="md:border-l md:border-gray-200 md:dark:border-gray-700 md:pl-6 pt-1">
+              <div className="md:border-l md:border-gray-200 md:dark:border-gray-700 md:pl-6 pt-1 print:border-0 print:pl-0">
                 <SidebarContact />
                 <SidebarSkills />
                 <SidebarCertifications />
@@ -405,8 +433,8 @@ const Resume = () => {
         </motion.div>
 
         <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4 no-print">
-          The downloaded PDF is a single-column, plain-text layout formatted for ATS parsers —
-          this page's two-column view is for on-screen reading only.
+          The two-column view above is for on-screen reading. Applying through a job portal? Use the DOCX or PDF download.{" "}
+          <Link className="text-blue-700 dark:text-blue-400 underline underline-offset-2" to="/match">Check fit against a job description →</Link>
         </p>
       </div>
     </div>
