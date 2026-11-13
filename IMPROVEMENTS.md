@@ -1,5 +1,17 @@
 # Portfolio updates
 
+## November 2026
+
+- **Job match (`/match`).** Recruiters paste a job description and get a requirement checklist (strong, partial, gap), technology coverage, evidence links into the portfolio, and the gaps. If the AI assessment is unavailable, the keyword evidence still shows, with a notice.
+- **ATS résumé.** The old static `resume.pdf` was printed from the two-column web page: 4 pages, with headings that extracted as `P R O F E S S I O N A L  S U M M A R Y`. The DOCX was built from 10 tables. Both are replaced by single-column PDF, DOCX, and TXT files from the backend generator: 2 pages, standard headings, contact details in the body, bullet points per deliverable. The résumé page offers all three, and printing it is single-column.
+- **Discovery.** Shareable stack and category filters on Projects; "Ask about this project" on each case study; an interactive role-to-stack timeline on the résumé page; RSS at `/feed.xml`.
+- **Assistant.** Real API status on the launcher with an early warm-up ping; Clear chat and Delete conversation erase the server copy; conversation IDs are random UUIDs (old guessable IDs are re-keyed automatically).
+- **Reliability.** 45-second request timeouts for cold starts, readable messages for network errors, timeouts, and rate limits; loading, empty, and error states for live proof, newsletter, and demos.
+- **Accessibility.** Small text raised to a legible minimum, keyboard focus styles that match hover effects, no stuck hover on touch screens.
+- **Analytics.** First-party `page_view` (path only) and `case_study_view` events feed an admin conversion funnel.
+
+Design review of the AI features, with measured retrieval quality and next steps: `AI_SYSTEM_DESIGN.md` in the backend repository.
+
 The homepage highlights three featured systems, links to four case studies, provides a recruiter overview, and includes technical notes. The assistant now has a public `/assistant-architecture` explorer linked from the homepage, chat, footer, and command search. Full source map and current limitations: [CODEBASE.md](CODEBASE.md).
 
 ## AI architecture UI
@@ -16,7 +28,7 @@ The route receives static title/description/canonical metadata in `postbuild.mjs
 - Optional media entries accept `poster`, `video` (MP4 URL), `captions` (WebVTT URL), and `transcript`. No fabricated screenshots or recordings are published.
 - `projectMedia.syncly.liveAvailable` is false, hiding the inactive live link. Other project links follow current content configuration; documentation review does not establish live service availability.
 - The technical notes are explanatory copy based on the listed project technologies; they do not claim undocumented implementation details or measured results. Review before publication.
-- Run `npm run resume:pdf` to refresh the saved PDF after structured content changes. Commit the resulting `resume.pdf`.
+- After structured content changes, run `npm run resume:pdf` (downloads from the backend generator) or the backend's `scripts/export_resume.py`. Commit the resulting `resume.pdf`, `Vigneshwaran_CJ.docx`, and `resume.txt`.
 
 ## Build and preview
 

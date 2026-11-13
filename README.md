@@ -1,19 +1,20 @@
 # Vigneshwaran C. J. — Portfolio Frontend
 
-A React portfolio showcasing AI engineering, full-stack products, and computational biology research. It includes project case studies, an evidence-based portfolio assistant, and an interactive explanation of the assistant's architecture.
+A React portfolio showcasing AI engineering, full-stack products, and computational biology research. It includes project case studies, an evidence-based portfolio assistant, a job-description match tool, and an interactive explanation of the assistant's architecture.
 
-[Portfolio](https://vigneshwarancj-portfolio-website.vercel.app/) · [Codebase guide](CODEBASE.md) · [Maintenance notes](IMPROVEMENTS.md)
+[Portfolio](https://vigneshwarancj-portfolio-website.vercel.app/) · [Codebase guide](CODEBASE.md) · [Maintenance notes](IMPROVEMENTS.md) · AI system design review: `AI_SYSTEM_DESIGN.md` in the backend repository
 
 ## Features
 
-- Project search and category filters, engineering case studies, and technical articles.
+- Project search, category and stack filters kept in the URL (shareable, with copy-link), engineering case studies, and technical articles with an RSS feed (`/feed.xml`).
 - Career timeline, education, certifications, skills, and research publications.
-- Résumé preview, live PDF generation with a saved-PDF fallback, DOCX download, and print layout.
-- Streaming portfolio assistant with citations, contextual questions, specific operation summaries, saved conversations, and verified browser action receipts.
-- Guided case-study tours and reviewable contact drafts that never submit themselves.
+- ATS-friendly résumé downloads (PDF, DOCX, plain text) with static fallbacks from the same generator, an interactive role-to-stack timeline, and a single-column print layout.
+- `/match`: paste a job description to get a requirement checklist, coverage, evidence links, and honest gaps.
+- Streaming portfolio assistant with citations, contextual questions, specific operation summaries, saved conversations, verified browser action receipts, and live API status with an early warm-up.
+- "Ask about this project" on every case study, plus guided tours and reviewable contact drafts that never submit themselves.
 - Interactive `/assistant-architecture` explorer covering normal, contact, refusal, and routing-fallback paths.
 - Seven language choices, Arabic RTL, persistent theme selection, keyboard search, and reduced-motion support.
-- Contact form, newsletter subscription, public GitHub/PyPI activity, and protected admin UI.
+- Contact form, newsletter subscription, public GitHub/PyPI activity, and a protected admin UI with a conversion funnel.
 
 ## Stack
 
@@ -67,13 +68,14 @@ Backend `knowledge/` Markdown is canonical for assistant facts and résumé data
 
 Presentation files under `src/data/` also define project cards, experience, education, skills, publications, social links, case studies, and articles. Keep those views aligned with the canonical facts. Edit `src/data/assistantArchitecture.js` when backend tools, limits, models, or execution flow change.
 
-To refresh the saved résumé PDF, keep the production preview running and run:
+The committed `resume.pdf`, `Vigneshwaran_CJ.docx`, and `resume.txt` are fallbacks for when the backend is asleep. They come from the backend's ATS generator, so they match the live downloads. Refresh them after content changes with either command:
 
 ```powershell
-npm run resume:pdf
+npm run resume:pdf                                  # downloads from the deployed backend
+$env:RESUME_API_URL = "http://127.0.0.1:8080"; npm run resume:pdf   # from a local backend
 ```
 
-This prints the website résumé through Chromium. The live backend PDF uses a separate FPDF2 layout. Public downloads remain `resume.pdf` and `Vigneshwaran_CJ.docx`.
+or, offline from the backend repository, `python scripts/export_resume.py ../vigneshwarancj-portfolio-website`. Do not print the two-column web page to PDF: its layout is for on-screen reading, and parsers misread columns.
 
 ## Tests
 
@@ -103,13 +105,13 @@ App.js                    Routes, providers, and shared application shell
 src/pages/                Portfolio pages and architecture explorer
 src/Components/           Shared UI, assistant, diagrams, and demos
 src/features/assistant/   Chat lifecycle, SSE parser, actions, and local storage
-src/Hooks/                Metadata, translation, and contact behavior
+src/Hooks/                Metadata, translation, contact, and API status behavior
 src/Contexts/             Language state
-src/services/             Backend HTTP client
+src/services/             Backend HTTP client (timeouts, readable errors)
 src/config/               API origin configuration
 src/data/                 Presentation content and generated résumé snapshot
-src/styles/               Architecture explorer styling
-scripts/                  Content compilation, postbuild, preview, and PDF export
+src/styles/               Architecture explorer and feature styling
+scripts/                  Content compilation, postbuild (sitemap, RSS), preview, résumé refresh
 tests/                    Node checks and Playwright browser suites
 vercel.json               Hosting rewrites and security/cache headers
 ```
@@ -120,7 +122,9 @@ For the full frontend/backend source map and data flows, read [CODEBASE.md](CODE
 
 Vercel uses `npm run build` and publishes `dist/`. Direct-route rewrites preserve page-specific sharing metadata. GitHub Actions builds on Node 22, runs Node checks, installs Chromium, and runs browser suites against the production preview.
 
-The architecture explorer explains the implementation; it is not live service telemetry. AI suggestions use curated templates, grounding can be imperfect, and browser session IDs are not authenticated accounts. Browser Clear chat only resets local messages, not the existing server session. Admin revisions are stored but do not automatically update public pages. Newsletter subscriptions are stored; no mailing scheduler is implemented.
+CI runs on pushes to `main` and on pull requests; pushes to other branches are built only through a pull request or a Vercel preview.
+
+The architecture explorer explains the implementation; it is not live service telemetry. AI suggestions use curated templates, grounding can be imperfect, and browser session IDs are not authenticated accounts (they are random UUIDs, and Clear chat erases the server copy). Job match results come from documented portfolio content and do not replace a conversation. Admin revisions are stored but do not automatically update public pages. Newsletter subscriptions are stored; no mailing scheduler is implemented, so the RSS feed is the delivery channel for new notes.
 
 ## License
 

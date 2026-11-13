@@ -329,7 +329,8 @@ const Resume = () => {
     } catch {
       save(fallback);
       trackConversion("resume_download", { source: "resume", version: "static", format });
-      setError(`Live generator is asleep, so the saved ${label} started downloading instead (same content).`);
+      // Keep the "Saved PDF download started" wording: the browser suite asserts it.
+      setError(`Saved ${label} download started — the live generator is unavailable, and the saved copy has the same content.`);
     } finally {
       setLoading(null);
     }
