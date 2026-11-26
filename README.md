@@ -9,7 +9,11 @@ A React portfolio showcasing AI engineering, full-stack products, and computatio
 - Project search, category and stack filters kept in the URL (shareable, with copy-link), engineering case studies, and technical articles with an RSS feed (`/feed.xml`).
 - Career timeline, education, certifications, skills, and research publications.
 - ATS-friendly résumé downloads (PDF, DOCX, plain text) with static fallbacks from the same generator, an interactive role-to-stack timeline, and a single-column print layout.
-- `/match`: paste a job description to get a requirement checklist, coverage, evidence links, and honest gaps.
+- `/match`: paste a job description to get a requirement checklist, coverage, evidence links, and honest gaps; download a résumé tailored to it (PDF/DOCX) or share the result as a 30-day link (`/match/:id`).
+- `/compare` (two projects side by side, shareable), `/brief` (one-page printable recruiter brief, `?for=Company`), `/status` (live API status), `/recommend` (moderated recommendations shown on the home page).
+- Skills proof map on `/skills`: pick a technology to see every role deliverable and project that uses it.
+- Read-aloud answers in the assistant (browser speech, no server cost), browser-language detection on first visit, "/" to focus project search, copy-email and optional booking buttons, and a 404 page with search and a best-guess suggestion.
+- First-party error monitoring: uncaught errors are reported to the backend and listed in the admin page.
 - Streaming portfolio assistant with citations, contextual questions, specific operation summaries, saved conversations, verified browser action receipts, and live API status with an early warm-up.
 - "Ask about this project" on every case study, plus guided tours and reviewable contact drafts that never submit themselves.
 - Interactive `/assistant-architecture` explorer covering normal, contact, refusal, and routing-fallback paths.
@@ -94,7 +98,7 @@ In another terminal:
 npm run test:browser
 ```
 
-Browser suites cover portfolio navigation and responsive layouts, assistant feedback/actions/history, and architecture scenarios. Assistant and contact responses are mocked; these checks do not validate live model quality, production credentials, database connectivity, or email delivery. Screenshots are written under ignored `tmp/`.
+Browser suites cover portfolio navigation and responsive layouts, assistant feedback/actions/history, architecture scenarios, and (`tests/features.browser.cjs`) job match tailoring and sharing, compare, brief, status, recommendations, the skills proof map, keyboard search, 404 suggestions, and phone-width overflow on the new pages. To use an installed Chrome or Edge instead of Playwright's download, set `CHROME_PATH`. Assistant and contact responses are mocked; these checks do not validate live model quality, production credentials, database connectivity, or email delivery. Screenshots are written under ignored `tmp/`.
 
 Optional test variables: `PREVIEW_URL` selects another preview address, `CHROME_PATH` selects a system browser executable, and `PLAYWRIGHT_MODULE` selects an alternate Playwright module location. `npm run test:all` runs Node and browser checks but still requires a running preview and an existing build.
 

@@ -4,7 +4,7 @@ import { m as motion, AnimatePresence } from "framer-motion";
 import {
   FiCheck, FiChevronDown, FiClock, FiCopy, FiDownload, FiEdit3, FiEye,
   FiMic, FiPlus, FiRefreshCw, FiSearch, FiSend, FiShare2, FiSquare,
-  FiThumbsDown, FiThumbsUp, FiTrash2, FiType, FiUserPlus, FiX,
+  FiThumbsDown, FiThumbsUp, FiTrash2, FiType, FiUserPlus, FiVolume2, FiVolumeX, FiX,
 } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import botAvatar from "url:../assets/portrait-640.webp";
@@ -67,6 +67,34 @@ function AgentActionButtons({ actions = [], onAction }) {
   </div>;
 }
 
+// Voice mode: the browser's own speech synthesis (no server call, no API cost).
+const SPEECH_LANG = { en: "en-IN", ta: "ta-IN", hi: "hi-IN", fr: "fr-FR", es: "es-ES", ar: "ar-SA", "zh-CN": "zh-CN" };
+
+function ReadAloudButton({ text }) {
+  const [speaking, setSpeaking] = useState(false);
+  const supported = typeof window !== "undefined" && "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+  useEffect(() => () => { if (speaking) window.speechSynthesis.cancel(); }, [speaking]);
+  if (!supported || !text) return null;
+  const toggle = () => {
+    const synth = window.speechSynthesis;
+    if (speaking) { synth.cancel(); setSpeaking(false); return; }
+    synth.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const lang = SPEECH_LANG[document.documentElement.lang] || "en-IN";
+    utterance.lang = lang;
+    utterance.voice = synth.getVoices().find((voice) => voice.lang === lang) || synth.getVoices().find((voice) => voice.lang.startsWith(lang.split("-")[0])) || null;
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+    setSpeaking(true);
+    synth.speak(utterance);
+  };
+  return (
+    <button type="button" onClick={toggle} className={speaking ? "is-active" : ""} aria-pressed={speaking} aria-label={speaking ? "Stop reading aloud" : "Read answer aloud"}>
+      {speaking ? <FiVolumeX /> : <FiVolume2 />}
+    </button>
+  );
+}
+
 function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, onShare, onNavigate, onAgentAction }) {
   if (!msg.done || msg.error || msg.stopped || (!msg.question && !msg.sources?.length)) return null;
   return (
@@ -84,6 +112,7 @@ function MessageExtras({ msg, feedback, onFeedback, onFollowup, onRegenerate, on
         <button type="button" onClick={() => onFeedback(msg, "not_helpful")} className={feedback === "not_helpful" ? "is-active" : ""} aria-label="Not helpful answer"><FiThumbsDown /></button>
         <button type="button" onClick={() => onRegenerate(msg.question)} aria-label="Regenerate answer"><FiRefreshCw /></button>
         <button type="button" onClick={() => onShare(msg.text)} aria-label="Share answer"><FiShare2 /></button>
+        <ReadAloudButton text={msg.text} />
       </div>
     </div>
   );

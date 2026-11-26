@@ -6,7 +6,7 @@ const dist=path.resolve(__dirname,'../dist');
 test('deployed direct links serve the generated sharing metadata',async()=>{
  const {caseStudies,articles}=await import('../src/data/showcase.js');
  const config=JSON.parse(fs.readFileSync(path.resolve(__dirname,'../vercel.json'),'utf8'));
- const routes=['assistant-architecture','match',...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
+ const routes=['assistant-architecture','match','compare','brief','status','recommend',...Object.keys(caseStudies).map(slug=>`projects/${slug}`),...articles.map(article=>`writing/${article.slug}`)];
  for(const route of routes){
   const rewrite=config.rewrites.find(rule=>rule.source===`/${route}` || rule.source==='/(.*)');
   assert.equal(rewrite?.destination,`/${route}/index.html`,`Direct link loses metadata: ${route}`);

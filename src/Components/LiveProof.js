@@ -6,7 +6,7 @@ const formatDate = (value) => {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
 };
-const plural = (count, word) => `${count} ${word}${count === 1 ? "" : "s"}`;
+const plural = (count, word, suffix = "s") => `${count} ${word}${count === 1 ? "" : suffix}`;
 
 export default function LiveProof() {
   const [state, setState] = useState({ status: "loading", data: null });
@@ -26,6 +26,7 @@ export default function LiveProof() {
     ready: data && `GitHub and PyPI metadata, refreshed ${formatDate(data.cached_at)}.`,
     unavailable: "Live metadata is resting right now — browse the public repositories directly.",
   }[status];
+  const activity = data?.activity;
 
   return (
     <section className="surface-card live-proof" aria-busy={status === "loading"}>
@@ -33,6 +34,14 @@ export default function LiveProof() {
         <p className="eyebrow">Live engineering proof</p>
         <h2>Public work and package activity</h2>
         <p>{summary}</p>
+        {activity && activity.pushes > 0 && (
+          <p className="proof-activity">
+            <strong>{plural(activity.commits, "commit")}</strong> across {plural(activity.pushes, "push", "es")} in the last {activity.days} days
+            {activity.active_repos?.length > 0 && <> · most active: {activity.active_repos.slice(0, 3).map((repo, index) => (
+              <span key={repo.name}>{index > 0 && ", "}<a href={repo.url} target="_blank" rel="noreferrer">{repo.name}</a></span>
+            ))}</>}
+          </p>
+        )}
       </div>
       <div className="proof-grid">
         {status === "loading" && [0, 1, 2].map((index) => <span key={index} className="proof-skeleton" aria-hidden="true" />)}

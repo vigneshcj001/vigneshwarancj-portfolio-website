@@ -5,6 +5,7 @@ import { m as motion } from "framer-motion";
 import { skillCategories, colorMap } from "../data/skills.js";
 import PageHeader from "../Components/ui/PageHeader.js";
 import useMeta from "../Hooks/useMeta.js";
+import SkillProofMap from "../Components/SkillProofMap.js";
 
 const totalSkills = skillCategories.reduce((acc, c) => acc + c.skills.length, 0);
 
@@ -66,6 +67,8 @@ const Skills = () => {
           );
         })}
       </div>
+
+      <SkillProofMap />
     </section>
   );
 };

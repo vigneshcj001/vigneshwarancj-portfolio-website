@@ -11,6 +11,22 @@
       "destination": "/match/index.html"
     },
     {
+      "source": "/compare",
+      "destination": "/compare/index.html"
+    },
+    {
+      "source": "/brief",
+      "destination": "/brief/index.html"
+    },
+    {
+      "source": "/status",
+      "destination": "/status/index.html"
+    },
+    {
+      "source": "/recommend",
+      "destination": "/recommend/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about/index.html"
     },

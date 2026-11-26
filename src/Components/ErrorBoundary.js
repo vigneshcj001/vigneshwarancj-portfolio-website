@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router";
+import { reportError } from "../Utils/errorReporter";
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null };
@@ -10,6 +11,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, info) {
     console.error("[ErrorBoundary]", error, info);
+    reportError(error, "boundary");
   }
 
   render() {

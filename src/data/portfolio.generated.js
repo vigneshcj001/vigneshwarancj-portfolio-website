@@ -22,7 +22,11 @@ export default {
       "location": "Thanjavur, Tamil Nadu, India",
       "period": "Aug 2023 – Jun 2025",
       "grade": "79.67%",
-      "focus": "ML for biology, glycomics, bioinformatics, data science"
+      "focus": "ML for biology, glycomics, bioinformatics, data science",
+      "projects": [
+        "GlycanBench (main project, guided by Ashok Palaniappan, Systems Computational Biology Lab): glycoinformatics web server and Python package with 20 tools; paper submitted to Frontiers in Systems Biology",
+        "M.Tech thesis: explainable machine learning for EGFR inhibitor classification in ovarian cancer"
+      ]
     },
     {
       "degree": "Bachelor of Technology",
@@ -101,7 +105,7 @@ export default {
       "status": "Submitted — Frontiers in Systems Biology",
       "type": "Research Paper",
       "context": "PG M.Tech · Main Project",
-      "abstract": "Unified glycoinformatics web server and Python package with 20 tools. Includes an MPNN trained on 1,344 curated glycans after correcting 12 contradictory labels, on-demand conformers, GLYSUM alignment, network visualisation, and GlycomicsChat.",
+      "abstract": "Unified glycoinformatics web server and Python package with 20 tools. Includes an MPNN trained on 1,344 curated glycans after correcting 12 contradictory labels (AUC-ROC 0.983 and MCC 0.899 on the paper's 633-glycan evaluation set), on-demand conformers, GLYSUM alignment, network visualisation, and GlycomicsChat.",
       "tags": [
         "Glycomics",
         "MPNN",
@@ -309,7 +313,28 @@ export default {
     "GlycanBench: a unified resource for working with glycans": {
       "type": "AI/Research Platform",
       "subtitle": "Glycoinformatics Web Server + Python Package · SASTRA University",
-      "description": "Full-stack glycoinformatics platform and installable Python package built with Ashok Palaniappan at SASTRA's Systems Computational Biology Lab. React 19 and FastAPI expose 20 tools for glycan creation, SNFG 2D and on-demand 3D conformers, format conversion, molecular descriptors, fingerprint comparison, GLYSUM Needleman-Wunsch alignment, clustering, immunogenicity prediction, and literature-aware chat. The PyTorch Geometric MPNN uses 1,344 curated glycans after correcting 12 contradictory labels across two datasets. GlycomicsChat routes Groq/LangChain requests to PubMed, ArXiv, and GlyTouCan. Distributed as web app, SDK, CLI, and FastAPI server with tests and notebooks.",
+      "description": "Full-stack glycoinformatics platform and installable Python package built with Ashok Palaniappan at SASTRA's Systems Computational Biology Lab. React 19 and FastAPI expose 20 tools for glycan creation, SNFG 2D and on-demand 3D conformers, format conversion, molecular descriptors, fingerprint comparison, GLYSUM Needleman-Wunsch alignment, clustering, immunogenicity prediction, and literature-aware chat. The PyTorch Geometric MPNN uses 1,344 curated glycans after correcting 12 contradictory labels across two datasets. GlycomicsChat routes Groq/LangChain requests to PubMed, ArXiv, and GlyTouCan. Distributed as web app, SDK, CLI, and FastAPI server with tests and notebooks. The deduplicated training set is balanced (672 immunogenic, 672 non-immunogenic) with a stratified 80/20 split. On the evaluation set reported in the submitted paper (633 glycans, 179 immunogenic), the MPNN reaches AUC-ROC 0.983, MCC 0.899, accuracy 0.959 and F1 0.927. GAT, GIN and LSTM baselines were trained for comparison.",
+      "evaluation": {
+        "model": "MPNN immunogenicity classifier (PyTorch Geometric), compared with GAT, GIN and LSTM baselines",
+        "training_data": "1,344 unique glycans after resolving 12 contradictory labels (672 positive, 672 negative); stratified 80/20 split",
+        "reported_evaluation_set": "633 glycans (179 immunogenic, 454 non-immunogenic), as reported in the submitted paper's Table 1",
+        "auc_roc": "0.983",
+        "auc_pr": "0.952",
+        "mcc": "0.899",
+        "accuracy": "0.959",
+        "balanced_accuracy": "0.949",
+        "f1_immunogenic": "0.927",
+        "confusion_matrix": "TN 441, FP 13, FN 13, TP 166"
+      },
+      "novel_contributions": [
+        "First web aligner using the GLYSUM glycan substitution matrix (Needleman-Wunsch with fuzzy token resolution); earlier web alignment (SweetAlign, 2006) used simple match/mismatch scoring",
+        "On-demand 3D conformers for any IUPAC glycan (ETKDGv3, then MMFF94s, with a UFF fallback); GLYCAM-Web offers higher-quality force fields but only for a pre-built library",
+        "Public web immunogenicity predictor (MPNN with AlphaGal, Neu5Gc and complex N-glycan rule flags); GlyNet and glycowork classifiers are programmatic only",
+        "Interactive motif mutation tool with pentamer glycoword frequencies; no published interactive equivalent was found",
+        "One request returns IUPAC, SMILES, GlycoCT and WURCS, with unsupported conversions reported explicitly",
+        "Multi-fingerprint comparison (Morgan R2/R3, Atom Pair, Torsion, RDKit) and clustering with runtime-selectable metrics, including glycowork graph similarity",
+        "GlycomicsChat: glycomics-restricted assistant whose LLM router selects PubMed, ArXiv or GlyTouCan per question, with a keyword fallback"
+      ],
       "tech_stack": [
         "Python",
         "FastAPI",
@@ -515,8 +540,44 @@ export default {
       "company": "Ceiyone Tech Works Pvt. Ltd.",
       "period": "Dec 2025 – Present",
       "type": "Full-time",
-      "overview": "Designing and maintaining AIORA, a multi-tenant WhatsApp commerce platform spanning 13 microservices for bookings, e-commerce, document validation, payments, logistics, and AI interactions. Work covers Node.js/TypeScript and Python APIs, concurrent messaging sessions, Redis queues, OCR and GPT-4o Vision, PostgreSQL usage tracking, Razorpay and Shiprocket integrations, n8n workflows, and production deployment on Ubuntu VPS and Railway.",
+      "overview": "Designing and maintaining AIORA, a multi-tenant WhatsApp commerce platform spanning 13 microservices for bookings, e-commerce, document validation, payments, logistics, and AI interactions. Work covers Node.js/TypeScript and Python APIs, concurrent messaging sessions, Redis queues, OCR and GPT-4o Vision, PostgreSQL usage tracking, Razorpay and Shiprocket integrations, n8n workflows, and production deployment on Ubuntu VPS and Railway. Also built Kural, a multi-tenant AI customer-care voice platform on Sarvam AI, and contributed to CMO Copilot, a grounded marketing-analytics agent.",
       "projects": [
+        {
+          "name": "Kural (multi-tenant AI voice customer-care platform)",
+          "description": "Built solo (Nov 2026): one shared agent engine where each business gets its own data, knowledge base, agent configuration, languages, tools and escalation rules, demonstrated with a real-estate and a hospital business in English and Tamil. The engine runs guardrails → context → LLM ⇄ tool calls (max four rounds, 20-second budget); industry modules add their own tables and tools; tools are tenant-scoped, validated, time-limited and audited, and bookings require the caller's explicit confirmation. Emergency, human-request and repeated-failure guardrails escalate with a context summary. The first version streamed Sarvam STT → LLM → TTS over WebSockets with barge-in and Tamil/English switching; streaming LLM replies into speech sentence by sentence cut time to first audio from about 1.27 s to 0.85 s. Voice calls then moved to hosted Sarvam Voice Agents via the browser SDK, calling Kural's tools over signed HTTPS webhooks, because the target host (Zoho Catalyst AppSail) cannot keep WebSockets open. JWT/RBAC, Fernet-encrypted integration credentials, tenant-isolation tests, 88 backend tests. A live call on hosted Sarvam agents was still pending verification at last update.",
+          "tech": [
+            "Python",
+            "FastAPI",
+            "SQLAlchemy",
+            "Alembic",
+            "PostgreSQL",
+            "Redis",
+            "Sarvam AI",
+            "React",
+            "TypeScript",
+            "Vite",
+            "Tailwind CSS",
+            "Supabase",
+            "Zoho Catalyst",
+            "Docker"
+          ]
+        },
+        {
+          "name": "CMO Copilot (marketing analytics AI agent)",
+          "description": "Team project (Oct 2026): a marketing-analytics agent that answers natural-language questions over Google Analytics 4 (Data API and BigQuery), Google Ads, Meta Ads and Search Console. A LangGraph pipeline (guard → understand → plan → analyze → compose → validate → respond) builds SQL only from validated query plans, never from users or the model, and rejects any number in an answer that cannot be traced to a query result. Multi-tenant configuration, OIDC or demo authentication, SSE chat, dashboards, budgets and board-slide export, with Gemini, Anthropic or OpenAI as the model. Contributed as a member of the Ceiyone team.",
+          "tech": [
+            "Python",
+            "FastAPI",
+            "LangGraph",
+            "BigQuery",
+            "Google Analytics 4",
+            "PostgreSQL",
+            "React",
+            "TypeScript",
+            "TanStack Query",
+            "Recharts"
+          ]
+        },
         {
           "name": "Bullion Handler",
           "description": "FastAPI service that reads gold-shipment AWB and invoice PDFs with GPT-4o vision, then runs a two-stage rules engine — Stage 1 checks the invoice alone (weight, purity, calculations), Stage 2 compares it against its matched AWB — and produces bilingual EN/ES PDF reports delivered by email. PostgreSQL for records, Redis Streams/Pub-Sub for job pickup and SHA-256 dedup.",
@@ -670,7 +731,8 @@ export default {
         "Multi-tenant platform design (shared WhatsApp numbers, multi-agent routing)",
         "Multi-environment VPS deployment (dev/SIT/prod) with systemd, PM2, nginx and isolated Postgres/Redis",
         "IAM, Secrets Manager, CloudWatch configuration on AWS",
-        "Mentoring interns (code review, architecture guidance)"
+        "Mentoring interns (code review, architecture guidance)",
+        "Voice AI with Sarvam (speech recognition, text-to-speech, LLM tool calling) in English and Tamil"
       ]
     },
     {

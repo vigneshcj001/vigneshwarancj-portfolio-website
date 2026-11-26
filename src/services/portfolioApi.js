@@ -95,6 +95,27 @@ export const portfolioApi = {
   match: (jobDescription, signal) => requestJson("/api/match", {
     method: "POST", body: JSON.stringify({ job_description: jobDescription }), signal, timeoutMs: 75000,
   }),
+  // Résumé reordered for one job description; returns { blob, filename }.
+  tailoredResume: async (jobDescription, format = "pdf") => {
+    const response = await send("/api/resume/tailored", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ job_description: jobDescription, format }), timeoutMs: 60000,
+    });
+    if (!response.ok) throw new PortfolioApiError(await errorMessage(response), response.status);
+    const disposition = response.headers.get("Content-Disposition") || "";
+    const filename = disposition.match(/filename="([^"]+)"/)?.[1] || `Vigneshwaran_CJ_Resume_tailored.${format}`;
+    return { blob: await response.blob(), filename };
+  },
+  shareMatch: (result, title = "") => requestJson("/api/match/share", {
+    method: "POST", body: JSON.stringify({ ...result, title }),
+  }),
+  sharedMatch: (shareId, signal) => requestJson(`/api/match/share/${encodeURIComponent(shareId)}`, { signal }),
+  testimonials: (signal) => requestJson("/api/testimonials", { signal }),
+  submitTestimonial: (payload) => requestJson("/api/testimonials", { method: "POST", body: JSON.stringify(payload) }),
+  // Fire-and-forget; must never throw or recurse into the error reporter.
+  reportClientError: (payload) => send("/api/client-errors", {
+    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true, timeoutMs: 10000,
+  }).catch(() => {}),
   health: (signal) => requestJson("/api/health", { signal, timeoutMs: 60000 }),
   // Best effort: a failed server-side erase must never block clearing the chat locally.
   deleteSession: (sessionId) => {

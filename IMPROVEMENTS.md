@@ -1,5 +1,14 @@
 # Portfolio updates
 
+## Late November 2026
+
+- **New knowledge.** Kural (multi-tenant AI voice customer-care platform on Sarvam AI, built solo) and CMO Copilot (grounded marketing-analytics agent, team project) under the Ceiyone role; GlycanBench evaluation metrics and state-of-the-art contributions; the M.Tech record links GlycanBench and the thesis.
+- **Recruiter tools.** Tailored résumé and shareable results on `/match`, `/compare`, `/brief`, and a skills proof map.
+- **Trust.** Moderated recommendations (`/recommend`, admin approval), a public `/status` page.
+- **AI quality.** An output guard removes links and contact details the sources never mentioned; AI metrics and client error reports in the admin page; an answer-quality eval and nightly end-to-end check in the backend repository.
+- **Small wins.** Read-aloud answers, browser-language detection, "/" search shortcut, copy email, optional booking link (`BOOKING_URL` in `src/Utils/const.js`), smarter 404 page.
+- **Bugs fixed while testing.** Page headings with a long word overflowed 320 px screens; compare dropdowns sized to the longest paper title and widened the page; the 404 page suggested "Projects" instead of the specific project.
+
 ## November 2026
 
 - **Job match (`/match`).** Recruiters paste a job description and get a requirement checklist (strong, partial, gap), technology coverage, evidence links into the portfolio, and the gaps. If the AI assessment is unavailable, the keyword evidence still shows, with a notice.

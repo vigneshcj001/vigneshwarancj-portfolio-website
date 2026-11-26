@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect } from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, useNavigate } from "react-router";
 import { m as motion, AnimatePresence, MotionConfig, LazyMotion } from "framer-motion";
 import { IconContext } from "react-icons";
 import { Analytics } from "@vercel/analytics/react";
@@ -14,6 +14,7 @@ import BackToTop from "./src/Components/BackToTop";
 import { LanguageProvider } from "./src/Contexts/LanguageContext";
 import usePageTranslation from "./src/Hooks/usePageTranslation";
 import { recordEvent } from "./src/Utils/analytics";
+import { installErrorReporter } from "./src/Utils/errorReporter";
 
 const CaseStudy = lazy(() => import("./src/pages/CaseStudy"));
 const AssistantArchitecture = lazy(() => import("./src/pages/AssistantArchitecture"));
@@ -29,6 +30,10 @@ const Experience   = lazy(() => import("./src/pages/Experience"));
 const Resume       = lazy(() => import("./src/pages/Resume"));
 const Admin        = lazy(() => import("./src/pages/Admin"));
 const JobMatch     = lazy(() => import("./src/pages/JobMatch"));
+const Compare      = lazy(() => import("./src/pages/Compare"));
+const RecruiterBrief = lazy(() => import("./src/pages/RecruiterBrief"));
+const Status       = lazy(() => import("./src/pages/Status"));
+const Recommend    = lazy(() => import("./src/pages/Recommend"));
 
 const NAV_LINKS = [
   { label: "Home",         to: "/" },
@@ -42,13 +47,56 @@ const NAV_LINKS = [
   { label: "Resume",       to: "/resume" },
 ];
 
-const NotFound = () => (
+const KNOWN_PATHS = [
+  ...NAV_LINKS.map(({ label, to }) => ({ label, to })),
+  ...["aiora", "pocketpet", "syncly", "glycanbench"].map((slug) => ({ label: `${slug[0].toUpperCase()}${slug.slice(1)} case study`, to: `/projects/${slug}` })),
+  { label: "Job match", to: "/match" }, { label: "Compare projects", to: "/compare" },
+  { label: "Recruiter brief", to: "/brief" }, { label: "Writing", to: "/writing" }, { label: "Status", to: "/status" },
+];
+
+// Best guess at the intended page. An exact match on a path's last segment
+// ("/project/aiora" → "/projects/aiora") outranks a partial match ("/projects").
+export function suggestPath(pathname) {
+  const words = pathname.toLowerCase().split(/[^a-z0-9]+/).filter((word) => word.length > 2);
+  if (!words.length) return null;
+  let best = null;
+  let bestScore = 0;
+  for (const candidate of KNOWN_PATHS) {
+    if (candidate.to === "/") continue;
+    const last = candidate.to.split("/").pop();
+    const score = words.reduce((total, word) => total + (word === last ? 3 : candidate.to.includes(word) || word.includes(last) ? 1 : 0), 0);
+    if (score > bestScore || (score === bestScore && score > 0 && candidate.to.length > best.to.length)) {
+      best = candidate;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
+const NotFound = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const suggestion = suggestPath(location.pathname);
+  const search = (event) => {
+    event.preventDefault();
+    const query = new FormData(event.currentTarget).get("q")?.toString().trim();
+    if (query) navigate(`/projects?q=${encodeURIComponent(query)}`);
+  };
+  return (
   <div className="flex flex-col items-center justify-center flex-1 pt-32 pb-20 px-4 text-center">
     <p className="text-8xl font-black text-gray-200 dark:text-gray-800 select-none">404</p>
     <p className="text-xl font-bold text-gray-700 dark:text-gray-300 mt-2 mb-1">Page not found</p>
-    <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
+    <p className="text-sm text-gray-400 dark:text-gray-500 mb-6">
       This page doesn't exist or was moved.
     </p>
+    {suggestion && (
+      <p className="text-sm mb-6">Did you mean <Link className="text-link" to={suggestion.to}>{suggestion.label}</Link>?</p>
+    )}
+    <form className="not-found-search" onSubmit={search} role="search">
+      <label className="sr-only" htmlFor="not-found-q">Search projects and technologies</label>
+      <input id="not-found-q" name="q" placeholder="Search projects or technologies" />
+      <button type="submit" className="primary-action">Search</button>
+    </form>
     <div className="flex flex-wrap gap-3 justify-center mb-10">
       {NAV_LINKS.map(({ label, to }) => (
         <Link
@@ -67,7 +115,8 @@ const NotFound = () => (
       Go home
     </Link>
   </div>
-);
+  );
+};
 
 const PageLoader = () => (
   <div className="flex-1 flex items-center justify-center py-32">
@@ -87,6 +136,7 @@ function AppContent() {
   useEffect(() => { window.scrollTo(0, 0); document.getElementById("main-content")?.focus({ preventScroll: true }); }, [location.pathname]);
   // First-party funnel analytics: path only, no query string or visitor identifiers.
   useEffect(() => { if (!location.pathname.startsWith("/admin")) recordEvent("page_view"); }, [location.pathname]);
+  useEffect(() => { installErrorReporter(); }, []);
   useEffect(() => { if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") navigator.serviceWorker.register(new URL("sw.js", import.meta.url)).catch(() => {}); }, []);
 
   return (
@@ -128,6 +178,11 @@ function AppContent() {
                   <Route path="/contact"      element={<ContactUs />} />
                   <Route path="/resume"       element={<Resume />} />
                   <Route path="/match"        element={<JobMatch />} />
+                  <Route path="/match/:shareId" element={<JobMatch />} />
+                  <Route path="/compare"      element={<Compare />} />
+                  <Route path="/brief"        element={<RecruiterBrief />} />
+                  <Route path="/status"       element={<Status />} />
+                  <Route path="/recommend"    element={<Recommend />} />
                   <Route path="/admin"        element={<Admin />} />
                   <Route path="*"             element={<NotFound />} />
                 </Routes>

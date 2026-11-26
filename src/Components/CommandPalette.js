@@ -12,6 +12,10 @@ const pages = [
   ["Publications", "/publications"], ["Skills", "/skills"], ["Writing", "/writing"],
   ["Résumé", "/resume"], ["Contact", "/contact"],
   ["Job match — check a job description against this portfolio", "/match"],
+  ["Compare two projects side by side", "/compare"],
+  ["Recruiter brief — one-page printable summary", "/brief"],
+  ["Write a recommendation", "/recommend"],
+  ["Status — is the API up?", "/status"],
   ["AI assistant architecture and request flow", "/assistant-architecture"],
 ];
 

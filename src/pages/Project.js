@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { m as motion } from "framer-motion";
 import { Link, useSearchParams } from "react-router";
 import { caseStudies, projectMedia } from "../data/showcase";
@@ -47,6 +47,20 @@ const Projects = () => {
   useMeta("Projects", `${projects.length} projects spanning AI/ML research, full-stack engineering, computational biology, and embedded systems — Vigneshwaran C.J.'s portfolio.`);
   const [params, setParams] = useSearchParams();
   const [copied, setCopied] = useState(false);
+  const searchRef = useRef(null);
+
+  // "/" focuses search, unless the visitor is already typing somewhere.
+  useEffect(() => {
+    const onKey = (event) => {
+      if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))) return;
+      event.preventDefault();
+      searchRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
   const search = params.get("q") || "";
   const activeFilter = categoryFilters.includes(params.get("cat")) ? params.get("cat") : "All";
   const activeTech = (params.get("tech") || "").split(",").map((tag) => tag.trim()).filter((tag) => TECH_OPTIONS.includes(tag));
@@ -97,10 +111,13 @@ const Projects = () => {
         <div className="relative max-w-sm mx-auto mb-6">
           <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           <input
+            ref={searchRef}
+            id="project-search"
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            aria-label="Search projects by name or technology" placeholder="Search projects, tags…"
+            aria-keyshortcuts="/"
+            aria-label="Search projects by name or technology" placeholder="Search projects, tags…  (press /)"
             className="w-full pl-10 pr-9 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
           />
           {search && (
@@ -141,6 +158,7 @@ const Projects = () => {
 
         <div className="filter-summary" aria-live="polite">
           <span>{filtered.length} of {projects.length} projects</span>
+          <Link to="/compare">Compare two projects</Link>
           {hasFilters && <>
             <button type="button" onClick={copyLink}>{copied ? "Link copied ✓" : "Copy link to this view"}</button>
             <button type="button" onClick={() => setParams({}, { replace: true })}>Reset filters</button>

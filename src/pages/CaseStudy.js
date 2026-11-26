@@ -15,6 +15,7 @@ const PROJECT_QUESTIONS = [
   "What was the hardest engineering decision in {title}, and why?",
   "Walk me through how {title} works end to end.",
   "What exactly did Vigneshwaran build in {title}?",
+  "What should a hiring team ask Vigneshwaran about {title} in an interview, based on its design decisions?",
 ];
 
 function askAssistant(question, autoSubmit) {
