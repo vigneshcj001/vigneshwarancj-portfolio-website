@@ -16,6 +16,16 @@ import { projects } from "../data/projects";
 import { portfolioApi } from "../services/portfolioApi";
 import { executeAgentAction, highlightAgentTarget, validateAgentAction } from "../features/assistant/actions";
 
+// SpeechRecognition error codes mapped to actionable messages.
+const VOICE_ERRORS = {
+  "not-allowed": "Microphone access is blocked. Allow it from the lock icon in the address bar, then try again.",
+  "service-not-allowed": "This browser does not allow speech recognition here. Try Chrome or Edge, or type your question.",
+  "audio-capture": "No microphone was found. Check that one is connected and not used by another app.",
+  "no-speech": "No speech heard. Tap the mic and start speaking.",
+  network: "Speech recognition needs an internet connection to the browser's speech service. Try again, or type your question.",
+  "language-not-supported": "Voice input isn't available for this language in your browser. Switch to English or type your question.",
+};
+
 function fmtTime(ts) {
   return new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
@@ -363,7 +373,11 @@ export default function PortfolioAssistant() {
     recognition.continuous = false;
     recognition.onstart = () => { setListening(true); setVoiceError(""); };
     recognition.onresult = (event) => setInput([...event.results].map((result) => result[0].transcript).join(""));
-    recognition.onerror = () => setVoiceError("Could not capture voice. Try again.");
+    recognition.onerror = (event) => {
+      // "aborted" means the user stopped listening; it is not a failure.
+      if (event.error === "aborted") return;
+      setVoiceError(VOICE_ERRORS[event.error] || "Could not capture voice. Try again.");
+    };
     recognition.onend = () => setListening(false);
     recognitionRef.current = recognition;
     recognition.start();
