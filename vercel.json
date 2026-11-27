@@ -67,6 +67,14 @@
       "destination": "/projects/syncly/index.html"
     },
     {
+      "source": "/projects/kural",
+      "destination": "/projects/kural/index.html"
+    },
+    {
+      "source": "/projects/cmo-copilot",
+      "destination": "/projects/cmo-copilot/index.html"
+    },
+    {
       "source": "/projects/glycanbench",
       "destination": "/projects/glycanbench/index.html"
     },

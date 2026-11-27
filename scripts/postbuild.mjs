@@ -21,7 +21,11 @@ routes['compare'] = {title:'Compare projects',description:'Compare two of Vignes
 routes['brief'] = {title:'Recruiter brief',description:'One-page summary of Vigneshwaran C. J.: role fit, current work, top projects, and contact details.'};
 routes['status'] = {title:'Status',description:'Live status of the portfolio API, AI assistant, and storage.'};
 routes['recommend'] = {title:'Write a recommendation',description:'Share a short recommendation for Vigneshwaran C. J. Every submission is reviewed before it appears.'};
-for (const [slug, study] of Object.entries(caseStudies)) routes[`projects/${slug}`]={title:`${study.title} — Case study`,description:study.summary,image:`/images/sharing/${slug}.png`};
+// Use a project's own share image when one exists; otherwise the default og-image.
+for (const [slug, study] of Object.entries(caseStudies)) {
+ const image = fs.existsSync(path.join(root,'images/sharing',`${slug}.png`)) ? `/images/sharing/${slug}.png` : undefined;
+ routes[`projects/${slug}`]={title:`${study.title} — Case study`,description:study.summary,image};
+}
 for (const article of articles) routes[`writing/${article.slug}`]={title:article.title,description:article.intro};
 for (const [route,meta] of Object.entries(routes)) {
  const title=escape(`${meta.title} | Vigneshwaran C.J.`), description=escape(meta.description), url=`${base}/${route}`, image=base+(meta.image || '/og-image.jpg');

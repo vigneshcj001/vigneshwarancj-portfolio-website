@@ -302,6 +302,20 @@
 .proof-map-detail li a:hover { color: #1d4ed8; text-decoration: underline; }
 .proof-map-detail li span { color: #64748b; font-size: 12px; }
 
+/* ── Case study: evaluation note and state-of-the-art table ─────────────── */
+.case-study-note { margin-top: -12px; color: #59626f; font-size: 13px; }
+.dark .case-study-note { color: #9fb0c7; }
+.sota-table-wrap { overflow-x: auto; border: 1px solid #dbe2ec; border-radius: 14px; background: #fff; }
+.dark .sota-table-wrap { border-color: #304158; background: #111e30; }
+.sota-table { width: 100%; min-width: 600px; border-collapse: collapse; font-size: 13px; line-height: 1.55; }
+.sota-table th, .sota-table td { border-bottom: 1px solid #e2e8f0; padding: 10px 12px; text-align: start; vertical-align: top; }
+.dark .sota-table th, .dark .sota-table td { border-color: #26364c; }
+.sota-table thead th { color: #59626f; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.dark .sota-table thead th { color: #9fb0c7; }
+.sota-table tbody th { width: 150px; font-weight: 700; }
+.sota-table td:last-child { color: #1e3a8a; }
+.dark .sota-table td:last-child { color: #bfdbfe; }
+
 /* ── Small additions ──────────────────────────────────────────────────── */
 .proof-activity { margin-top: 10px; font-size: 13px; }
 .proof-activity a { color: #1d4ed8; }

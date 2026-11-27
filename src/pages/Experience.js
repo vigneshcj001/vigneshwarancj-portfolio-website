@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router";
 import { m as motion, AnimatePresence } from "framer-motion";
 import useMeta from "../Hooks/useMeta.js";
 import { FiBriefcase, FiChevronDown, FiChevronUp, FiMapPin, FiAward } from "react-icons/fi";
@@ -55,6 +56,11 @@ function ProjectCard({ project, idx }) {
       <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
         {project.description}
       </p>
+      {project.caseStudy && (
+        <Link className="inline-block mb-3 text-xs font-semibold text-blue-700 dark:text-blue-400 hover:underline underline-offset-2" to={project.caseStudy}>
+          Read the {project.name} case study →
+        </Link>
+      )}
       <div className="flex flex-wrap gap-1.5">
         {project.tech.map((t) => (
           <span key={t} className={`text-[10px] font-semibold px-2 py-0.5 rounded-md ${tagCls}`}>

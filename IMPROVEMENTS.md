@@ -3,6 +3,7 @@
 ## Late November 2026
 
 - **New knowledge.** Kural (multi-tenant AI voice customer-care platform on Sarvam AI, built solo) and CMO Copilot (grounded marketing-analytics agent, team project) under the Ceiyone role; GlycanBench evaluation metrics and state-of-the-art contributions; the M.Tech record links GlycanBench and the thesis.
+- **New project UI.** Kural and CMO Copilot have project cards and case studies (`/projects/kural`, `/projects/cmo-copilot`), linked from Experience and the home page; the assistant can navigate to them. The GlycanBench case study adds a model-evaluation section and a "What it adds over existing tools" table.
 - **Recruiter tools.** Tailored résumé and shareable results on `/match`, `/compare`, `/brief`, and a skills proof map.
 - **Trust.** Moderated recommendations (`/recommend`, admin approval), a public `/status` page.
 - **AI quality.** An output guard removes links and contact details the sources never mentioned; AI metrics and client error reports in the admin page; an answer-quality eval and nightly end-to-end check in the backend repository.

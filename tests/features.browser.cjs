@@ -68,6 +68,22 @@ const MATCH = {
     await page.getByText('Assessment · AI Engineer at Acme').waitFor();
     assert.equal(await page.getByRole('button', { name: 'Share this result' }).count(), 0, 'shared view is read-only');
 
+    // New case studies and the GlycanBench evaluation / state-of-the-art sections.
+    await page.goto(`${base}/projects/kural`);
+    await page.getByRole('heading', { name: 'Kural', level: 1 }).waitFor();
+    await page.getByText('0.85 s').first().waitFor();
+    await page.getByText(/Status: in development/).waitFor();
+    await page.goto(`${base}/projects/cmo-copilot`);
+    await page.getByRole('heading', { name: 'CMO Copilot', level: 1 }).waitFor();
+    await page.getByText(/Team project at Ceiyone Tech Works/).waitFor();
+    await page.goto(`${base}/projects/glycanbench`);
+    await page.getByRole('heading', { name: 'Model evaluation' }).waitFor();
+    await page.getByText(/633 glycans/).first().waitFor();
+    await page.getByRole('heading', { name: 'What it adds over existing tools' }).waitFor();
+    assert.equal(await page.locator('.sota-table tbody tr').count(), 7);
+    await page.goto(`${base}/experience`);
+    await page.getByRole('link', { name: 'Read the Kural case study →' }).first().waitFor();
+
     // Compare two projects via URL state.
     await page.goto(`${base}/compare?a=syncly&b=glycanbench`);
     await page.getByRole('columnheader', { name: 'Syncly' }).waitFor();
@@ -120,7 +136,7 @@ const MATCH = {
     await page.getByRole('button', { name: 'Email copied' }).waitFor();
 
     // No horizontal overflow on the new pages at phone and tablet widths.
-    for (const route of ['/match', '/compare', '/brief', '/status', '/recommend', '/skills']) {
+    for (const route of ['/match', '/compare', '/brief', '/status', '/recommend', '/skills', '/projects/kural', '/projects/glycanbench']) {
       for (const width of [320, 390, 768]) {
         await page.setViewportSize({ width, height: 844 });
         await page.goto(`${base}${route}`);

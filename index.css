@@ -564,7 +564,7 @@ html[dir="rtl"] .fixed.right-6 { right: auto; left: 1.5rem; }
 .project-metrics dt { color: #1d4ed8; font-size: 15px; font-weight: 800; overflow-wrap: anywhere; }
 .dark .project-metrics dt { color: #93baff; }
 .project-metrics dd { margin-top: 3px; color: #64748b; font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
-.more-work-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.more-work-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 18px; }
 .more-work-row a { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; padding: 18px 20px; border: 1px solid #d7dfeb; border-radius: 14px; background: #ffffffa8; }
 .dark .more-work-row a { background: #101c2ecc; border-color: #2b3d55; }
 .more-work-row span { color: #64748b; font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }

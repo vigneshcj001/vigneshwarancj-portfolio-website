@@ -96,6 +96,7 @@ export default function Home() {
           {FEATURED_PROJECTS.map((slug, index) => <FeaturedProject key={slug} slug={slug} position={index + 1} />)}
         </div>
         <div className="more-work-row">
+          <Link to="/projects/kural"><span>Voice AI</span><strong>Kural multi-tenant voice agent</strong><em>Case study ↗</em></Link>
           <Link to="/projects/syncly"><span>Also built</span><strong>Syncly developer network</strong><em>Case study ↗</em></Link>
           <Link to="/publications"><span>Research</span><strong>Explainable ML for EGFR inhibitors</strong><em>Publication work ↗</em></Link>
         </div>
