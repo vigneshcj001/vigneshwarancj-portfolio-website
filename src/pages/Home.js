@@ -12,6 +12,7 @@ import useMeta from "../Hooks/useMeta";
 import { trackConversion } from "../Utils/analytics";
 import CareerTimeline from "../Components/CareerTimeline";
 import LiveProof from "../Components/LiveProof";
+import Testimonials from "../Components/Testimonials";
 
 const FEATURED_PROJECTS = ["aiora", "pocketpet", "glycanbench"];
 const ASSISTANT_STACK = [
@@ -95,6 +96,7 @@ export default function Home() {
           {FEATURED_PROJECTS.map((slug, index) => <FeaturedProject key={slug} slug={slug} position={index + 1} />)}
         </div>
         <div className="more-work-row">
+          <Link to="/projects/kural"><span>Voice AI</span><strong>Kural multi-tenant voice agent</strong><em>Case study ↗</em></Link>
           <Link to="/projects/syncly"><span>Also built</span><strong>Syncly developer network</strong><em>Case study ↗</em></Link>
           <Link to="/publications"><span>Research</span><strong>Explainable ML for EGFR inhibitors</strong><em>Publication work ↗</em></Link>
         </div>
@@ -131,6 +133,8 @@ export default function Home() {
         <div className="section-heading"><div><p className="eyebrow">Technical notes</p><h2>How decisions get made.</h2></div><Link className="text-link" to="/writing">All writing ↗</Link></div>
         <div className="writing-grid">{articles.slice(0, 3).map((article, index) => <Link key={article.slug} to={`/writing/${article.slug}`}><span>0{index + 1} · {article.project}</span><h3>{article.title}</h3><p>{article.intro}</p><em>Read note ↗</em></Link>)}</div>
       </section>
+
+      <Testimonials />
 
       <section className="portfolio-section section-spacing"><div className="contact-banner"><p className="eyebrow">Available for the right role</p><h2>Need an engineer who can cross product, AI, and research boundaries?</h2><p>Share the problem, team, and outcome you are hiring for.</p><div className="action-row" style={{ justifyContent: "center", marginBlock: 0 }}><Link className="primary-action" to="/contact">Start a conversation <span aria-hidden="true">↗</span></Link><Link className="secondary-action contact-banner-secondary" to="/match">Check fit against your job description</Link></div></div></section>
     </div>

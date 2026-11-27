@@ -23,11 +23,11 @@ WORK EXPERIENCE
 
 Junior Software Developer
 Ceiyone Tech Works Pvt. Ltd. | Dec 2025 – Present
+- Kural (multi-tenant AI voice customer-care platform): Built solo (Nov 2026): one shared agent engine where each business gets its own data, knowledge base, agent configuration, languages. (Python, FastAPI, SQLAlchemy, Alembic, PostgreSQL)
+- CMO Copilot (marketing analytics AI agent): Team project (Oct 2026): a marketing-analytics agent that answers natural-language questions over Google Analytics 4 (Data API and BigQuery). (Python, FastAPI, LangGraph, BigQuery, Google Analytics 4)
 - Bullion Handler: FastAPI service that reads gold-shipment AWB and invoice PDFs with GPT-4o vision, then runs a two-stage rules engine. (Python, FastAPI, OpenAI GPT-4o, PostgreSQL, Redis)
 - Bullion Listener: Node.js WhatsApp bot bridging group chats and Bullion Handler: saves incoming PDFs to the shared filesystem. (Node.js, whatsapp-web.js, Chokidar, Redis, PM2)
 - Splendor: Express 5 REST API that meters AI token consumption and subscription quotas per client/agent, enforces plan limits. (Node.js, Express.js, PostgreSQL, Joi, Winston)
-- Oblion: Multi-number WhatsApp gateway: one whatsapp-web.js session per business number, BullMQ-queued outbound sends with retries and a dead-letter queue. (TypeScript, Node.js, Express.js, BullMQ, Redis)
-- meridian-api: Shared service layer every AIORA WhatsApp conversation runs through: slot availability, bookings, operator-authored intake questions. (Node.js, Express.js, PostgreSQL, Joi, Winston)
 
 AI Engineer Intern
 Ceiyone Tech Works Pvt. Ltd. | Oct 2025 – Dec 2025

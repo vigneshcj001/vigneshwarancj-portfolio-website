@@ -22,7 +22,8 @@ The root `preview-server.mjs` is a separate legacy preview utility. Use the fron
 - `Writing.js`: technical-note index and individual article routes, driven by `src/data/showcase.js`.
 - `Resume.js`: HTML résumé using generated canonical content; ATS PDF, DOCX, and TXT downloads from the backend with static fallbacks from the same generator; the `ResumeTimeline` role-to-stack explorer; and a single-column print view.
 - `ContactUs.js`: React Hook Form validation, honeypot, query-string draft prefill, EmailJS delivery through `useContactForm`, and optional backend persistence.
-- `Admin.js`: tab-local admin key, JSON revision editor, aggregate event view, conversion funnel (`AdminFunnel`), and link checking. Public pages do not consume saved admin revisions.
+- `JobMatch.js` also renders `/match/:shareId` (read-only shared result) and, after an analysis, tailored résumé downloads and share-link creation. `Compare.js` (`/compare?a=&b=`), `RecruiterBrief.js` (`/brief?for=`), `Status.js` (`/status`, health probe every minute), and `Recommend.js` (`/recommend`, consent-gated, moderated).
+- `Admin.js`: tab-local admin key, JSON revision editor, aggregate event view, conversion funnel (`AdminFunnel`), AI metrics, testimonial moderation, newsletter sending (dry run first), client errors (`AdminPanels`), and link checking. Public pages do not consume saved admin revisions.
 - `AssistantArchitecture.js`: public `/assistant-architecture` route with selectable request scenarios, seven-stage normal flow, four-stage refusal path, source references, memory boundaries, and all nine tools. The explorer is static explanatory content; selecting stages does not call providers. Trying a question fills the chat composer without sending it.
 
 ### Components
@@ -39,6 +40,8 @@ The root `preview-server.mjs` is a separate legacy preview utility. Use the fron
 - `features/assistant/actions.js`: fixed target-to-route/selector map, action validation, delayed destination lookup, navigation/highlight execution, and actual outcome reporting. Arbitrary selectors, URLs, and generated code are not accepted.
 - `features/assistant/storage.js`: up to 12 browser conversations, unguessable `crypto.randomUUID()` conversation IDs (older IDs re-keyed on load), active conversation ID, daily usage storage, and restored messages marked so actions do not replay. `constants.js`: initial message and starter questions.
 - `services/portfolioApi.js` and `config/runtime.js`: 45-second request timeouts, readable messages for network, timeout, 429, and 5xx errors, API methods (including job match, health, résumé formats, and best-effort session deletion), streaming request, and build-time API base selection.
+- `Utils/errorReporter.js`: first-party error monitoring (uncaught errors, unhandled rejections, error-boundary crashes; at most 10 distinct reports per page, extension noise ignored, no query strings). `Components/SkillProofMap.js` (skill → every documented use), `Components/Testimonials.js` (approved only; renders nothing when empty).
+- `Contexts/LanguageContext.js` picks the browser's language on a first visit when it is one of the seven supported; a saved choice always wins.
 - `Hooks/useApiStatus.js`: one shared `/api/health` probe after first paint that wakes the free-tier API and reports checking, waking, online, or offline.
 - `Contexts/LanguageContext.js`, `i18n/messages.js`, and `Hooks/usePageTranslation.js`: seven language choices, static core translations, batched API translation, DOM observation, translation caches, and Arabic RTL.
 - `Hooks/useMeta.js`: client title, description, canonical, and sharing metadata. `Hooks/useContactForm.js`: honeypot, best-effort persistence, EmailJS delivery, notification state, and conversion event.

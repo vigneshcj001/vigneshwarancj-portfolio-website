@@ -13,3 +13,7 @@ export const LEETCODE_LINK = "https://leetcode.com/vigneshcj001/";
 export const X_LINK = "https://x.com/vigneshwarancj";
 export const YOUTUBE_LINK = "https://www.youtube.com/@vigneshwarancj";
 export const BUY_ME_A_COFFEE_LINK = "https://buymeacoffee.com/vigneshwarancj"
+
+// Scheduling: paste a Cal.com or Calendly link (e.g. "https://cal.com/yourname/20min")
+// to show "Book a call" buttons. Empty hides them everywhere.
+export const BOOKING_URL = "";

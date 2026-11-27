@@ -12,7 +12,8 @@ const PageHeader = ({ title, subtitle, badge }) => (
         {badge}
       </span>
     )}
-    <h1 className="text-5xl font-black mb-3 bg-linear-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
+    {/* Smaller on phones, and long single words wrap instead of widening the page. */}
+    <h1 className="text-4xl sm:text-5xl font-black mb-3 bg-linear-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent [overflow-wrap:anywhere]">
       {title}
     </h1>
     <div className="flex justify-center mb-4">

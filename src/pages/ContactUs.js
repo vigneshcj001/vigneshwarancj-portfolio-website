@@ -1,13 +1,38 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useMeta from "../Hooks/useMeta.js";
 import { m as motion } from "framer-motion";
 import { SiBuymeacoffee } from "react-icons/si";
-import { FiMail, FiLinkedin } from "react-icons/fi";
+import { FiCalendar, FiCopy, FiMail, FiLinkedin } from "react-icons/fi";
 import { Send, Loader2 } from "lucide-react";
 import useContactForm from "../Hooks/useContactForm.js";
-import { BUY_ME_A_COFFEE_LINK, LINKEDIN_LINK } from "../Utils/const.js";
+import { BOOKING_URL, BUY_ME_A_COFFEE_LINK, LINKEDIN_LINK } from "../Utils/const.js";
 import { useSearchParams } from "react-router";
+import { trackConversion } from "../Utils/analytics.js";
+
+const EMAIL = "vigneshwarancj@gmail.com";
+
+function QuickActions() {
+  const [copied, setCopied] = useState(false);
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      trackConversion("email_copied", { source: "contact" });
+      setTimeout(() => setCopied(false), 2000);
+    } catch { /* clipboard blocked: the address stays visible and selectable */ }
+  };
+  return (
+    <div className="contact-quick-actions">
+      <button type="button" onClick={copy} aria-live="polite"><FiCopy aria-hidden="true" /> {copied ? "Email copied" : "Copy email address"}</button>
+      {BOOKING_URL && (
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConversion("booking_click", { source: "contact" })}>
+          <FiCalendar aria-hidden="true" /> Book a 20-minute call ↗
+        </a>
+      )}
+    </div>
+  );
+}
 
 const CONTACT_INFO = [
   { Icon: FiMail,     label: "Email",    value: "vigneshwarancj@gmail.com", href: "mailto:vigneshwarancj@gmail.com" },
@@ -77,6 +102,8 @@ const ContactUs = () => {
             </a>
           ))}
         </motion.div>
+
+        <QuickActions />
 
         {/* Notification */}
         {notification && (

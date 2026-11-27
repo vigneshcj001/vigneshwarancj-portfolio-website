@@ -21,7 +21,7 @@ const { chromium } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
  await page.goto(base);
  await page.getByRole('link',{name:/Explore selected work/}).click();
  await page.getByRole('textbox',{name:'Search projects by name or technology'}).fill('FastAPI');
- assert.deepEqual(await page.locator('h2').allTextContents(),['AIORA','GlycanBench: a unified resource for working with glycans']);
+ assert.deepEqual(await page.locator('h2').allTextContents(),['AIORA','GlycanBench: a unified resource for working with glycans','Kural','CMO Copilot']);
  await page.goto(base+'/skills');await page.getByRole('link',{name:'React.js ↗',exact:true}).click();
  assert.match(page.url(),/q=React/); await page.getByRole('heading',{name:'Syncly',exact:true}).waitFor(); assert.ok((await page.locator('h2').count())>=3);
  for (const slug of ['aiora','pocketpet','syncly','glycanbench']) {

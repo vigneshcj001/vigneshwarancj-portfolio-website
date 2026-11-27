@@ -1,5 +1,27 @@
 const projectCatalog = [
   {
+    title: "Kural",
+    subtitle: "Multi-Tenant AI Voice Customer-Care Platform · Ceiyone Tech Works",
+    description:
+      "Built solo: one shared AI agent engine where each business gets its own data, knowledge base, tools, languages and escalation rules, demonstrated with a real-estate and a hospital business in English and Tamil. Guardrails, context and LLM tool calls run in a bounded loop; tools are tenant-scoped, time-limited and audited, and bookings need the caller's explicit confirmation. Streaming replies into speech sentence by sentence cut time to first audio from about 1.27 s to 0.85 s. Voice calls then moved to hosted Sarvam Voice Agents calling Kural's tools over signed HTTPS. 88 backend tests, including tenant isolation.",
+    link: null,
+    github: null,
+    tags: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redis", "Sarvam AI", "React.js", "TypeScript", "Tailwind CSS", "Supabase", "Docker"],
+    accent: "violet",
+    category: "AI/Full-Stack",
+  },
+  {
+    title: "CMO Copilot",
+    subtitle: "Grounded Marketing Analytics Agent · Ceiyone Tech Works",
+    description:
+      "Team project: a LangGraph agent that answers natural-language marketing questions over Google Analytics 4 (Data API and BigQuery), Google Ads, Meta Ads and Search Console. SQL is generated only from validated query plans, never from users or the model, and any number in an answer that cannot be traced to a query result is rejected. Multi-tenant configuration, OIDC or demo authentication, streamed chat, dashboards, budgets and board-slide export.",
+    link: null,
+    github: null,
+    tags: ["Python", "FastAPI", "LangGraph", "BigQuery", "Google Analytics 4", "PostgreSQL", "React.js", "TypeScript", "Recharts"],
+    accent: "orange",
+    category: "AI/Analytics",
+  },
+  {
     title: "AIORA",
     subtitle: "Multi-Tenant WhatsApp Commerce Platform · Ceiyone Tech Works",
     description:
@@ -123,6 +145,8 @@ const projectCatalog = [
 ];
 
 const projectMeta = {
+  "Kural": { date: "Nov 2026", status: "In development", sourceAvailability: "Private (employer)", contribution: "Built solo: multi-tenant agent engine, industry modules, guardrails, tool registry, Sarvam voice integration, React dashboard, tests, and deployment." },
+  "CMO Copilot": { date: "Oct 2026", status: "In development", sourceAvailability: "Private (employer)", contribution: "Contributed as a member of the Ceiyone team." },
   "AIORA": { date: "2025–Present", status: "Production", sourceAvailability: "Private", contribution: "Backend APIs, messaging gateway, AI/OCR workflows, commerce integrations, cloud deployment, and platform operations." },
   "PocketPet": { date: "2026", status: "Maintained", sourceAvailability: "Public", contribution: "Independent end-to-end product engineering across desktop, native Windows integration, browser automation, and download website." },
   "GlycanBench: a unified resource for working with glycans": { date: "2025–2026", status: "Research", sourceAvailability: "Public", contribution: "Full-stack development, ML integration, glycoinformatics pipelines, package SDK/CLI, tests, and deployment." },
@@ -141,6 +165,9 @@ const priority = [
   "PocketPet",
   "GlycanBench: a unified resource for working with glycans",
   "Syncly",
+  // New projects come after the original four: case studies refer to projects by position.
+  "Kural",
+  "CMO Copilot",
 ];
 
 export const projects = [...projectCatalog]

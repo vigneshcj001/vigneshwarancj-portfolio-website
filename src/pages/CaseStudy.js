@@ -15,6 +15,7 @@ const PROJECT_QUESTIONS = [
   "What was the hardest engineering decision in {title}, and why?",
   "Walk me through how {title} works end to end.",
   "What exactly did Vigneshwaran build in {title}?",
+  "What should a hiring team ask Vigneshwaran about {title} in an interview, based on its design decisions?",
 ];
 
 function askAssistant(question, autoSubmit) {
@@ -62,6 +63,24 @@ export default function CaseStudy() {
     <section data-walkthrough-step="2"><h2>Architecture at a glance</h2><p>High-level system map. Confidential infrastructure details omitted.</p><ArchitectureDiagram nodes={study.diagram} /><ol className="architecture-list">{study.architecture.map(item => <li key={item}>{item}</li>)}</ol></section>
     {study.install && <section className="surface-card"><p className="eyebrow">Install package</p><pre className="install-command"><code>{study.install}</code></pre></section>}
     {study.validation && <section><h2>Validation</h2><p>{study.validation}</p></section>}
+    {study.evaluation && (
+      <section aria-labelledby="model-evaluation">
+        <h2 id="model-evaluation">Model evaluation</h2>
+        <dl className="evidence-grid">{study.evaluation.map((metric) => <div key={metric.value}><dt>{metric.label}</dt><dd>{metric.value}</dd></div>)}</dl>
+        {study.evaluationNote && <p className="case-study-note">{study.evaluationNote}</p>}
+      </section>
+    )}
+    {study.stateOfTheArt && (
+      <section aria-labelledby="state-of-the-art">
+        <h2 id="state-of-the-art">What it adds over existing tools</h2>
+        <div className="sota-table-wrap" tabIndex={0} role="region" aria-label="Comparison with existing tools">
+          <table className="sota-table">
+            <thead><tr><th scope="col">Area</th><th scope="col">Before</th><th scope="col">{study.title}</th></tr></thead>
+            <tbody>{study.stateOfTheArt.map((row) => <tr key={row.area}><th scope="row">{row.area}</th><td>{row.before}</td><td>{row.added}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
+    )}
     {study.limitations && <section><h2>Model limitations</h2><ul className="space-y-3 list-disc pl-5">{study.limitations.map(item => <li key={item}>{item}</li>)}</ul></section>}
     <section data-walkthrough-step="3"><h2>Design decisions</h2><ul className="space-y-4 list-disc pl-5">{study.decisions.map(item => <li key={item}>{item}</li>)}</ul></section>
     <section className="surface-card"><p className="eyebrow">Delivered</p><h2>{study.result}</h2><p>{study.caveat}</p></section>

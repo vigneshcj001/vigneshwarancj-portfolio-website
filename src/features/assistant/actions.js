@@ -8,6 +8,8 @@ export const AGENT_TARGETS = Object.freeze({
   "projects.pocketpet": { path: "/projects/pocketpet", selector: "#case-study-pocketpet" },
   "projects.glycanbench": { path: "/projects/glycanbench", selector: "#case-study-glycanbench" },
   "projects.syncly": { path: "/projects/syncly", selector: "#case-study-syncly" },
+  "projects.kural": { path: "/projects/kural", selector: "#case-study-kural" },
+  "projects.cmo-copilot": { path: "/projects/cmo-copilot", selector: "#case-study-cmo-copilot" },
   "skills.grid": { path: "/skills", selector: "#portfolio-skills" },
   "publications.list": { path: "/publications", selector: "#portfolio-publications" },
   "resume.document": { path: "/resume", selector: "#portfolio-resume" },

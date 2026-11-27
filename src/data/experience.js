@@ -7,8 +7,26 @@ export const roles = [
     type: "Full-time",
     accent: "blue",
     overview:
-      "Designing and maintaining AIORA, a multi-tenant WhatsApp commerce platform spanning 13 microservices for bookings, e-commerce, document validation, payments, logistics, and AI interactions. Work covers Node.js/TypeScript and Python APIs, concurrent messaging sessions, Redis queues, OCR and GPT-4o Vision, PostgreSQL usage tracking, Razorpay and Shiprocket integrations, n8n workflows, and production deployment on Ubuntu VPS and Railway.",
+      "Designing and maintaining AIORA, a multi-tenant WhatsApp commerce platform spanning 13 microservices for bookings, e-commerce, document validation, payments, logistics, and AI interactions. Work covers Node.js/TypeScript and Python APIs, concurrent messaging sessions, Redis queues, OCR and GPT-4o Vision, PostgreSQL usage tracking, Razorpay and Shiprocket integrations, n8n workflows, and production deployment on Ubuntu VPS and Railway. Also built Kural, a multi-tenant AI voice customer-care platform on Sarvam AI, and contributed to CMO Copilot, a grounded marketing-analytics agent.",
     projects: [
+      {
+        name: "Kural",
+        subtitle: "Multi-Tenant AI Voice Customer-Care Platform",
+        description:
+          "Built solo: one shared agent engine where each business gets its own data, knowledge, tools, languages and escalation rules, demonstrated with a real-estate and a hospital business in English and Tamil. Guardrails → context → LLM ⇄ tool calls, with tenant-scoped, audited tools and confirmation before bookings. Sentence-level streaming cut time to first audio from about 1.27 s to 0.85 s; voice calls later moved to hosted Sarvam Voice Agents calling Kural's tools over signed HTTPS. 88 backend tests, including tenant isolation.",
+        tech: ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "Redis", "Sarvam AI", "React", "TypeScript", "Supabase"],
+        accent: "violet",
+        caseStudy: "/projects/kural",
+      },
+      {
+        name: "CMO Copilot",
+        subtitle: "Grounded Marketing Analytics Agent",
+        description:
+          "Team project: a LangGraph agent answering natural-language questions over GA4 (Data API and BigQuery), Google Ads, Meta Ads and Search Console. SQL is built only from validated query plans, and any number in an answer that can't be traced to a query result is rejected. Multi-tenant, OIDC authentication, SSE chat, dashboards and board-slide export.",
+        tech: ["Python", "FastAPI", "LangGraph", "BigQuery", "Google Analytics 4", "React", "TypeScript", "Recharts"],
+        accent: "orange",
+        caseStudy: "/projects/cmo-copilot",
+      },
       {
         name: "Bullion Handler",
         subtitle: "AI Document Validation Engine",
